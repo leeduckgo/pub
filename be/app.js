@@ -2,16 +2,16 @@ const Koa = require('koa');
 const app = new Koa();
 const router = require('koa-router')();
 const views = require('koa-views');
-const co = require('co');
 const convert = require('koa-convert');
 const json = require('koa-json');
-const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
 const wechat = require('./routes/wechat');
+
+require('./models');
 
 // middlewares
 app.use(convert(bodyparser));
@@ -38,7 +38,7 @@ router.use('/login', wechat.routes(), wechat.allowedMethods());
 app.use(router.routes(), router.allowedMethods());
 // response
 
-app.on('error', function(err, ctx){
+app.on('error', function (err, ctx) {
   console.log(err)
   logger.error('server error', err, ctx);
 });
