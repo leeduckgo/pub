@@ -10,8 +10,9 @@ const logger = require('koa-logger');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const wechat = require('./routes/wechat');
+const github = require('./routes/github');
 
-require('./models');
+const models = require('./models');
 
 // middlewares
 app.use(convert(bodyparser));
@@ -23,24 +24,19 @@ app.use(views(__dirname + '/views', {
   extension: 'jade'
 }));
 
-// logger
-app.use(async (ctx, next) => {
-  const start = new Date();
-  await next();
-  const ms = new Date() - start;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
-});
+router.all('*', models.api.errorHandler);
+router.all('*', models.api.extendCtx);
 
 router.use('/', index.routes(), index.allowedMethods());
 router.use('/users', users.routes(), users.allowedMethods());
 router.use('/login', wechat.routes(), wechat.allowedMethods());
+router.use('/github', github.routes(), wechat.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 // response
 
-app.on('error', function (err, ctx) {
+app.on('error', function (err) {
   console.log(err)
-  logger.error('server error', err, ctx);
 });
 
 

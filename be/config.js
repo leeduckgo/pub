@@ -13,6 +13,11 @@ const config = {
     },
     timezone: 'utc',
   },
+
+  github: {
+    clientID: 'a269deced07c748a3526',
+    clientSecret: '8cf2b9c75e540588be69ecbd498fee808abbeadd'
+  }
 };
 
 module.exports = config;
