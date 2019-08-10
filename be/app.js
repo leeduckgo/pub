@@ -6,33 +6,39 @@ const convert = require('koa-convert');
 const json = require('koa-json');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
+const cors = require('@koa/cors');
 
 const index = require('./routes/index');
-const users = require('./routes/users');
-const wechat = require('./routes/wechat');
+const user = require('./routes/user');
 const github = require('./routes/github');
+const logout = require('./routes/logout');
 
 const models = require('./models');
+
+const {
+  ensureAuthorization,
+} = require('./models/api');
 
 models.cache.init();
 
 // middlewares
 app.use(convert(bodyparser));
 app.use(convert(json()));
+app.use(cors({
+  credentials: true
+}));
 app.use(convert(logger()));
 app.use(require('koa-static')(__dirname + '/public'));
 
-app.use(views(__dirname + '/views', {
-  extension: 'jade'
-}));
+app.use(views(__dirname + '/views'));
 
 router.all('*', models.api.errorHandler);
 router.all('*', models.api.extendCtx);
 
 router.use('/', index.routes(), index.allowedMethods());
-router.use('/users', users.routes(), users.allowedMethods());
-router.use('/login', wechat.routes(), wechat.allowedMethods());
-router.use('/github', github.routes(), wechat.allowedMethods());
+router.use('/user', ensureAuthorization(), user.routes(), user.allowedMethods());
+router.use('/github', github.routes(), github.allowedMethods());
+router.use('/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 // response

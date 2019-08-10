@@ -6,6 +6,7 @@ let util = require('util');
 const config = require('../config');
 
 let verbose = false;
+let redis;
 
 var getKey = function (type, id, callback) {
   if (!type || !id) {
@@ -47,7 +48,7 @@ var rawSet = function (type, id, data, options, callback) {
       options['NX'] && args.push('NX');
       options['XX'] && args.push('XX');
     }
-    global.redis.set(args, callback || function () {});
+    redis.set(args, callback || function () {});
   });
 };
 
@@ -70,7 +71,7 @@ var del = function (type, id, callback) {
     if (verbose && config.debug) {
       console.log('Del cache: ' + key);
     }
-    global.redis.del(key, callback || function () {});
+    redis.del(key, callback || function () {});
   });
 };
 
@@ -82,7 +83,7 @@ let lrem = function (type, id, data, callback) {
     if (config.debug) {
       console.log('Del cache by value: ' + data);
     }
-    global.redis.lrem(key, 0, data, callback || function () {});
+    redis.lrem(key, 0, data, callback || function () {});
   });
 };
 
@@ -124,10 +125,7 @@ var get = function (type, id, callback) {
     if (err) {
       return callback(err);
     }
-    if (global.argv.ignore_cache) {
-      return callback(null, null);
-    }
-    global.redis.get(key, function (err, reply) {
+    redis.get(key, function (err, reply) {
       if (err) {
         return callback(err);
       }
@@ -151,10 +149,7 @@ var mGet = function (type, ids, callback) {
     if (err) {
       return callback(err);
     }
-    if (global.argv.ignore_cache) {
-      return callback(null, null);
-    }
-    global.redis.mget(keys, function (err, reply) {
+    redis.mget(keys, function (err, reply) {
       if (err) {
         return callback(err);
       }
@@ -187,8 +182,8 @@ let rawPush = (type, id, left, values, callback) => {
       console.log(`RPUSH ${value} to ${key}`);
     }
     callback = callback || function () {};
-    left ? global.redis.lpush(key, values, callback) :
-      global.redis.rpush(key, values, callback);
+    left ? redis.lpush(key, values, callback) :
+      redis.rpush(key, values, callback);
   });
 };
 
@@ -205,10 +200,7 @@ let lRange = (type, id, start, stop, callback) => {
     if (err) {
       return callback(err);
     }
-    if (global.argv.ignore_cache) {
-      return callback(null, null);
-    }
-    global.redis.lrange(key, start, stop, (err, reply) => {
+    redis.lrange(key, start, stop, (err, reply) => {
       if (verbose && config.debug) {
         console.log('Get list: ' + key + ' = ' + reply);
       }
@@ -249,7 +241,7 @@ let pUnLock = util.promisify(unLock);
 
 let init = (callback) => {
   try {
-    global.redis = new ioredis({
+    redis = new ioredis({
       port: config.redis.port,
       host: config.redis.host,
       password: config.redis.password ?

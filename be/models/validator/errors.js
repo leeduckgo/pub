@@ -34,7 +34,10 @@ const errors = {
 
   // 常用错误
   ERR_NO_PERMISSION: 'No permission',
-  ERR_TOO_MANY_REQUEST: 'Too many request'
+  ERR_TOO_MANY_REQUEST: 'Too many request',
+
+  // Token
+  ERR_AUTH_TOKEN_EXPIRED: 'Token expired',
 };
 
 const codes = Object.keys(errors);

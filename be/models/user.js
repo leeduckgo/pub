@@ -1,10 +1,23 @@
 const User = require('./sequelize/user');
+const Profile = require('./sequelize/profile');
 
-setTimeout(() => {
-  (async () => {
-    // const user = await User.create({
-    //   provider_id: 327894,
-    //   provider: 'wechat'
-    // });
-  })()
-}, 3000);
+const packProfile = profile => ({
+  name: profile.name,
+  avatar: profile.avatar,
+  bio: profile.bio,
+})
+
+exports.get = async id => {
+  const [user, profile] = await Promise.all([
+    User.findOne({
+      id
+    }),
+    Profile.findOne({
+      userId: id
+    }),
+  ]);
+  return {
+    ...user.toJSON(),
+    ...packProfile(profile.toJSON())
+  }
+}

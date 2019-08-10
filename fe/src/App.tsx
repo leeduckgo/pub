@@ -2,7 +2,10 @@ import React from 'react';
 import { observer, useLocalStore } from 'mobx-react-lite';
 import { Button } from '@material-ui/core';
 import Translate from '@material-ui/icons/Translate';
+import Api from './api';
 import './App.css';
+
+const { useEffect } = React;
 
 function App() {
   const store = useLocalStore(() => ({
@@ -13,6 +16,18 @@ function App() {
       this.location = '广州';
     },
   }));
+
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log(` ------------- try ---------------`);
+        const user = await Api.fetchUser();
+        console.log(` ------------- user ---------------`, user);
+      } catch (err) {
+        console.log(` ------------- err ---------------`, err);
+      }
+    })();
+  }, []);
 
   return (
     <div className="App">

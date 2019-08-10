@@ -25,7 +25,11 @@ const config = {
     clientSecret: '8cf2b9c75e540588be69ecbd498fee808abbeadd'
   },
 
-  tokenPrivateKey: 'kCtfo6go2PQYgXUAYJIqdLkKIxD8C7EwYAFC58kezgQsCzbu+NchwZx+tS/+rQGMFw+kzZHQkkcCz1reSdUgcg=='
+  tokenPrivateKey: 'kCtfo6go2PQYgXUAYJIqdLkKIxD8C7EwYAFC58kezgQsCzbu+NchwZx+tS/+rQGMFw+kzZHQkkcCz1reSdUgcg==',
+
+  authFinalRedirect: 'http://localhost:3001',
+
+  authTokenKey: 'pub_token'
 };
 
 module.exports = config;

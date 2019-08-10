@@ -37,7 +37,13 @@ exports.callback = async ctx => {
     userId: insertedProfile.userId,
     providerId: insertedProfile.providerId
   });
-  ctx.body = token;
+  ctx.cookies.set(
+    config.authTokenKey,
+    token, {
+      expires: new Date('2100-01-01')
+    }
+  )
+  ctx.redirect('/');
 }
 
 const fetchAccessToken = (code) => {
