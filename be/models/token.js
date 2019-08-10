@@ -8,7 +8,7 @@ const {
 } = require('./cache');
 
 const TYPE = 'AUTH_TOKEN';
-const DEFAULT_EXPIRED_DAY = 3;
+const DEFAULT_EXPIRED_DAY = 365;
 const HOUR_SECONDS = 60 * 60;
 const DAY_SECONDS = HOUR_SECONDS * 24;
 exports.HOUR_SECONDS = HOUR_SECONDS;

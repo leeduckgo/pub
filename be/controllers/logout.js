@@ -7,5 +7,8 @@ exports.logout = async (ctx) => {
   } = ctx.verification;
   await Token.delFromRedis(token);
   ctx.cookies.set(config.authTokenKey)
-  ctx.body = true;
+  const {
+    from
+  } = ctx.query;
+  ctx.redirect(from);
 }

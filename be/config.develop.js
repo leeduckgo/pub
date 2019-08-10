@@ -27,8 +27,6 @@ const config = {
 
   tokenPrivateKey: 'kCtfo6go2PQYgXUAYJIqdLkKIxD8C7EwYAFC58kezgQsCzbu+NchwZx+tS/+rQGMFw+kzZHQkkcCz1reSdUgcg==',
 
-  authFinalRedirect: 'http://localhost:3001',
-
   authTokenKey: 'pub_token'
 };
 
