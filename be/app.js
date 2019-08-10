@@ -14,6 +14,8 @@ const github = require('./routes/github');
 
 const models = require('./models');
 
+models.cache.init();
+
 // middlewares
 app.use(convert(bodyparser));
 app.use(convert(json()));

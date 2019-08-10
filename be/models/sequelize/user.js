@@ -7,7 +7,7 @@ const User = sequelize.define('users', {
     primaryKey: true,
     autoIncrement: true
   },
-  provider_id: {
+  providerId: {
     type: Sequelize.BIGINT,
     unique: true
   },
