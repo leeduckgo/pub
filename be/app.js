@@ -32,9 +32,9 @@ router.all('*', models.api.errorHandler);
 router.all('*', models.api.extendCtx);
 
 router.use('/', index.routes(), index.allowedMethods());
-router.use('/user', ensureAuthorization(), user.routes(), user.allowedMethods());
-router.use('/github', github.routes(), github.allowedMethods());
-router.use('/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
+router.use('/api/user', ensureAuthorization(), user.routes(), user.allowedMethods());
+router.use('/api/github', github.routes(), github.allowedMethods());
+router.use('/api/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 

@@ -8,7 +8,7 @@ export default observer((props: any) => {
   const store = useStore();
 
   const logout = () => {
-    window.location.href = `http://localhost:8090/logout?from=http://localhost:4200/login`;
+    window.location.href = `http://localhost:8090/api/logout?from=http://localhost:4200/login`;
   };
 
   if (store.user.isFetched && !store.user.isLogin) {

@@ -5,8 +5,9 @@
   "scripts": {
     "start": "./node_modules/.bin/nodemon bin/run",
     "koa": "./node_modules/.bin/runkoa bin/www",
-    "pm2": "pm2 start bin/run ",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node ./test",
+    "test-watch": "nodemon node ./test",
+    "pm2": "pm2 start bin/run "
   },
   "dependencies": {
     "@koa/cors": "2",
@@ -38,6 +39,9 @@
     "wechat-oauth": "^1.5.0"
   },
   "devDependencies": {
-    "nodemon": "^1.8.1"
+    "mocha": "^6.2.0",
+    "nodemon": "^1.8.1",
+    "should": "^13.2.3",
+    "supertest": "^4.0.2"
   }
 }
