@@ -1,12 +1,7 @@
 var router = require('koa-router')();
 
-router.get('/', async function (ctx, next) {
-  ctx.state = {
-    title: 'koa2 title'
-  };
-
-  await ctx.render('index', {
-  });
+router.get('/', async function (ctx) {
+  ctx.body = '自学网'
 })
 
 module.exports = router;

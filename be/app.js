@@ -1,7 +1,6 @@
 const Koa = require('koa');
 const app = new Koa();
 const router = require('koa-router')();
-const views = require('koa-views');
 const convert = require('koa-convert');
 const json = require('koa-json');
 const bodyparser = require('koa-bodyparser')();
@@ -28,9 +27,6 @@ app.use(cors({
   credentials: true
 }));
 app.use(convert(logger()));
-app.use(require('koa-static')(__dirname + '/public'));
-
-app.use(views(__dirname + '/views'));
 
 router.all('*', models.api.errorHandler);
 router.all('*', models.api.extendCtx);
@@ -41,7 +37,6 @@ router.use('/github', github.routes(), github.allowedMethods());
 router.use('/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
-// response
 
 app.on('error', function (err) {
   console.log(err)
