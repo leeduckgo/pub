@@ -27,7 +27,13 @@ const config = {
 
   tokenPrivateKey: 'kCtfo6go2PQYgXUAYJIqdLkKIxD8C7EwYAFC58kezgQsCzbu+NchwZx+tS/+rQGMFw+kzZHQkkcCz1reSdUgcg==',
 
-  authTokenKey: 'pub_token'
+  authTokenKey: 'pub_token',
+
+  aesKey256: [
+    11, 19, 1, 2, 30, 5, 0, 13, 8, 6, 27, 3, 21, 26, 7,
+    25, 9, 20, 31, 17, 22, 14, 24, 23, 29, 15, 4, 16, 18,
+    28, 12, 10,
+  ]
 };
 
 module.exports = config;
