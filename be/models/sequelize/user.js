@@ -14,6 +14,16 @@ const User = sequelize.define('users', {
   provider: {
     type: Sequelize.STRING
   },
+  address: {
+    type: Sequelize.STRING,
+    unique: true
+  },
+  aesEncryptedHexOfPrivateKey: {
+    type: Sequelize.TEXT
+  },
+  publicKey: {
+    type: Sequelize.TEXT
+  },
 }, {
   timestamps: true
 });

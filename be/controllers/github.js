@@ -19,11 +19,9 @@ exports.callback = async ctx => {
   assert(access_token, Errors.ERR_IS_REQUIRED('access_token'));
   const profileStr = await fetchProfile(access_token);
   const profile = JSON.parse(profileStr);
-  console.log(` ------------- profile ---------------`, profile);
   const isNewUser = !await Profile.isExist(profile.id, {
     provider: 'github',
   });
-  console.log(` ------------- isNewUser ---------------`, isNewUser);
   let insertedProfile = {};
   if (isNewUser) {
     insertedProfile = await Profile.createProfile(profile, {
@@ -32,7 +30,6 @@ exports.callback = async ctx => {
   } else {
     insertedProfile = await Profile.get(profile.id);
   }
-  console.log(` ------------- insertedProfile ---------------`, insertedProfile);
   const token = await Token.create({
     userId: insertedProfile.userId,
     providerId: insertedProfile.providerId

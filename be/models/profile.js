@@ -1,4 +1,4 @@
-const User = require('./sequelize/user');
+const User = require('./user');
 const Profile = require('./sequelize/profile');
 const Errors = require('../models/validator/errors');
 const {
@@ -9,14 +9,14 @@ exports.get = async profileId => {
   const profile = await Profile.findOne({
     profileId
   });
-  return profile && profile.toJSON();
+  return profile ? profile.toJSON() : null;
 }
 
 exports.getByUserId = async userId => {
   const profile = await Profile.findOne({
     userId
   });
-  return profile && profile.toJSON();
+  return profile ? profile.toJSON() : null;
 }
 
 exports.isExist = async (providerId, options = {}) => {
@@ -46,6 +46,7 @@ exports.createProfile = async (profile, options = {}) => {
     providerId: pickedUpData.providerId,
     provider
   });
+  assert(user, Errors.ERR_IS_REQUIRED('user'));
   const insertedProfile = await Profile.create({
     userId: user.id,
     provider,
