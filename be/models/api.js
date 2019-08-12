@@ -31,7 +31,6 @@ exports.ensureAuthorization = () => {
     const user = await User.get(userId);
     ctx.verification.user = user;
     assert(user, Errors.ERR_NOT_FOUND('user'));
-    console.log(` ------------- ctx.verification.user ---------------`, ctx.verification.user);
     await next();
   }
 }

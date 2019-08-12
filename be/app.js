@@ -11,6 +11,7 @@ const index = require('./routes/index');
 const user = require('./routes/user');
 const github = require('./routes/github');
 const logout = require('./routes/logout');
+const file = require('./routes/file');
 
 const models = require('./models');
 
@@ -35,6 +36,7 @@ router.use('/', index.routes(), index.allowedMethods());
 router.use('/api/user', ensureAuthorization(), user.routes(), user.allowedMethods());
 router.use('/api/github', github.routes(), github.allowedMethods());
 router.use('/api/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
+router.use('/api/files', file.routes(), file.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 
