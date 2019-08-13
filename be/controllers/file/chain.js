@@ -45,7 +45,8 @@ const getPayload = (file, user) => {
     user_address: user.address,
     type: 'PIP:2001',
     meta: {
-      fileUrl: getFileUrl(file)
+      uris: [getFileUrl(file)],
+      mime: `${file.mimeType};charset=UTF-8`
     },
     data,
     hash: PrsUtil.hashBlockData(data),
