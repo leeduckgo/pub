@@ -34,7 +34,7 @@ const getPostfix = mimeType => {
 const getFileUrl = file => {
   const name = file.msghash;
   const postfix = getPostfix(file.mimeType);
-  return `${config.origin}/api/storage/${name}.${postfix}`;
+  return `${config.domain}/api/storage/${name}.${postfix}`;
 }
 
 const getPayload = (file, user) => {

@@ -40,7 +40,7 @@ exports.callback = async ctx => {
       expires: new Date('2100-01-01')
     }
   )
-  ctx.redirect('http://localhost:4200/dashboard');
+  ctx.redirect('http://localhost:4201/dashboard');
 }
 
 const fetchAccessToken = (code) => {
