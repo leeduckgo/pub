@@ -111,3 +111,14 @@ exports.delete = async id => {
   });
   return true;
 };
+
+exports.getByMsghash = async msghash => {
+  assert(msghash, Errors.ERR_IS_REQUIRED('msghash'));
+  const file = await File.findOne({
+    where: {
+      msghash,
+      deleted: false
+    }
+  });
+  return file ? packFile(file.toJSON()) : null;
+};
