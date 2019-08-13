@@ -1,8 +1,9 @@
-const File = require('../models/file');
+const File = require('../../models/file');
 const {
   assert,
   Errors
-} = require('../models/validator')
+} = require('../../models/validator')
+const Chain = require('./chain');
 
 exports.list = async ctx => {
   const userId = ctx.verification.user.id;
@@ -14,6 +15,7 @@ exports.create = async ctx => {
   const userId = ctx.verification.user.id;
   const data = ctx.request.body.payload;
   const file = await File.create(userId, data);
+  await Chain.push(file);
   ctx.body = file;
 }
 
