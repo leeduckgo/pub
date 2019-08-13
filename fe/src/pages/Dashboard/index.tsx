@@ -102,7 +102,9 @@ export default observer((props: any) => {
         <section className="flex v-center sb" style={{ padding: '0 24px', height: '84px' }}>
           <div style={{ fontSize: '28px', fontWeight: 600 }}>文章</div>
 
-          <Button variant="outlined" color="primary">创建文章</Button>
+          <Link to="/editor">
+            <Button variant="outlined" color="primary">创建文章</Button>
+          </Link>
         </section>
 
         <section style={{ padding: '0 24px' }}>

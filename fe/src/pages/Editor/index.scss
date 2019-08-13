@@ -1,0 +1,39 @@
+.p-editor {
+  width: 100%;
+
+  .p-back {
+    position: fixed;
+    top: 0;
+    left: 25px;
+    box-sizing: border-box;
+    height: 45px;
+    margin-top: 25px;
+    padding-right: 25px;
+    color: #3eb0ef;
+    cursor: pointer;
+    font-size: 13px;
+    border-right: 1px solid #e5eff5;
+
+    .MuiSvgIcon-root {
+      width: 30px;
+      height: 30px;
+      font-weight: 200;
+    }
+  }
+
+  .p-input-area {
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: 750px;
+    padding: 15vh 92px;
+
+    .MuiInput-root {
+      margin-bottom: 20px;
+      padding: 5px 20px 0;
+      font-size: 38px;
+      font-weight: 700;
+      border-radius: 5px;
+      border: 1px solid #bbb;
+    }
+  }
+}

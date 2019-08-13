@@ -1,8 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+
+import { Input } from '@material-ui/core';
+import NavigateBefore from '@material-ui/icons/NavigateBefore';
+
+import SimpleMDE from "react-simplemde-editor";
+
 import { useStore } from '../../store';
+
+import "easymde/dist/easymde.min.css";
+
+import './index.scss'
 
 export default observer((props: any) => {
   const store = useStore();
@@ -14,13 +23,35 @@ export default observer((props: any) => {
   }
 
   return (
-    <div>
-      <div>编辑器</div>
+    <div className="p-editor flex h-center">
       <Link to="/dashboard">
-        <Button className="push-top" variant="contained" color="primary">
-          返回 Dashboard
-        </Button>
+        <nav className="p-back flex v-center">
+          <NavigateBefore />
+          文章
+        </nav>
       </Link>
+
+      <main className="p-input-area">
+        <Input
+          autoFocus
+          fullWidth
+          required
+          disableUnderline
+          placeholder="输入标题" />
+        
+        <SimpleMDE></SimpleMDE>
+      </main>
     </div>
   );
+
+  // return (
+  //   <div>
+  //     <div>编辑器</div>
+  //     <Link to="/dashboard">
+  //       <Button className="push-top" variant="contained" color="primary">
+  //         返回 Dashboard
+  //       </Button>
+  //     </Link>
+  //   </div>
+  // );
 });
