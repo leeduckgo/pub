@@ -3,12 +3,13 @@ import { observer } from 'mobx-react-lite';
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useStore } from '../../store';
+import Endpoint from '../../utils/endpoint';
 
 export default observer((props: any) => {
   const store = useStore();
 
   const logout = () => {
-    window.location.href = `http://localhost:8090/api/logout?from=http://localhost:4200/login`;
+    window.location.href = `${Endpoint.getApi()}/api/logout?from=${window.location.origin}/login`;
   };
 
   if (store.user.isFetched && !store.user.isLogin) {
