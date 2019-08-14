@@ -11,6 +11,8 @@ import { useStore } from '../../store';
 
 import Endpoint from '../../utils/endpoint';
 
+import './index.scss'
+
 export default observer((props: any) => {
   const store = useStore();
 
@@ -22,18 +24,6 @@ export default observer((props: any) => {
     setTimeout(() => {
       props.history.push('/login');
     }, 0);
-  }
-
-  let linkStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '6px 32px',
-    color: '#343f44',
-    transition: 'none',
-    margin: '2px 5px',
-    fontWeight: 700,
-    borderRadius: '5px',
-    background: '#e7ecf3'
   }
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -54,34 +44,37 @@ export default observer((props: any) => {
   ];
 
   return (
-    <div className="flex">
-      <nav className="flex normal column sb" style={{ width: '267px', minHeight: '100vh' }}>
+    <div className="p-dashboard flex">
+      <nav className="p-dashboard-nav flex normal column sb">
         <section>
-          <ul style={{ padding: 0 }}>
-            <li style={{ listStyle: 'none', padding: '10px 20px', fontSize: '12px' }}>MANAGE</li>
-            <li style={{ listStyle: 'none' }}>
-              <Link to='/editor' style={linkStyle}>
+          <ul className="p-dashboard-nav-ul">
+            <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">MANAGE</li>
+            <li className="p-dashboard-nav-li">
+              {/* <Link className="p-dashboard-link flex v-center po-bold po-radius-5" to='/dashboard'>
                 <CreateIcon style={{ width: '16px', height: '16px', marginRight: '8px' }} />
                 文章
-              </Link>
+              </Link> */}
+              <div className="p-dashboard-nav-link flex v-center po-bold po-radius-5">
+                <CreateIcon className="p-dashboard-nav-li-icon"/>
+                文章
+              </div>
             </li>
           </ul>
         </section>
 
         { store.user.isLogin && (
           <Button
-            className="flex"
-            style={{ boxSizing: 'content-box', height: '36px', padding: '10px 15px 10px 20px', margin: '12px 5px 24px', textTransform: 'none' }}
+            className="p-dashboard-nav-button flex"
             aria-controls="dashboard-menu"
             aria-haspopup="true"
             onClick={handleClick}
           >
-            <img style={{ borderRadius: '100%', marginRight: '8px', border: '1px solid #d9dfe7' }} src={store.user.avatar} width="34" alt="头像" />
-            <div className="flex v-center" style={{ width: '160px', fontSize: '14px', fontWeight: 600 }}>
-              <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{store.user.name}</span>
+            <img className="p-dashboard-nav-img" src={store.user.avatar} width="34" alt="头像" />
+            <div className="p-dashboard-nav-info flex v-center po-text-14">
+              <span className="p-dashboard-nav-info-name">{store.user.name}</span>
             </div>
             <div className="flex v-center">
-              <KeyboardCapslock style={{ width: '20px', height: '20px' }} />
+              <KeyboardCapslock className="p-dashboard-nav-info-icon" />
             </div>
           </Button>
         )}
@@ -99,16 +92,16 @@ export default observer((props: any) => {
         )}
       </nav>
 
-      <main style={{ backgroundColor: '#f2f4f7', width: '150px', height: '100vh', flexGrow: 1 }}>
-        <section className="flex v-center sb" style={{ padding: '0 24px', height: '84px' }}>
-          <div style={{ fontSize: '28px', fontWeight: 600 }}>文章</div>
+      <main className="p-dashboard-main">
+        <section className="p-dashboard-main-head flex v-center sb">
+          <div className="p-dashboard-main-head-title">文章</div>
 
           <Link to="/editor">
             <Button variant="outlined" color="primary">创建文章</Button>
           </Link>
         </section>
 
-        <section style={{ padding: '0 24px' }}>
+        <section className="p-dashboard-main-table">
           <Table>
             <TableHead>
               <TableRow>
@@ -136,25 +129,4 @@ export default observer((props: any) => {
       </main>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <h2>dashboard</h2>
-  //     {store.user.isLogin && (
-  //       <div>
-  //         <img className="push-top" src={store.user.avatar} width="100" alt="头像" />
-  //         <div className="push-top">{store.user.name}</div>
-  //       </div>
-  //     )}
-  //     <Link to="/editor">
-  //       <Button className="push-top" variant="contained" color="primary">
-  //         编辑器
-  //       </Button>
-  //     </Link>
-  //     <br />
-  //     <Button className="push-top" variant="contained" color="primary" onClick={logout}>
-  //       登出
-  //     </Button>
-  //   </div>
-  // );
 });

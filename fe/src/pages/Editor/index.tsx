@@ -25,13 +25,13 @@ export default observer((props: any) => {
   return (
     <div className="p-editor flex h-center">
       <Link to="/dashboard">
-        <nav className="p-back flex v-center">
+        <nav className="p-editor-back flex v-center">
           <NavigateBefore />
           文章
         </nav>
       </Link>
 
-      <main className="p-input-area">
+      <main className="p-editor-input-area">
         <Input
           autoFocus
           fullWidth

@@ -1,7 +1,7 @@
 .p-editor {
   width: 100%;
 
-  .p-back {
+  &-back {
     position: fixed;
     top: 0;
     left: 25px;
@@ -21,7 +21,7 @@
     }
   }
 
-  .p-input-area {
+  &-input-area {
     box-sizing: border-box;
     width: 100vw;
     max-width: 750px;
