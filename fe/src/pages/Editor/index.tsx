@@ -41,13 +41,16 @@ export default observer((props: any) => {
   }
 
   React.useEffect(() => {
-    Api.getFile(id).then(file => setFile(file)).catch(console.error);
+    id && Api.getFile(id).then(file => {
+      console.log(file);
+      setFile(file);
+    }).catch(console.error);
   }, [id]);
 
   const handleBack = async() => {
     try {
       if (file.title && file.content) {
-        await Api.createFile(file);
+        id ? await Api.updateFile(file) : await Api.createFile(file)
       }
       props.history.push('/dashboard');
     } catch (err) {
