@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button, Menu, MenuItem, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 
 import CreateIcon from '@material-ui/icons/Create';
-import KeyboardCapslock from '@material-ui/icons/KeyboardCapslock';
+import ExpandLess from '@material-ui/icons/ExpandLess';
 
 import Api from '../../api';
 
@@ -76,7 +76,7 @@ export default observer((props: any) => {
               <span className="p-dashboard-nav-info-name">{store.user.name}</span>
             </div>
             <div className="flex v-center">
-              <KeyboardCapslock className="p-dashboard-nav-info-icon" />
+              <ExpandLess className="p-dashboard-nav-info-icon" />
             </div>
           </Button>
         )}
@@ -99,7 +99,7 @@ export default observer((props: any) => {
           <div className="p-dashboard-main-head-title">文章</div>
 
           <Link to="/editor">
-            <Button variant="outlined" color="primary">创建文章</Button>
+            <Button className="p-dashboard-main-button">创建文章</Button>
           </Link>
         </section>
 

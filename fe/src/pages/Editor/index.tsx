@@ -36,7 +36,9 @@ export default observer((props: any) => {
 
   const handleBack = async() => {
     try {
-      await Api.createFile({title, content});
+      if (title && content) {
+        await Api.createFile({title, content});
+      }
       props.history.push('/dashboard');
     } catch (err) {
       console.error(err)

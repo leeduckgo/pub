@@ -80,5 +80,12 @@
     &-table {
       padding: 0 24px;
     }
+
+    &-button {
+      background: linear-gradient(#aed452,#8fb925);
+      font-weight: 500;
+      border: 1px solid #a1ca3d;
+      color: white !important;
+    }
   }
 }
