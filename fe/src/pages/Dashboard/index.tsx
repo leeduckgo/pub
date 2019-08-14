@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
@@ -6,6 +6,8 @@ import { Button, Menu, MenuItem, Table, TableHead, TableBody, TableRow, TableCel
 
 import CreateIcon from '@material-ui/icons/Create';
 import KeyboardCapslock from '@material-ui/icons/KeyboardCapslock';
+
+import Api from '../../api';
 
 import { useStore } from '../../store';
 
@@ -27,6 +29,12 @@ export default observer((props: any) => {
   }
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  
+  const [files, setFiles] = React.useState([]);
+
+  React.useEffect(() => {
+    Api.getFiles().then(files => setFiles(files));
+  }, [files.length]);
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
