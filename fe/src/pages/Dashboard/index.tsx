@@ -34,6 +34,7 @@ export default observer((props: any) => {
 
   React.useEffect(() => {
     Api.getFiles().then(files => setFiles(files));
+    console.log(files);
   }, [files.length]);
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
@@ -43,13 +44,6 @@ export default observer((props: any) => {
   function handleClose() {
     setAnchorEl(null);
   }
-
-  const rows = [
-    { title: '为什么他们都那么聪明却总是做出错误决策', content: '普通人错过这本书的“踏空成本”无限大……\n没开始在交易市场投资之前，每个人都觉得自己正常得要命……\n开始做投资之后，用不了多久，绝大多数人都会变得垂头丧气，...', update: '8 days ago', author: '李笑来' },
-    { title: '为什么他们都那么聪明却总是做出错误决策', content: '普通人错过这本书的“踏空成本”无限大……\n没开始在交易市场投资之前，每个人都觉得自己正常得要命……\n开始做投资之后，用不了多久，绝大多数人都会变得垂头丧气，...', update: '8 days ago', author: '李笑来' },
-    { title: '为什么他们都那么聪明却总是做出错误决策', content: '普通人错过这本书的“踏空成本”无限大……\n没开始在交易市场投资之前，每个人都觉得自己正常得要命……\n开始做投资之后，用不了多久，绝大多数人都会变得垂头丧气，...', update: '8 days ago', author: '李笑来' },
-    { title: '为什么他们都那么聪明却总是做出错误决策', content: '普通人错过这本书的“踏空成本”无限大……\n没开始在交易市场投资之前，每个人都觉得自己正常得要命……\n开始做投资之后，用不了多久，绝大多数人都会变得垂头丧气，...', update: '8 days ago', author: '李笑来' },
-  ];
 
   return (
     <div className="p-dashboard flex">
@@ -116,18 +110,16 @@ export default observer((props: any) => {
                 <TableCell>TITLE</TableCell>
                 <TableCell>STATUS</TableCell>
                 <TableCell>LAST UPDATE</TableCell>
-                <TableCell>AUTHORS</TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {
-                rows.map((row, idx) => (
-                  <TableRow key={idx}>
-                    <TableCell>{row.title}</TableCell>
-                    <TableCell>{row.content}</TableCell>
-                    <TableCell>{row.update}</TableCell>
-                    <TableCell>{row.author}</TableCell>
+                files.map((file: any) => (
+                  <TableRow key={file.id}>
+                    <TableCell>{file.title}</TableCell>
+                    <TableCell>{file.content}</TableCell>
+                    <TableCell>{file.updatedAt}</TableCell>
                   </TableRow>
                 ))
               }

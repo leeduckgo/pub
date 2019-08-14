@@ -9,6 +9,8 @@ import SimpleMDE from "react-simplemde-editor";
 
 import { useStore } from '../../store';
 
+import Api from '../../api';
+
 import "easymde/dist/easymde.min.css";
 
 import './index.scss'
@@ -22,24 +24,48 @@ export default observer((props: any) => {
     }, 0);
   }
 
+  const [title, setTitle] = React.useState('');
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
+    setTitle(event.target.value)
+  }
+
+  const [content, setContent] = React.useState('');
+  const handleContentChange = (value: string)  => {
+    setContent(value)
+  }
+
+  const handleBack = async() => {
+    try {
+      await Api.createFile({title, content});
+      props.history.push('/dashboard');
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
   return (
     <div className="p-editor flex h-center">
-      <Link to="/dashboard">
+      <div onClick={handleBack}>
         <nav className="p-editor-back flex v-center">
           <NavigateBefore />
           文章
         </nav>
-      </Link>
+      </div>
 
       <main className="p-editor-input-area">
         <Input
           autoFocus
           fullWidth
           required
-          disableUnderline
-          placeholder="输入标题" />
+          placeholder="输入标题"
+          value={title}
+          onChange={handleTitleChange}
+        />
         
-        <SimpleMDE></SimpleMDE>
+        <SimpleMDE
+          value={content}
+          onChange={handleContentChange}
+        />
       </main>
     </div>
   );

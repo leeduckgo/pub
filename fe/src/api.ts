@@ -6,5 +6,14 @@ export default {
   },
   getFiles() {
     return request('/api/files')
+  },
+  createFile(file: any) {
+    file.mimeType = 'text/markdown';
+    let payload = { payload: file }
+    const path = '/api/files';
+    return request(path, {
+      method: 'POST',
+      body: payload
+    });
   }
 };
