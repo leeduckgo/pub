@@ -8,13 +8,14 @@ import CreateIcon from '@material-ui/icons/Create';
 import KeyboardCapslock from '@material-ui/icons/KeyboardCapslock';
 
 import { useStore } from '../../store';
-// import { fontSize } from '@material-ui/system';
+
+import Endpoint from '../../utils/endpoint';
 
 export default observer((props: any) => {
   const store = useStore();
 
   const logout = () => {
-    window.location.href = `http://localhost:8090/api/logout?from=http://localhost:4200/login`;
+    window.location.href = `${Endpoint.getApi()}/api/logout?from=${window.location.origin}/login`;
   };
 
   if (store.user.isFetched && !store.user.isLogin) {
