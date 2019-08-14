@@ -11,6 +11,8 @@ import { useStore } from '../../store';
 
 import Api from '../../api';
 
+import { getQueryObject } from '../../utils'
+
 import "easymde/dist/easymde.min.css";
 
 import './index.scss'
@@ -24,20 +26,28 @@ export default observer((props: any) => {
     }, 0);
   }
 
-  const [title, setTitle] = React.useState('');
+  const [file, setFile] = React.useState({ title: '', content: '' });
+
+  const id = getQueryObject().id;
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
-    setTitle(event.target.value)
+    file.title = event.target.value;
+    setFile({...file});
   }
 
-  const [content, setContent] = React.useState('');
   const handleContentChange = (value: string)  => {
-    setContent(value)
+    file.content = value;
+    setFile({...file});
   }
+
+  React.useEffect(() => {
+    Api.getFile(id).then(file => setFile(file)).catch(console.error);
+  }, [id]);
 
   const handleBack = async() => {
     try {
-      if (title && content) {
-        await Api.createFile({title, content});
+      if (file.title && file.content) {
+        await Api.createFile(file);
       }
       props.history.push('/dashboard');
     } catch (err) {
@@ -60,12 +70,12 @@ export default observer((props: any) => {
           fullWidth
           required
           placeholder="输入标题"
-          value={title}
+          value={file.title}
           onChange={handleTitleChange}
         />
         
         <SimpleMDE
-          value={content}
+          value={file.content}
           onChange={handleContentChange}
         />
       </main>

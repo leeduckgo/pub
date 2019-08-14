@@ -33,7 +33,7 @@ export default observer((props: any) => {
   const [files, setFiles] = React.useState([]);
 
   React.useEffect(() => {
-    Api.getFiles().then(files => setFiles(files));
+    Api.getFiles().then(files => setFiles(files)).catch(console.error);
     console.log(files);
   }, [files.length]);
 
@@ -43,6 +43,10 @@ export default observer((props: any) => {
 
   function handleClose() {
     setAnchorEl(null);
+  }
+
+  function handleClickTable(fileId: number | string) {
+    props.history.push(`/editor?id=${fileId}`);
   }
 
   return (
@@ -108,7 +112,7 @@ export default observer((props: any) => {
             <TableHead>
               <TableRow>
                 <TableCell>TITLE</TableCell>
-                <TableCell>STATUS</TableCell>
+                <TableCell>content</TableCell>
                 <TableCell>LAST UPDATE</TableCell>
               </TableRow>
             </TableHead>
@@ -116,7 +120,7 @@ export default observer((props: any) => {
             <TableBody>
               {
                 files.map((file: any) => (
-                  <TableRow key={file.id}>
+                  <TableRow key={file.id} onClick={() => { handleClickTable(file.id) }}>
                     <TableCell>{file.title}</TableCell>
                     <TableCell>{file.content}</TableCell>
                     <TableCell>{file.updatedAt}</TableCell>

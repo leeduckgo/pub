@@ -15,5 +15,8 @@ export default {
       method: 'POST',
       body: payload
     });
+  },
+  getFile(id: any) {
+    return request(`/api/files/${id}`)
   }
 };
