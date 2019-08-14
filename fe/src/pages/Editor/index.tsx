@@ -30,6 +30,10 @@ export default observer((props: any) => {
 
   const id = getQueryObject().id;
 
+  React.useEffect(() => {
+    id && Api.getFile(id).then(file => setFile(file)).catch(console.error);
+  }, [id]);
+
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
     file.title = event.target.value;
     setFile({...file});
@@ -40,14 +44,7 @@ export default observer((props: any) => {
     setFile({...file});
   }
 
-  React.useEffect(() => {
-    id && Api.getFile(id).then(file => {
-      console.log(file);
-      setFile(file);
-    }).catch(console.error);
-  }, [id]);
-
-  const handleBack = async() => {
+  const handleBack = async () => {
     try {
       if (file.title && file.content) {
         id ? await Api.updateFile(file) : await Api.createFile(file)
@@ -84,15 +81,4 @@ export default observer((props: any) => {
       </main>
     </div>
   );
-
-  // return (
-  //   <div>
-  //     <div>编辑器</div>
-  //     <Link to="/dashboard">
-  //       <Button className="push-top" variant="contained" color="primary">
-  //         返回 Dashboard
-  //       </Button>
-  //     </Link>
-  //   </div>
-  // );
 });

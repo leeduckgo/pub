@@ -34,19 +34,22 @@ export default observer((props: any) => {
 
   React.useEffect(() => {
     Api.getFiles().then(files => setFiles(files)).catch(console.error);
-    console.log(files);
   }, [files.length]);
 
-  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   }
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null);
   }
 
-  function handleClickTable(fileId: number | string) {
+  const handleClickTable = (fileId: number) => {
     props.history.push(`/editor?id=${fileId}`);
+  }
+
+  const handleDelete = (id: number) => {
+    Api.deleteFile(id).then(() => setFiles(files.filter((item: any) => +item.id !== id))).catch(console.error);
   }
 
   return (
@@ -111,19 +114,23 @@ export default observer((props: any) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>TITLE</TableCell>
-                <TableCell>content</TableCell>
-                <TableCell>LAST UPDATE</TableCell>
+                <TableCell>标题</TableCell>
+                <TableCell>内容</TableCell>
+                <TableCell>更新时间</TableCell>
+                <TableCell>操作</TableCell>
               </TableRow>
             </TableHead>
 
             <TableBody>
               {
                 files.map((file: any) => (
-                  <TableRow key={file.id} onClick={() => { handleClickTable(file.id) }}>
+                  <TableRow key={file.id} onClick={() => { handleClickTable(+file.id) }}>
                     <TableCell>{file.title}</TableCell>
                     <TableCell>{file.content}</TableCell>
                     <TableCell>{file.updatedAt}</TableCell>
+                    <TableCell>
+                      <Button size="small" variant="contained" color="secondary" onClick={e => { e.stopPropagation();handleDelete(+file.id) }} >删除</Button>
+                    </TableCell>
                   </TableRow>
                 ))
               }

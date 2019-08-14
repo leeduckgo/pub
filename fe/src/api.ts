@@ -32,5 +32,10 @@ export default {
       method: 'PUT',
       body: payload
     });
-  }
+  },
+  deleteFile(id: any) {
+    return request(`/api/files/${id}`, {
+      method: 'DELETE'
+    })
+  },
 };
