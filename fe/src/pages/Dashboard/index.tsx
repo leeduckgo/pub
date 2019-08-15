@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
@@ -59,10 +59,6 @@ export default observer((props: any) => {
           <ul className="p-dashboard-nav-ul">
             <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">管理</li>
             <li className="p-dashboard-nav-li">
-              {/* <Link className="p-dashboard-link flex v-center po-bold po-radius-5" to='/dashboard'>
-                <CreateIcon style={{ width: '16px', height: '16px', marginRight: '8px' }} />
-                文章
-              </Link> */}
               <div className="p-dashboard-nav-link flex v-center po-bold po-radius-5">
                 <CreateIcon className="p-dashboard-nav-li-icon"/>
                 文章

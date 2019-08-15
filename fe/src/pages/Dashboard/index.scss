@@ -80,7 +80,10 @@
     }
 
     &-table {
-      padding: 0 24px;
+      box-sizing: border-box;
+      max-height: calc(100vh - 84px);
+      padding: 0 24px 24px;
+      overflow: scroll;
     }
 
     &-button {

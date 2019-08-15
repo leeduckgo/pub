@@ -33,4 +33,13 @@
       font-weight: 500;
     }
   }
+
+  &-markdown {
+    .CodeMirror {
+      background: #f7f7f7;
+    }
+    .CodeMirror-scroll {
+      height: 50vh;
+    }
+  }
 }

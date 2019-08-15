@@ -1,6 +1,5 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Link } from 'react-router-dom';
 
 import { Input } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
@@ -10,6 +9,8 @@ import SimpleMDE from "react-simplemde-editor";
 import { useStore } from '../../store';
 
 import Api from '../../api';
+
+import config from './config';
 
 import { getQueryObject } from '../../utils'
 
@@ -69,14 +70,16 @@ export default observer((props: any) => {
           autoFocus
           fullWidth
           required
-          placeholder="输入标题"
+          placeholder="请输入标题"
           value={file.title}
           onChange={handleTitleChange}
         />
         
         <SimpleMDE
+          className="p-editor-markdown"
           value={file.content}
           onChange={handleContentChange}
+          options={config}
         />
       </main>
     </div>
