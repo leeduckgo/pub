@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
-import { Button, MenuItem, Popover, Table, TableHead, TableBody, TableRow, TableCell, MenuList } from '@material-ui/core';
+import { Button, MenuItem, Paper, Popover, Table, TableHead, TableBody, TableRow, TableCell, MenuList } from '@material-ui/core';
 
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -122,31 +122,33 @@ export default observer((props: any) => {
         </section>
 
         <section className="p-dashboard-main-table">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>标题</TableCell>
-                <TableCell>内容</TableCell>
-                <TableCell>更新时间</TableCell>
-                <TableCell>操作</TableCell>
-              </TableRow>
-            </TableHead>
+          <Paper>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>标题</TableCell>
+                  <TableCell>内容</TableCell>
+                  <TableCell>更新时间</TableCell>
+                  <TableCell>操作</TableCell>
+                </TableRow>
+              </TableHead>
 
-            <TableBody>
-              {
-                files.map((file: any) => (
-                  <TableRow key={file.id} onClick={() => { handleClickTable(+file.id) }}>
-                    <TableCell>{file.title}</TableCell>
-                    <TableCell>{file.content}</TableCell>
-                    <TableCell>{file.updatedAt}</TableCell>
-                    <TableCell>
-                      <Button size="small" variant="contained" color="secondary" onClick={e => { e.stopPropagation();handleDelete(+file.id) }} >删除</Button>
-                    </TableCell>
-                  </TableRow>
-                ))
-              }
-            </TableBody>
-          </Table>
+              <TableBody>
+                {
+                  files.map((file: any) => (
+                    <TableRow hover key={file.id} onClick={() => { handleClickTable(+file.id) }}>
+                      <TableCell component="th" scope="row">{file.title}</TableCell>
+                      <TableCell>{file.content}</TableCell>
+                      <TableCell>{file.updatedAt}</TableCell>
+                      <TableCell>
+                        <Button size="small" variant="contained" color="secondary" onClick={e => { e.stopPropagation();handleDelete(+file.id) }} >删除</Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                }
+              </TableBody>
+            </Table>
+          </Paper>
         </section>
       </main>
     </div>

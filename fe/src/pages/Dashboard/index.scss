@@ -1,4 +1,6 @@
 .p-dashboard {
+  min-width: 850px;
+  
   &-nav {
     width: 267px;
     min-height: 100vh;
@@ -93,5 +95,9 @@
     .MuiPaper-root {
       width: 235px;
     }
+  }
+
+  .MuiTableRow-head {
+    background-color: rgb(248, 250, 252);
   }
 }
