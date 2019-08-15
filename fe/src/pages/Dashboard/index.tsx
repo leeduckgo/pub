@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
-import { Button, Menu, MenuItem, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Button, MenuItem, Popover, Table, TableHead, TableBody, TableRow, TableCell, MenuList } from '@material-ui/core';
 
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandLess from '@material-ui/icons/ExpandLess';
@@ -89,15 +89,26 @@ export default observer((props: any) => {
         )}
 
         { store.user.isLogin && (
-          <Menu
+          <Popover
             id="dashboard-menu"
+            className="p-dashboard-popover"
             anchorEl={anchorEl}
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
           >
-            <MenuItem onClick={logout}>Logout</MenuItem>
-          </Menu>
+            <MenuList>
+              <MenuItem dense onClick={logout}>Logout</MenuItem>
+            </MenuList>
+          </Popover>
         )}
       </nav>
 

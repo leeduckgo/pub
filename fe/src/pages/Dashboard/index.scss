@@ -88,4 +88,10 @@
       color: white !important;
     }
   }
+
+  &-popover {
+    .MuiPaper-root {
+      width: 235px;
+    }
+  }
 }
