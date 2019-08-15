@@ -11,7 +11,7 @@ import Api from '../../api';
 
 import { useStore } from '../../store';
 
-import Endpoint from '../../utils/endpoint';
+import { ago, Endpoint } from '../../utils'
 
 import './index.scss'
 
@@ -135,7 +135,7 @@ export default observer((props: any) => {
                     <TableRow hover key={file.id} onClick={() => { handleClickTable(+file.id) }}>
                       <TableCell component="th" scope="row">{file.title}</TableCell>
                       <TableCell>{file.content}</TableCell>
-                      <TableCell>{file.updatedAt}</TableCell>
+                      <TableCell>{ago(file.updatedAt)}</TableCell>
                       <TableCell>
                         <Button size="small" variant="contained" color="secondary" onClick={e => { e.stopPropagation();handleDelete(+file.id) }} >删除</Button>
                       </TableCell>
