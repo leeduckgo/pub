@@ -57,7 +57,7 @@ export default observer((props: any) => {
       <nav className="p-dashboard-nav flex normal column sb">
         <section>
           <ul className="p-dashboard-nav-ul">
-            <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">MANAGE</li>
+            <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">管理</li>
             <li className="p-dashboard-nav-li">
               {/* <Link className="p-dashboard-link flex v-center po-bold po-radius-5" to='/dashboard'>
                 <CreateIcon style={{ width: '16px', height: '16px', marginRight: '8px' }} />
