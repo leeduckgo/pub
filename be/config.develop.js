@@ -1,6 +1,12 @@
 'use strict';
 
 const config = {
+  domain: 'http://127.0.0.1:8091',
+
+  host: '127.0.0.1',
+
+  port: '8091',
+
   mysql: {
     host: '127.0.0.1',
     port: 3306,
@@ -33,7 +39,11 @@ const config = {
     11, 19, 1, 2, 30, 5, 0, 13, 8, 6, 27, 3, 21, 26, 7,
     25, 9, 20, 31, 17, 22, 14, 24, 23, 29, 15, 4, 16, 18,
     28, 12, 10,
-  ]
+  ],
+
+  testPort: 8092,
+
+  prsEndpoint: 'https://beta.press.one'
 };
 
 module.exports = config;

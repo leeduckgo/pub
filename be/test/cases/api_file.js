@@ -7,7 +7,6 @@ let fileId = null;
 const generateTitle = () => 'test_file_title' + new Date().getTime();
 const generateContent = () => 'test_file_content' + new Date().getTime();
 
-
 it('can not create file when missing title', () => {
   const file = {
     content: generateTitle(),

@@ -1,9 +1,10 @@
 const {
-  assert
+  assert,
+  Errors
 } = require('./validator');
-const Errors = require('./validator/errors');
-const File = require('../models/sequelize/file');
 const prsUtil = require('prs-utility');
+const File = require('./sequelize/file');
+const Block = require('./block');
 
 const packFile = file => {
   delete file.deleted;
@@ -22,6 +23,7 @@ const verifyData = (data, options = {}) => {
     'mimeType'
   ];
   const editableKeys = [
+    'rId',
     'title',
     'content',
     'mimeType',
@@ -75,6 +77,17 @@ exports.list = async (userId) => {
   return files.map((file) => packFile(file.toJSON()))
 };
 
+const getStatusByBlock = block => {
+  const {
+    blockNum,
+    blockTransactionId
+  } = block;
+  if (blockNum && blockTransactionId) {
+    return 'published';
+  }
+  return 'pending';
+}
+
 exports.get = async id => {
   assert(id, Errors.ERR_IS_REQUIRED('id'));
   const file = await File.findOne({
@@ -83,7 +96,16 @@ exports.get = async id => {
       deleted: false
     }
   });
-  return file ? packFile(file.toJSON()) : null;
+  const {
+    rId
+  } = file;
+  assert(rId, Errors.ERR_IS_REQUIRED('rId'));
+  const block = await Block.get(rId);
+  const status = getStatusByBlock(block);
+  return file ? packFile({
+    ...file.toJSON(),
+    status
+  }) : null;
 };
 
 exports.update = async (id, data) => {

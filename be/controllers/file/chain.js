@@ -5,10 +5,15 @@ const {
 const config = require('../../config');
 const User = require('../../models/user');
 const PrsUtil = require('prs-utility');
+const {
+  assert,
+  Errors
+} = require('../../models/validator');
+const Block = require('../../models/block');
 
 const SIGN_URL = `${config.prsEndpoint}/api/v2/datasign`;
 
-const makeRequest = (data) => {
+const signBlock = (data) => {
   return request({
     method: 'post',
     uri: SIGN_URL,
@@ -37,10 +42,34 @@ const getFileUrl = file => {
   return `${config.domain}/api/storage/${name}.${postfix}`;
 }
 
-const getPayload = (file, user) => {
+const getPayload = ({
+  file,
+  user,
+  topic,
+}, options = {}) => {
+
+  assert(file, Errors.ERR_IS_REQUIRED(file));
+  assert(user, Errors.ERR_IS_REQUIRED(user));
+  assert(topic, Errors.ERR_IS_REQUIRED(topic));
+
   const data = {
-    file_hash: file.msghash
+    file_hash: file.msghash,
+    topic
   };
+
+  const {
+    updatedFile
+  } = options;
+  if (updatedFile) {
+    const {
+      blockTransactionId,
+      blockNum
+    } = updatedFile;
+    assert(blockTransactionId, Errors.ERR_IS_REQUIRED(blockTransactionId));
+    assert(blockNum, Errors.ERR_IS_REQUIRED(blockNum));
+    data.updated_file_id = `${blockTransactionId}@${blockNum}`;
+  }
+
   const payload = {
     user_address: user.address,
     type: 'PIP:2001',
@@ -55,14 +84,32 @@ const getPayload = (file, user) => {
   return payload;
 }
 
-exports.push = async file => {
+const packBlock = block => {
+  const result = {};
+  delete block['createdAt'];
+  for (const key in block) {
+    const value = block[key];
+    const isObj = typeof value === 'object';
+    result[key] = isObj ? JSON.stringify(value) : value;
+  }
+  return result;
+}
+
+exports.push = async (file, options = {}) => {
   const user = await User.get(file.userId, {
     withKeys: true
   });
-  const payload = getPayload(file, user);
+  const payload = getPayload({
+    file,
+    user,
+    topic: user.address,
+  }, options);
   console.log(` ------------- payload ---------------`);
   console.log(payload)
-  const hash = await makeRequest(payload);
-  console.log(` ------------- pressone hash ---------------`);
-  console.log(hash)
+  const block = await signBlock(payload);
+  assert(block, Errors.ERR_NOT_FOUND('block'));
+  const packedBlock = packBlock(block);
+  console.log(` ------------- packedBlock ---------------`, packedBlock);
+  const dbBlock = await Block.create(packedBlock);
+  return dbBlock;
 }

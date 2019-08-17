@@ -15,7 +15,13 @@ exports.create = async ctx => {
   const userId = ctx.verification.user.id;
   const data = ctx.request.body.payload;
   const file = await File.create(userId, data);
-  await Chain.push(file);
+  const block = await Chain.push(file);
+  console.log(` ------------- block.id ---------------`, block.id);
+  const rId = block.id;
+  await File.update(file.id, {
+    rId
+  });
+  file.rId = rId;
   ctx.body = file;
 }
 

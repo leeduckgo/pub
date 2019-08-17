@@ -10,6 +10,10 @@ const File = sequelize.define('files', {
   userId: {
     type: Sequelize.BIGINT,
   },
+  rId: {
+    type: Sequelize.STRING,
+    unique: true
+  },
   title: {
     type: Sequelize.STRING
   },
