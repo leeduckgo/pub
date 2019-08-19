@@ -43,7 +43,9 @@ const config = {
 
   testPort: 8092,
 
-  prsEndpoint: 'https://beta.press.one'
+  queuePort: 8093,
+
+  prsEndpoint: 'http://127.0.0.1:8090'
 };
 
 module.exports = config;
