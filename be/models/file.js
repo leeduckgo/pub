@@ -6,6 +6,13 @@ const prsUtil = require('prs-utility');
 const File = require('./sequelize/file');
 const Block = require('./block');
 
+const FILE_STATUS = {
+  PUBLISHED: 'published',
+  PENDING: 'pending'
+}
+
+exports.FILE_STATUS = FILE_STATUS;
+
 const packFile = file => {
   delete file.deleted;
   return file;
@@ -83,9 +90,9 @@ const getStatusByBlock = block => {
     blockTransactionId
   } = block;
   if (blockNum && blockTransactionId) {
-    return 'published';
+    return FILE_STATUS.PUBLISHED;
   }
-  return 'pending';
+  return FILE_STATUS.PENDING;
 }
 
 exports.get = async id => {
@@ -96,6 +103,7 @@ exports.get = async id => {
       deleted: false
     }
   });
+  assert(file, Errors.ERR_NOT_FOUND('file'));
   const {
     rId
   } = file;

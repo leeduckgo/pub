@@ -38,6 +38,9 @@ const errors = {
 
   // Token
   ERR_AUTH_TOKEN_EXPIRED: 'Token expired',
+
+  // File
+  ERR_FILE_NOT_PUBLISHED: 'This file can not be updated because it\'s not published',
 };
 
 const codes = Object.keys(errors);

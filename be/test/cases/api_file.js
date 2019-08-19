@@ -63,7 +63,7 @@ it('create file', () => {
     });
 });
 
-it('update file', () => {
+it('This file can not be updated because it\'s not published', () => {
   const file = {
     content: generateContent()
   };
@@ -72,7 +72,7 @@ it('update file', () => {
       payload: file
     })
     .set('Cookie', [`${config.authTokenKey}=${global.token}`])
-    .expect(200);
+    .expect(400);
 });
 
 // const OTHERS_file_ID = 1069;
