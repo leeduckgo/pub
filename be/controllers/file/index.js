@@ -11,8 +11,24 @@ exports.list = async ctx => {
   ctx.body = result;
 }
 
-const createFile = async (userId, data, options = {}) => {
-  const file = await File.create(userId, data);
+const getFrontMatter = (user, file) => {
+  return `---
+author_name: ${user.name}
+author_avatar: ${user.avatar}
+title: ${file.title}
+---\n`;
+}
+
+const appendFrontMatter = (user, file) => {
+  if (file.content) {
+    file.content = getFrontMatter(user, file) + file.content;
+  }
+  return file;
+}
+
+const createFile = async (user, data, options = {}) => {
+  const derivedData = appendFrontMatter(user, data);
+  const file = await File.create(user.id, derivedData);
   const block = await Chain.push(file, options);
   const rId = block.id;
   await File.update(file.id, {
@@ -23,9 +39,11 @@ const createFile = async (userId, data, options = {}) => {
 }
 
 exports.create = async ctx => {
-  const userId = ctx.verification.user.id;
+  const {
+    user
+  } = ctx.verification;
   const data = ctx.request.body.payload;
-  const file = await createFile(userId, data);
+  const file = await createFile(user, data);
   ctx.body = file;
 }
 
@@ -51,19 +69,19 @@ const getNewFilePayload = (file, payload) => {
 }
 
 exports.update = async ctx => {
-  const userId = ctx.verification.user.id;
+  const {
+    user
+  } = ctx.verification;
   const data = ctx.request.body.payload;
   const id = ~~ctx.params.id;
   const file = await File.get(id);
-  assert(file.userId === userId, Errors.ERR_NO_PERMISSION);
-  console.log(` ------------- file ---------------`, file);
+  assert(file.userId === user.id, Errors.ERR_NO_PERMISSION);
   const {
     status
   } = file;
   assert(status === File.FILE_STATUS.PUBLISHED, Errors.ERR_FILE_NOT_PUBLISHED)
   const newFilePayload = getNewFilePayload(file, data);
-  console.log(` ------------- newFilePayload ---------------`, newFilePayload);
-  const newFile = await createFile(userId, newFilePayload, {
+  const newFile = await createFile(user, newFilePayload, {
     updatedFile: file
   });
   const deletedFile = await File.delete(file.id);

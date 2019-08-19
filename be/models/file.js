@@ -13,8 +13,13 @@ const FILE_STATUS = {
 
 exports.FILE_STATUS = FILE_STATUS;
 
+const removeFrontMatter = (content = '') => {
+  return content = content.replace(/^---(.|\n)*?---\n/, '');
+}
+
 const packFile = file => {
   delete file.deleted;
+  file.content = removeFrontMatter(file.content);
   return file;
 }
 
