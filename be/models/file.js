@@ -100,13 +100,10 @@ const getStatusByBlock = block => {
   return FILE_STATUS.PENDING;
 }
 
-exports.get = async id => {
-  assert(id, Errors.ERR_IS_REQUIRED('id'));
+const getBy = async condition => {
+  assert(condition, Errors.ERR_IS_REQUIRED('condition'));
   const file = await File.findOne({
-    where: {
-      id,
-      deleted: false
-    }
+    where: condition
   });
   assert(file, Errors.ERR_NOT_FOUND('file'));
   const {
@@ -119,6 +116,15 @@ exports.get = async id => {
     ...file.toJSON(),
     status
   }) : null;
+}
+
+exports.get = async id => {
+  assert(id, Errors.ERR_IS_REQUIRED('id'));
+  const file = await getBy({
+    id,
+    deleted: false
+  });
+  return file;
 };
 
 exports.update = async (id, data) => {
@@ -149,11 +155,18 @@ exports.delete = async id => {
 
 exports.getByMsghash = async msghash => {
   assert(msghash, Errors.ERR_IS_REQUIRED('msghash'));
-  const file = await File.findOne({
-    where: {
-      msghash,
-      deleted: false
-    }
+  const file = await getBy({
+    msghash,
+    deleted: false
   });
-  return file ? packFile(file.toJSON()) : null;
+  return file;
+};
+
+exports.getByRId = async rId => {
+  assert(rId, Errors.ERR_IS_REQUIRED('rId'));
+  const file = await getBy({
+    rId,
+    deleted: false
+  });
+  return file;
 };

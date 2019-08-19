@@ -20,7 +20,7 @@ const {
   ensureAuthorization,
 } = require('./models/api');
 
-models.cache.init();
+const redis = models.cache.init();
 
 // middlewares
 app.use(convert(bodyparser));
@@ -46,5 +46,8 @@ app.on('error', function (err) {
   console.log(err)
 });
 
+app.serverUpCallback = (server) => {
+  models.socketIo.init(redis, server);
+}
 
 module.exports = app;

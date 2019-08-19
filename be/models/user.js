@@ -78,7 +78,9 @@ exports.create = async (data) => {
 exports.get = async (id, options) => {
   const [user, profile] = await Promise.all([
     User.findOne({
-      id
+      where: {
+        id
+      }
     }),
     Profile.getByUserId(id),
   ]);

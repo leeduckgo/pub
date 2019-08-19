@@ -3,7 +3,7 @@ const BlockQueue = require('./block');
 const queues = [];
 
 exports.up = () => {
-  console.log(` ------------- up queue ---------------`);
+  console.log(` ------------- 队列开始启动 ---------------`);
   queues.push(BlockQueue.create());
 }
 

@@ -1,5 +1,7 @@
 const config = require('../config');
 const Block = require('../models/sequelize/block');
+const File = require('./file');
+const socketIo = require('./socketIo');
 const {
   assert,
   Errors
@@ -69,4 +71,6 @@ exports.sync = async () => {
       id: unSyncBlock.id
     }
   })
+  const file = await File.getByRId(unSyncBlock.id);
+  socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
 }

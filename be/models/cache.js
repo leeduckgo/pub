@@ -239,7 +239,7 @@ let unLock = (key, callback) => {
 
 let pUnLock = util.promisify(unLock);
 
-let init = (callback) => {
+let init = () => {
   try {
     redis = new ioredis({
       port: config.redis.port,
@@ -247,7 +247,7 @@ let init = (callback) => {
       password: config.redis.password ?
         config.redis.password : null
     });
-    callback && callback();
+    return redis;
   } catch (e) {
     console.log(e);
   }

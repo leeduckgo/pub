@@ -7,14 +7,18 @@ const {
 
 exports.get = async profileId => {
   const profile = await Profile.findOne({
-    profileId
+    where: {
+      id: profileId
+    }
   });
   return profile ? profile.toJSON() : null;
 }
 
 exports.getByUserId = async userId => {
   const profile = await Profile.findOne({
-    userId
+    where: {
+      userId
+    }
   });
   return profile ? profile.toJSON() : null;
 }
