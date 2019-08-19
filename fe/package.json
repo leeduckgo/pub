@@ -44,5 +44,6 @@
   },
   "devDependencies": {
     "http-server": "^0.11.1"
-  }
+  },
+  "proxy": "http://localhost:8091"
 }
