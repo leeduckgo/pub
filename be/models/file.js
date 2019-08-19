@@ -17,10 +17,19 @@ const removeFrontMatter = (content = '') => {
   return content = content.replace(/^---(.|\n)*?---\n/, '');
 }
 
-const packFile = file => {
-  delete file.deleted;
-  file.content = removeFrontMatter(file.content);
-  return file;
+const packFile = async file => {
+  assert(file, Errors.ERR_NOT_FOUND('file'));
+  const fileJson = file.toJSON();
+  const {
+    rId
+  } = fileJson;
+  assert(rId, Errors.ERR_IS_REQUIRED('rId'));
+  const block = await Block.get(rId);
+  const status = getStatusByBlock(block);
+  delete fileJson.deleted;
+  fileJson.content = removeFrontMatter(fileJson.content);
+  fileJson.status = status;
+  return fileJson;
 }
 
 const verifyData = (data, options = {}) => {
@@ -75,7 +84,7 @@ exports.create = async (userId, data) => {
     msghash
   };
   const file = await File.create(payload);
-  return packFile(file.toJSON());
+  return file.toJSON();
 };
 
 exports.list = async (userId) => {
@@ -86,7 +95,12 @@ exports.list = async (userId) => {
       deleted: false
     }
   });
-  return files.map((file) => packFile(file.toJSON()))
+  const list = await Promise.all(
+    files.map((file) => {
+      return packFile(file);
+    })
+  )
+  return list;
 };
 
 const getStatusByBlock = block => {
@@ -100,31 +114,17 @@ const getStatusByBlock = block => {
   return FILE_STATUS.PENDING;
 }
 
-const getBy = async condition => {
-  assert(condition, Errors.ERR_IS_REQUIRED('condition'));
-  const file = await File.findOne({
-    where: condition
-  });
-  assert(file, Errors.ERR_NOT_FOUND('file'));
-  const {
-    rId
-  } = file;
-  assert(rId, Errors.ERR_IS_REQUIRED('rId'));
-  const block = await Block.get(rId);
-  const status = getStatusByBlock(block);
-  return file ? packFile({
-    ...file.toJSON(),
-    status
-  }) : null;
-}
-
 exports.get = async id => {
   assert(id, Errors.ERR_IS_REQUIRED('id'));
-  const file = await getBy({
-    id,
-    deleted: false
+  const file = await File.findOne({
+    where: {
+      id,
+      deleted: false
+    }
   });
-  return file;
+  assert(file, Errors.ERR_NOT_FOUND('file'));
+  const derivedFile = await packFile(file);
+  return derivedFile;
 };
 
 exports.update = async (id, data) => {
@@ -155,18 +155,26 @@ exports.delete = async id => {
 
 exports.getByMsghash = async msghash => {
   assert(msghash, Errors.ERR_IS_REQUIRED('msghash'));
-  const file = await getBy({
-    msghash,
-    deleted: false
+  const file = await File.findOne({
+    where: {
+      msghash,
+      deleted: false
+    }
   });
-  return file;
+  assert(file, Errors.ERR_NOT_FOUND('file'));
+  const derivedFile = await packFile(file);
+  return derivedFile;
 };
 
 exports.getByRId = async rId => {
   assert(rId, Errors.ERR_IS_REQUIRED('rId'));
-  const file = await getBy({
-    rId,
-    deleted: false
+  const file = await File.findOne({
+    where: {
+      rId,
+      deleted: false
+    }
   });
-  return file;
+  assert(file, Errors.ERR_NOT_FOUND('file'));
+  const derivedFile = await packFile(file);
+  return derivedFile;
 };
