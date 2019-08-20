@@ -13,9 +13,9 @@ exports.list = async ctx => {
 
 const getFrontMatter = (user, file) => {
   return `---
-author_name: ${user.name}
-author_avatar: ${user.avatar}
 title: ${file.title}
+author: ${user.name}
+avatar: ${user.avatar}
 ---\n`;
 }
 
