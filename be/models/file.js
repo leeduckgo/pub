@@ -26,9 +26,9 @@ const packFile = async file => {
   assert(rId, Errors.ERR_IS_REQUIRED('rId'));
   const block = await Block.get(rId);
   const status = getStatusByBlock(block);
-  delete fileJson.deleted;
-  fileJson.content = removeFrontMatter(fileJson.content);
   fileJson.status = status;
+  fileJson.content = removeFrontMatter(fileJson.content);
+  delete fileJson.deleted;
   return fileJson;
 }
 
