@@ -8,6 +8,7 @@ import Editor from './pages/Editor';
 
 import Preload from './components/Preload';
 import Socket from './components/Socket';
+import SnackBar from './components/SnackBar';
 
 import { StoreProvider } from './store';
 
@@ -20,6 +21,7 @@ const AppRouter = () => {
         <div>
           <Preload />
           <Socket />
+          <SnackBar />
           <Route path="/" exact component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/dashboard" exact component={Dashboard} />
