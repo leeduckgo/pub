@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocalStore } from 'mobx-react-lite';
 import { createUserStore } from './user';
+import { createFilesStore } from './files';
 
 const storeContext = React.createContext<any>(null);
 
@@ -11,6 +12,7 @@ interface IProps {
 export const StoreProvider = ({ children }: IProps) => {
   const store = {
     user: useLocalStore(createUserStore),
+    files: useLocalStore(createFilesStore),
   };
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };
