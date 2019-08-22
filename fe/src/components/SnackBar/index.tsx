@@ -39,7 +39,7 @@ export default observer((props: any) => {
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       open={snackbar.isOpenning}
-      // autoHideDuration={2000}
+      autoHideDuration={2000}
       onClose={() => snackbar.close()}
     >
       <SnackbarContent
