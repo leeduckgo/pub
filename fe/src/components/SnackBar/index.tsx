@@ -11,7 +11,6 @@ import { green } from '@material-ui/core/colors';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 import { useStore } from '../../store';
-import { fontSize } from '@material-ui/system';
 
 const useStyles = makeStyles((theme: Theme) => ({
   success: {
