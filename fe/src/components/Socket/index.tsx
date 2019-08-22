@@ -12,7 +12,7 @@ const log = (event: string, data: any) => {
 };
 
 export default observer(() => {
-  const { user } = useStore();
+  const { user, files } = useStore();
   if (!user.isFetched || !user.isLogin) {
     return null;
   }
@@ -27,6 +27,7 @@ export default observer(() => {
   });
   socket.on('file_published', (data: any) => {
     log('file_published', data);
+    files.updateFiles(data);
   });
   socket.on('connect_error', () => {
     console.error('Socket 连接失败, 请检查队列服务是否启动？');
