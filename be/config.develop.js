@@ -28,7 +28,8 @@ const config = {
 
   github: {
     clientID: 'a269deced07c748a3526',
-    clientSecret: '8cf2b9c75e540588be69ecbd498fee808abbeadd'
+    clientSecret: '8cf2b9c75e540588be69ecbd498fee808abbeadd',
+    oauthCallback: 'http://localhost:4201/dashboard'
   },
 
   tokenPrivateKey: 'kCtfo6go2PQYgXUAYJIqdLkKIxD8C7EwYAFC58kezgQsCzbu+NchwZx+tS/+rQGMFw+kzZHQkkcCz1reSdUgcg==',
@@ -45,7 +46,7 @@ const config = {
 
   queuePort: 8093,
 
-  prsEndpoint: 'http://127.0.0.1:8090'
+  prsEndpoint: 'http://127.0.0.1:8090',
 };
 
 module.exports = config;

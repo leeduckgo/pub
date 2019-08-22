@@ -7,8 +7,8 @@ export default observer((props: any) => {
   const store = useStore();
 
   const login = () => {
-    window.location.href =
-      'https://github.com/login/oauth/authorize?client_id=a269deced07c748a3526&redirect_uri=http://localhost:8097/api/github/oauth/callback';
+    const { REACT_APP_GITHUB_CALLBACK } = process.env;
+    window.location.href = `https://github.com/login/oauth/authorize?client_id=a269deced07c748a3526&redirect_uri=${REACT_APP_GITHUB_CALLBACK}`;
   };
 
   if (store.user.isFetched && store.user.isLogin) {

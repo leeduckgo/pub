@@ -1,4 +1,5 @@
-const BASE = 'http://localhost:8097';
+const { REACT_APP_API_ENDPOINT } = process.env;
+const BASE = REACT_APP_API_ENDPOINT;
 export default async (url: any, options: any = {}) => {
   if (options.method === 'POST' || options.method === 'PUT') {
     options.headers = { 'Content-Type': 'application/json' };

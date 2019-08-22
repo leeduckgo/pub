@@ -40,7 +40,7 @@ exports.callback = async ctx => {
       expires: new Date('2100-01-01')
     }
   )
-  ctx.redirect('http://localhost:4201/dashboard');
+  ctx.redirect(config.github.oauthCallback);
 }
 
 const fetchAccessToken = (code) => {

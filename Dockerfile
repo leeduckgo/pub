@@ -14,6 +14,6 @@ RUN yarn install
 
 WORKDIR /app
 
-EXPOSE 4007 8097
+EXPOSE 4007 8097 8093
 
 CMD chmod 777 *.sh && ./start-prod.sh
