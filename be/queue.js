@@ -6,5 +6,7 @@ const queue = require('./models/queue');
 const server = http.createServer(app.callback());
 server.listen(config.queuePort, () => {
   app.serverUpCallback(server);
-  queue.up();
+  if (config.sync) {
+    queue.up();
+  }
 });

@@ -47,6 +47,8 @@ const config = {
   queuePort: 8093,
 
   prsEndpoint: 'http://127.0.0.1:8090',
+
+  sync: false
 };
 
 module.exports = config;
