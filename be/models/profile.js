@@ -5,10 +5,10 @@ const {
   assert
 } = require('../models/validator');
 
-exports.get = async profileId => {
+exports.get = async providerId => {
   const profile = await Profile.findOne({
     where: {
-      id: profileId
+      providerId
     }
   });
   return profile ? profile.toJSON() : null;
