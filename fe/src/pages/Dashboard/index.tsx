@@ -29,12 +29,10 @@ export default observer((props: any) => {
   }
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  
-  const [files, setFiles] = React.useState([]);
 
   React.useEffect(() => {
-    Api.getFiles().then(files => setFiles(files)).catch(console.error);
-  }, [files.length]);
+    Api.getFiles().then(files => store.files.setFiles(files)).catch(console.error);
+  }, [store.files.files.length]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,7 +47,7 @@ export default observer((props: any) => {
   }
 
   const handleDelete = (id: number) => {
-    Api.deleteFile(id).then(() => setFiles(files.filter((item: any) => +item.id !== id))).catch(console.error);
+    Api.deleteFile(id).then(() => store.files.setFiles(store.files.files.filter((item: any) => +item.id !== id))).catch(console.error);
   }
 
   return (
@@ -123,19 +121,19 @@ export default observer((props: any) => {
               <TableHead>
                 <TableRow>
                   <TableCell>标题</TableCell>
-                  <TableCell>内容</TableCell>
                   <TableCell>更新时间</TableCell>
+                  <TableCell>状态</TableCell>
                   <TableCell>操作</TableCell>
                 </TableRow>
               </TableHead>
 
               <TableBody>
                 {
-                  files.map((file: any) => (
+                  store.files.files.map((file: any) => (
                     <TableRow hover key={file.id} onClick={() => { handleClickTable(+file.id) }}>
                       <TableCell component="th" scope="row">{file.title}</TableCell>
-                      <TableCell>{file.content}</TableCell>
                       <TableCell>{ago(file.updatedAt)}</TableCell>
+                      <TableCell>{file.status}</TableCell>
                       <TableCell>
                         <Button size="small" variant="contained" color="secondary" onClick={e => { e.stopPropagation();handleDelete(+file.id) }} >删除</Button>
                       </TableCell>
