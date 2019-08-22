@@ -1,11 +1,11 @@
 'use strict';
 
 const config = {
-  domain: 'http://127.0.0.1:8091',
+  domain: 'http://127.0.0.1:8097',
 
   host: '127.0.0.1',
 
-  port: '8091',
+  port: '8097',
 
   mysql: {
     host: '127.0.0.1',
