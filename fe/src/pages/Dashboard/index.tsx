@@ -127,16 +127,16 @@ export default observer((props: any) => {
             onClose={handleClose}
             anchorOrigin={{
               vertical: 'top',
-              horizontal: 'left',
+              horizontal: 'center',
             }}
             transformOrigin={{
               vertical: 'bottom',
-              horizontal: 'left',
+              horizontal: 'center',
             }}
           >
             <MenuList>
               <MenuItem dense onClick={logout}>
-                Logout
+                登出
               </MenuItem>
             </MenuList>
           </Popover>
