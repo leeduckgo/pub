@@ -9,10 +9,10 @@
 }
 
 $gray-light-color: #999;
-$gray-lighter-color0: #bdbdbd;
-$gray-lighter-color: #f2f2f2;
+$gray-lighter-color: #F7F9FC;
+$gray-lighter-color1: #bdbdbd;
+$gray-lighter-color2: #d8d8d8;
 $gray-color: #888888;
-$gray-lighter-color1: #d8d8d8;
 $gray-darker-color: #6d6d6d;
 $dark-color: #4a4a4a;
 $white-color: white;
@@ -22,6 +22,7 @@ $headline-color: #468f9d;
 $navbar-color: #4b9eae;
 $light-box-color: #7fb5bf;
 $dark-bg-color: #2f2f2f;
+$primary-color: #93b719;
 $button-color: #93b719;
 $hover-color: #9BC61B;
 $link-color: #93b719;
@@ -44,10 +45,12 @@ body {
   @include colors(orange-color, $orange-color);
   @include colors(gray-light-color, $gray-light-color);
   @include colors(gray-lighter-color, $gray-lighter-color);
-  @include colors(gray-lighter-color0, $gray-lighter-color0);
+  @include colors(gray-lighter-color1, $gray-lighter-color1);
+  @include colors(gray-lighter-color2, $gray-lighter-color2);
   @include colors(headline-color, $headline-color);
   @include colors(navbar-color, $navbar-color);
   @include colors(light-box-color, $light-box-color);
+  @include colors(primary-color, $primary-color);
   @include colors(button-color, $button-color);
   @include colors(dark-bg-color, $dark-bg-color);
   @include colors(link-color, $link-color);
@@ -59,5 +62,4 @@ body {
   @include colors(title-color, $title-color);
   @include colors(accent-color, $accent-color);
   @include colors(pig-pink-color, $pig-pink-color);
-  @include colors(gray-lighter-color1, $gray-lighter-color1);
 }

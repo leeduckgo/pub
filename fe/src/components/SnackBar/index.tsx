@@ -39,7 +39,7 @@ export default observer((props: any) => {
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       open={snackbar.isOpenning}
-      autoHideDuration={2000}
+      autoHideDuration={snackbar.autoHideDuration}
       onClose={() => snackbar.close()}
     >
       <SnackbarContent
@@ -51,7 +51,14 @@ export default observer((props: any) => {
           </span>
         }
         action={[
-          <IconButton key="close" aria-label="close" color="inherit" onClick={() => { snackbar.close() }}>
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={() => {
+              snackbar.close();
+            }}
+          >
             <CloseIcon className={classes.icon} />
           </IconButton>,
         ]}

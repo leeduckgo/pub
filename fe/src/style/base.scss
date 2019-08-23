@@ -94,13 +94,17 @@ a {
 }
 
 /************************************** SNACKBAR STYLES **************************************/
-.snackBar {
-  &>div {
-    background: $button-color !important;
+.MuiSnackbar-root {
+  .MuiSnackbarContent-root {
+    background: $primary-color !important;
   }
 
   button {
     color: #fff !important;
+  }
+
+  .MuiSnackbarContent-message {
+    max-width: 90%;
   }
 }
 

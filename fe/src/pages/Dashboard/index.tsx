@@ -15,6 +15,8 @@ import {
   MenuList,
 } from '@material-ui/core';
 
+import Loading from '../../components/Loading';
+
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 
@@ -85,9 +87,65 @@ export default observer((props: any) => {
       .catch(console.error);
   };
 
+  const renderPosts = (files: any) => {
+    return (
+      <section className="p-dashboard-main-table po-mw-1200 po-center">
+        <Paper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>标题</TableCell>
+                <TableCell>更新时间</TableCell>
+                <TableCell>状态</TableCell>
+                <TableCell>操作</TableCell>
+              </TableRow>
+            </TableHead>
+
+            <TableBody>
+              {files.map((file: any) => (
+                <TableRow
+                  hover
+                  key={file.id}
+                  onClick={() => {
+                    handleClickTable(+file.id);
+                  }}
+                >
+                  <TableCell component="th" scope="row">
+                    {file.title}
+                  </TableCell>
+                  <TableCell>{ago(file.updatedAt)}</TableCell>
+                  <TableCell>{file.status}</TableCell>
+                  <TableCell>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="secondary"
+                      onClick={e => {
+                        e.stopPropagation();
+                        handleDelete(+file.id);
+                      }}
+                    >
+                      删除
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+      </section>
+    );
+  };
+
+  const renderNoPosts = () => {
+    return <div className="po-push-page-middle text-center gray-color po-text-16">暂无文章</div>;
+  };
+
+  const { isFetched, files } = store.files;
+
   return (
     <div className="p-dashboard flex">
-      <nav className="p-dashboard-nav flex normal column sb">
+      <nav className="p-dashboard-nav flex normal column sb po-b-br po-b-black-10">
         <section>
           <ul className="p-dashboard-nav-ul">
             <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">管理</li>
@@ -144,7 +202,7 @@ export default observer((props: any) => {
       </nav>
 
       <main className="p-dashboard-main">
-        <section className="p-dashboard-main-head flex v-center sb">
+        <section className="p-dashboard-main-head flex v-center sb po-mw-1200 po-center">
           <div className="p-dashboard-main-head-title">文章</div>
 
           <Link to="/editor">
@@ -160,51 +218,9 @@ export default observer((props: any) => {
           </Link>
         </section>
 
-        <section className="p-dashboard-main-table">
-          <Paper>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>标题</TableCell>
-                  <TableCell>更新时间</TableCell>
-                  <TableCell>状态</TableCell>
-                  <TableCell>操作</TableCell>
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {store.files.files.map((file: any) => (
-                  <TableRow
-                    hover
-                    key={file.id}
-                    onClick={() => {
-                      handleClickTable(+file.id);
-                    }}
-                  >
-                    <TableCell component="th" scope="row">
-                      {file.title}
-                    </TableCell>
-                    <TableCell>{ago(file.updatedAt)}</TableCell>
-                    <TableCell>{file.status}</TableCell>
-                    <TableCell>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        color="secondary"
-                        onClick={e => {
-                          e.stopPropagation();
-                          handleDelete(+file.id);
-                        }}
-                      >
-                        删除
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Paper>
-        </section>
+        {!isFetched && <Loading isPage={true} />}
+        {isFetched && files.length === 0 && renderNoPosts()}
+        {isFetched && files.length > 0 && renderPosts(files)}
       </main>
     </div>
   );

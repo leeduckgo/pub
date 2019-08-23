@@ -1,4 +1,5 @@
 import React from 'react';
+import { toJS } from 'mobx';
 import { useLocalStore } from 'mobx-react-lite';
 import { createUserStore } from './user';
 import { createFilesStore } from './files';
@@ -24,5 +25,7 @@ export const useStore = () => {
   if (!store) {
     throw new Error('You have forgot to use StoreProvider');
   }
+  (window as any).toJS = toJS;
+  (window as any).store = store;
   return store;
 };
