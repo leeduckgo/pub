@@ -6,11 +6,14 @@ const json = require('koa-json');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 const cors = require('@koa/cors');
+const config = require('./config');
 const Sentry = require('@sentry/node');
 
-Sentry.init({
-  dsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9'
-});
+if (config.env) {
+  Sentry.init({
+    dsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9'
+  });
+}
 
 const index = require('./routes/index');
 const user = require('./routes/user');
