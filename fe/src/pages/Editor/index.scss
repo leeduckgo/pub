@@ -1,3 +1,5 @@
+@import '../../style/base.scss';
+
 .p-editor {
   width: 100%;
 
@@ -9,10 +11,10 @@
     height: 45px;
     margin-top: 25px;
     padding-right: 25px;
-    color: #3eb0ef;
+    color: $greyblue-color;
     cursor: pointer;
     font-size: 13px;
-    border-right: 1px solid #e5eff5;
+    border-right: 1px solid $gray-lighter-color2;
 
     .MuiSvgIcon-root {
       width: 30px;
@@ -41,6 +43,7 @@
     }
 
     .CodeMirror {
+      background: $gray-lighter-color;
       font-size: 16px;
       padding: 16px;
       line-height: 1.8;
