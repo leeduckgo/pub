@@ -203,6 +203,7 @@ div[role="tooltip"] div {
 }
 
 /************************************** INTRO JS STYLES **************************************/
-.introjs-hint {
+.introjs-hint,
+.introjs-fixedTooltip {
   z-index: 9999999999;
 }
