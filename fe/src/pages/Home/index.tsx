@@ -11,5 +11,5 @@ export default observer((props: any) => {
     }, 0);
   }
 
-  return <div>首页（不需要用到）</div>;
+  return <div />;
 });
