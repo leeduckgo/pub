@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@koa/cors": "2",
+    "@sentry/node": "5.5.0",
     "aes-js": "^3.1.2",
     "async": "^3.1.0",
     "bull": "^3.10.0",
