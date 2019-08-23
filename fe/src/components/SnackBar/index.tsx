@@ -4,17 +4,17 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Slide from '@material-ui/core/Slide';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import { green } from '@material-ui/core/colors';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 import { useStore } from '../../store';
 
 const useStyles = makeStyles((theme: Theme) => ({
   success: {
-    backgroundColor: green[600],
+    backgroundColor: '#8fb925',
   },
   icon: {
     fontSize: '20px!important',
@@ -35,9 +35,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default observer((props: any) => {
   const { snackbar } = useStore();
   const classes = useStyles();
+  const TransitionUp = (props: any) => {
+    return <Slide {...props} direction="up" />;
+  }
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      TransitionComponent={TransitionUp}
       open={snackbar.isOpenning}
       autoHideDuration={2000}
       onClose={() => snackbar.close()}
@@ -51,6 +55,7 @@ export default observer((props: any) => {
           </span>
         }
         action={[
+          snackbar.type === 'socket' ? <span key="redirect" onClick={() => { console.log('去聚合站！') }}>去看看</span> : null,
           <IconButton key="close" aria-label="close" color="inherit" onClick={() => { snackbar.close() }}>
             <CloseIcon className={classes.icon} />
           </IconButton>,

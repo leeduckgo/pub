@@ -2,9 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 
-import { Button, MenuItem, Paper, Popover, Table, TableHead, TableBody, TableRow, TableCell, MenuList } from '@material-ui/core';
+import { Button, MenuItem, Paper, Popover, Table, TableHead, TableBody, 
+  TableRow, TableCell, Tooltip, MenuList } from '@material-ui/core';
 
 import CreateIcon from '@material-ui/icons/Create';
+import HomeIcon from '@material-ui/icons/Home';
+import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 
 import Api from '../../api';
@@ -42,11 +45,11 @@ export default observer((props: any) => {
     setAnchorEl(null);
   }
 
-  const handleClickTable = (fileId: number) => {
+  const editFile = (fileId: number) => {
     props.history.push(`/editor?id=${fileId}`);
   }
 
-  const handleDelete = (id: number) => {
+  const deleteFile = (id: number) => {
     Api.deleteFile(id).then(() => store.files.setFiles(store.files.files.filter((item: any) => +item.id !== id))).catch(console.error);
   }
 
@@ -130,12 +133,45 @@ export default observer((props: any) => {
               <TableBody>
                 {
                   store.files.files.map((file: any) => (
-                    <TableRow hover key={file.id} onClick={() => { handleClickTable(+file.id) }}>
+                    <TableRow key={file.id}>
                       <TableCell component="th" scope="row">{file.title}</TableCell>
                       <TableCell>{ago(file.updatedAt)}</TableCell>
-                      <TableCell>{file.status}</TableCell>
                       <TableCell>
-                        <Button size="small" variant="contained" color="secondary" onClick={e => { e.stopPropagation();handleDelete(+file.id) }} >删除</Button>
+                        <Tooltip title={file.status === 'published' ?
+                          '文章已显示在聚合站上' : '未上链的文章不会显示在聚合站上' } 
+                          placement="right">
+                          <span className={ file.status === 'published' ?
+                            'published' : 'pending'
+                          }>
+                            {file.status === 'published' ? '已上链' : '正在上链...' }
+                          </span>
+                        </Tooltip>
+                      </TableCell>
+                      <TableCell>
+                      {
+                        file.status === 'published' ? 
+                        <Button className="edit-button" size="small" variant="contained"
+                            onClick={e => { e.stopPropagation();editFile(+file.id) }} 
+                          ><CreateIcon/>编辑</Button> : 
+                        <Tooltip title="文章上链成功之后，才能编辑" placement="right">
+                          <span>
+                            <Button className="edit-button" disabled size="small" variant="contained"
+                              onClick={e => { e.stopPropagation();editFile(+file.id) }} 
+                            ><CreateIcon />编辑</Button>  
+                          </span>
+                        </Tooltip>
+                      }
+                      {
+                        file.status === 'published' ? 
+                        <Tooltip title="查看显示在聚合站上的文章" placement="right">
+                          <Button className="redirect-button" size="small" variant="contained"
+                              onClick={e => { e.stopPropagation();console.log('去聚合站！');}} 
+                          ><HomeIcon />查看文章</Button>
+                        </Tooltip> : null
+                      }
+                        <Button className="delete-button" size="small" variant="contained"
+                          onClick={e => { e.stopPropagation();deleteFile(+file.id) }} 
+                        ><DeleteIcon />删除</Button>
                       </TableCell>
                     </TableRow>
                   ))

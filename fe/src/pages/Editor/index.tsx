@@ -49,7 +49,7 @@ export default observer((props: any) => {
     try {
       if (file.title && file.content) {
         id ? await Api.updateFile(file) : await Api.createFile(file);
-        store.snackbar.open('文章发布成功，等待上链，上链成功之后，您就可以在网站上查看这篇文章');
+        store.snackbar.open('文章发布成功，等待上链，上链成功之后，您就可以在聚合站上查看这篇文章');
       }
       props.history.push('/dashboard');
     } catch (err) {

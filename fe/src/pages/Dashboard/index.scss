@@ -1,3 +1,5 @@
+@import '../../style/base.scss';
+
 .p-dashboard {
   min-width: 850px;
   
@@ -26,10 +28,10 @@
   
     &-link {
       padding: 6px 32px;
-      color: #343f44;
+      color: $title-color;
       transition: none;
       margin: 2px 5px;
-      background-color: #e7ecf3;
+      background-color: $gray-lighter-color;
     }
 
     &-button {
@@ -43,7 +45,7 @@
     &-img {
       border-radius: 100%;
       margin-right: 8px;
-      border: 1px solid #d9dfe7;
+      border: 1px solid $gray-lighter-color1;
     }
 
     &-info {
@@ -64,7 +66,7 @@
   }
 
   &-main {
-    background-color: #f2f4f7;
+    background-color: $page-bg;
     width: 150px;
     height: 100vh;
     flex-grow: 1;
@@ -84,12 +86,67 @@
       max-height: calc(100vh - 84px);
       padding: 0 24px 24px;
       overflow: scroll;
+
+      span.published {
+        display: inline-block;
+        background-color: $green-light-color;
+        padding: 0 5px;
+        color: $white-color;
+        border-radius: 3px;
+        min-width: 10px;
+        font-size: 13px;
+      }
+
+      span.pending {
+        display: inline-block;
+        background-color: $gray-lighter-color0;
+        padding: 0 5px;
+        color: $white-color;
+        border-radius: 3px;
+        min-width: 10px;
+        font-size: 13px;
+      }
+
+      .edit-button {
+        background-color: $button-color;
+        margin-right: 20px;
+        color: $white-color;
+
+        &:hover {
+          background-color: $button-color;
+        }
+      }
+
+      .redirect-button {
+        background-color: $green-color;
+        margin-right: 20px;
+        color: $white-color;
+
+        &:hover {
+          background-color: $green-color;
+        }
+      }
+
+      .delete-button {
+        background-color: $red-color;
+        margin-right: 20px;
+        color: $white-color;
+
+        &:hover {
+          background-color: $red-color;
+        }
+      }
+
+      .MuiSvgIcon-root {
+        width: 14px;
+        height: 14px;
+        margin-right: 2px;
+      }
     }
 
     &-button {
-      background: linear-gradient(#aed452,#8fb925);
+      background: linear-gradient($green-light-color,$green-color);
       font-weight: 500;
-      border: 1px solid #a1ca3d;
       color: white !important;
     }
   }
@@ -101,6 +158,6 @@
   }
 
   .MuiTableRow-head {
-    background-color: rgb(248, 250, 252);
+    background-color: $gray-lighter-color;
   }
 }
