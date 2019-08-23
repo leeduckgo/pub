@@ -95,8 +95,8 @@ export default observer((props: any) => {
             <TableHead>
               <TableRow>
                 <TableCell>标题</TableCell>
-                <TableCell>更新时间</TableCell>
                 <TableCell>状态</TableCell>
+                <TableCell>更新时间</TableCell>
                 <TableCell>操作</TableCell>
               </TableRow>
             </TableHead>
@@ -113,8 +113,8 @@ export default observer((props: any) => {
                   <TableCell component="th" scope="row">
                     {file.title}
                   </TableCell>
-                  <TableCell>{ago(file.updatedAt)}</TableCell>
                   <TableCell>{file.status}</TableCell>
+                  <TableCell>{ago(file.updatedAt)}</TableCell>
                   <TableCell>
                     <Button
                       size="small"

@@ -83,7 +83,7 @@ export default observer((props: any) => {
         />
 
         <SimpleMDE
-          className="p-editor-markdown"
+          className="p-editor-markdown push-top-sm"
           value={file.content}
           onChange={handleContentChange}
           options={config}

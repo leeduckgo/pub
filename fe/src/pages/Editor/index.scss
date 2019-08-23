@@ -25,21 +25,38 @@
     box-sizing: border-box;
     width: 100vw;
     max-width: 850px;
-    padding: 15vh 92px;
+    padding-top: 40px;
 
     .MuiInput-root {
       margin-bottom: 20px;
-      font-size: 30px;
+      font-size: 26px;
       font-weight: 500;
     }
   }
 
   &-markdown {
-    .CodeMirror {
-      background: #f7f7f7;
+    .editor-toolbar {
+      border: 1px solid #ddd;
+      border-bottom: none;
     }
+
+    .CodeMirror {
+      font-size: 16px;
+      padding: 16px;
+      line-height: 1.8;
+      height: calc(100vh - 200px);
+    }
+
     .CodeMirror-scroll {
       height: 50vh;
+    }
+  }
+
+  .MuiInput-underline {
+
+    &:after,
+    &:before {
+      display: none;
     }
   }
 }
