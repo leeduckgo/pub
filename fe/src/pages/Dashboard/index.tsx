@@ -97,8 +97,8 @@ export default observer((props: any) => {
             <TableHead>
               <TableRow>
                 <TableCell>标题</TableCell>
-                <TableCell>更新时间</TableCell>
                 <TableCell>状态</TableCell>
+                <TableCell>更新时间</TableCell>
                 <TableCell>操作</TableCell>
               </TableRow>
             </TableHead>

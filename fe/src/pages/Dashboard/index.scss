@@ -161,6 +161,11 @@
       }
     }
 
+    .MuiPaper-elevation1 {
+      border-radius: 5px;
+      box-shadow: 0 0 1px rgba(0, 0, 0, .12), 0 1px 6px rgba(0, 0, 0, .03), 0 6px 10px -8px rgba(0, 0, 0, .1);
+    }
+
     .MuiTableRow-head {
       background-color: $gray-lighter-color;
     }
@@ -175,6 +180,10 @@
       &:last-child {
         padding-right: 25px;
       }
+    }
+
+    .MuiTableCell-head {
+      padding: 12px 40px 12px 25px;
     }
 
     .MuiTableRow-root {
