@@ -43,7 +43,7 @@ export default observer((props: any) => {
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       TransitionComponent={TransitionUp}
       open={snackbar.isOpenning}
-      autoHideDuration={2000}
+      autoHideDuration={snackbar.autoHideDuration}
       onClose={() => snackbar.close()}
     >
       <SnackbarContent
@@ -55,8 +55,18 @@ export default observer((props: any) => {
           </span>
         }
         action={[
-          snackbar.type === 'socket' ? <span key="redirect" onClick={() => { console.log('去聚合站！') }}>去看看</span> : null,
-          <IconButton key="close" aria-label="close" color="inherit" onClick={() => { snackbar.close() }}>
+          snackbar.type === 'socket' ?
+            <span key="redirect"
+              onClick={() => { console.log('去聚合站！') }}>去看看</span> :
+            null,
+          <IconButton
+            key="close"
+            aria-label="close"
+            color="inherit"
+            onClick={() => {
+              snackbar.close();
+            }}
+          >
             <CloseIcon className={classes.icon} />
           </IconButton>,
         ]}

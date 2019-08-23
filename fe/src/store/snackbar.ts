@@ -3,9 +3,11 @@ export function createSnackbarStore() {
     isOpenning: false,
     msg: '',
     type: 'default',
-    open(msg: string, type?: string) {
+    autoHideDuration: 2000,
+    open(msg: string, duration = 2000, type?: string) {
       this.msg = msg;
       this.type = type || this.type;
+      this.autoHideDuration = duration;
       this.isOpenning = true;
     },
     close() {

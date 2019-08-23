@@ -2,7 +2,7 @@
 
 .p-dashboard {
   min-width: 850px;
-  
+
   &-nav {
     width: 267px;
     min-height: 100vh;
@@ -15,17 +15,17 @@
         font-size: 12px;
       }
     }
-  
-    &-li{
+
+    &-li {
       list-style: none;
-  
+
       &-icon {
         width: 16px;
         height: 16px;
         margin-right: 8px;
       }
     }
-  
+
     &-link {
       padding: 6px 32px;
       color: $title-color;
@@ -45,7 +45,7 @@
     &-img {
       border-radius: 100%;
       margin-right: 8px;
-      border: 1px solid $gray-lighter-color1;
+      border: 1px solid $gray-lighter-color2;
     }
 
     &-info {
@@ -66,7 +66,7 @@
   }
 
   &-main {
-    background-color: $page-bg;
+    background-color: $gray-lighter-color;
     width: 150px;
     height: 100vh;
     flex-grow: 1;
@@ -76,7 +76,7 @@
       height: 84px;
 
       &-title {
-        font-size: 28px;
+        font-size: 24px;
         font-weight: 600;
       }
     }
@@ -99,7 +99,7 @@
 
       span.pending {
         display: inline-block;
-        background-color: $gray-lighter-color0;
+        background-color: $gray-lighter-color1;
         padding: 0 5px;
         color: $white-color;
         border-radius: 3px;
@@ -141,6 +141,10 @@
         width: 14px;
         height: 14px;
         margin-right: 2px;
+      .MuiPaper-elevation1 {
+        border-radius: 5px;
+        box-shadow: 0 0 1px rgba(0, 0, 0, .12), 0 1px 6px rgba(0, 0, 0, .03), 0 6px 10px -8px rgba(0, 0, 0, .1);
+        overflow: hidden;
       }
     }
 
@@ -151,13 +155,32 @@
     }
   }
 
-  &-popover {
-    .MuiPaper-root {
-      width: 235px;
+    &-popover {
+      .MuiPaper-root {
+        width: 235px;
+      }
     }
-  }
 
-  .MuiTableRow-head {
-    background-color: $gray-lighter-color;
+    .MuiTableRow-head {
+      background-color: $gray-lighter-color;
+    }
+
+    .MuiTableCell-root {
+      border-bottom-color: #e5eff5;
+    }
+
+    .MuiTableCell-root {
+      padding: 16px 40px 16px 25px;
+
+      &:last-child {
+        padding-right: 25px;
+      }
+    }
+
+    .MuiTableRow-root {
+      &.MuiTableRow-hover:hover {
+        background: #f8fafc;
+      }
+    }
   }
 }

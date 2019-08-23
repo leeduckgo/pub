@@ -9,6 +9,7 @@
 @import 'colors.scss';
 @import 'animation.scss';
 @import 'responsive.scss';
+@import 'border.scss';
 
 @mixin utilities() {
   @include padding-utilities();

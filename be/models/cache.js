@@ -253,7 +253,12 @@ let init = () => {
   }
 };
 
+let getRedis = () => {
+  return redis;
+}
+
 const cache = {
+  getRedis,
   set,
   get,
   mGet,

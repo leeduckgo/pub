@@ -11,10 +11,10 @@
     height: 45px;
     margin-top: 25px;
     padding-right: 25px;
-    color: $link-color;
+    color: $greyblue-color;
     cursor: pointer;
     font-size: 13px;
-    border-right: 1px solid $gray-lighter-color1;
+    border-right: 1px solid $gray-lighter-color2;
 
     .MuiSvgIcon-root {
       width: 30px;
@@ -38,7 +38,7 @@
 
   &-markdown {
     .CodeMirror {
-      background: $page-bg;
+      background: $gray-lighter-color;
     }
     .CodeMirror-scroll {
       height: 50vh;

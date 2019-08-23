@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Input } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
-import SimpleMDE from "react-simplemde-editor";
+import SimpleMDE from 'react-simplemde-editor';
 
 import { useStore } from '../../store';
 
@@ -12,11 +12,11 @@ import Api from '../../api';
 
 import config from './config';
 
-import { getQueryObject } from '../../utils'
+import { getQueryObject } from '../../utils';
 
-import "easymde/dist/easymde.min.css";
+import 'easymde/dist/easymde.min.css';
 
-import './index.scss'
+import './index.scss';
 
 export default observer((props: any) => {
   const store = useStore();
@@ -32,30 +32,36 @@ export default observer((props: any) => {
   const id = getQueryObject().id;
 
   React.useEffect(() => {
-    id && Api.getFile(id).then(file => setFile(file)).catch(console.error);
+    id &&
+      Api.getFile(id)
+        .then(file => setFile(file))
+        .catch(console.error);
   }, [id]);
 
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>)  => {
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     file.title = event.target.value;
-    setFile({...file});
-  }
+    setFile({ ...file });
+  };
 
-  const handleContentChange = (value: string)  => {
+  const handleContentChange = (value: string) => {
     file.content = value;
-    setFile({...file});
-  }
+    setFile({ ...file });
+  };
 
   const handleBack = async () => {
     try {
       if (file.title && file.content) {
         id ? await Api.updateFile(file) : await Api.createFile(file);
-        store.snackbar.open('文章发布成功，等待上链，上链成功之后，您就可以在聚合站上查看这篇文章');
+        store.snackbar.open(
+          '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
+          8000,
+        );
       }
       props.history.push('/dashboard');
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
 
   return (
     <div className="p-editor flex h-center">
@@ -75,7 +81,7 @@ export default observer((props: any) => {
           value={file.title}
           onChange={handleTitleChange}
         />
-        
+
         <SimpleMDE
           className="p-editor-markdown"
           value={file.content}

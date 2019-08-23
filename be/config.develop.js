@@ -1,6 +1,8 @@
 'use strict';
 
 const config = {
+  env: 'development',
+
   domain: 'http://127.0.0.1:8097',
 
   host: '127.0.0.1',

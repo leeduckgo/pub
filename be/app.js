@@ -6,11 +6,14 @@ const json = require('koa-json');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 const cors = require('@koa/cors');
+const config = require('./config');
 const Sentry = require('@sentry/node');
 
-Sentry.init({
-  dsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9'
-});
+if (config.env === 'production') {
+  Sentry.init({
+    dsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9'
+  });
+}
 
 const index = require('./routes/index');
 const user = require('./routes/user');
@@ -18,6 +21,7 @@ const github = require('./routes/github');
 const logout = require('./routes/logout');
 const file = require('./routes/file');
 const storage = require('./routes/storage');
+const ping = require('./routes/ping');
 
 const models = require('./models');
 
@@ -44,6 +48,7 @@ router.use('/api/github', github.routes(), github.allowedMethods());
 router.use('/api/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
 router.use('/api/files', file.routes(), file.allowedMethods());
 router.use('/api/storage', storage.routes(), storage.allowedMethods());
+router.use('/api/ping', ping.routes(), ping.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 
