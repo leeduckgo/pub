@@ -9,7 +9,7 @@ const cors = require('@koa/cors');
 const config = require('./config');
 const Sentry = require('@sentry/node');
 
-if (config.env) {
+if (config.env === 'production') {
   Sentry.init({
     dsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9'
   });
