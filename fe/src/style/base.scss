@@ -195,15 +195,19 @@ div[role="tooltip"] div {
       background: #9BC61B;
     }
   }
+
+}
+
+.introjs-arrow.top-right {
+  border-bottom-color: $dark-bg-color;
+}
+
+.introjs-hint,
+.introjs-fixedTooltip {
+  z-index: 9999999999;
 }
 
 /************************************** LIST ITEM STYLES **************************************/
 .MuiMenuItem-root {
   font-size: 14px !important;
-}
-
-/************************************** INTRO JS STYLES **************************************/
-.introjs-hint,
-.introjs-fixedTooltip {
-  z-index: 9999999999;
 }
