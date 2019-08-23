@@ -12,7 +12,7 @@ import Api from '../../api';
 
 import config from './config';
 
-import { getQueryObject } from '../../utils';
+import { getQueryObject, IntroHints } from '../../utils';
 
 import 'easymde/dist/easymde.min.css';
 
@@ -37,6 +37,26 @@ export default observer((props: any) => {
         .then(file => setFile(file))
         .catch(console.error);
   }, [id]);
+
+  React.useEffect(() => {
+    const hints = [
+      {
+        element: '.CodeMirror-scroll',
+        hint: '支持 Markdown 语法',
+        hintPosition: 'top-left',
+      },
+      {
+        element: '.preview',
+        hint: '点击这里可以预览文章',
+        hintPosition: 'middle-middle',
+      },
+    ];
+    IntroHints.init(hints);
+
+    return () => {
+      IntroHints.remove();
+    };
+  });
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     file.title = event.target.value;
@@ -77,7 +97,7 @@ export default observer((props: any) => {
           autoFocus
           fullWidth
           required
-          placeholder="请输入标题"
+          placeholder="文章标题"
           value={file.title}
           onChange={handleTitleChange}
         />

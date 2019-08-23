@@ -20,14 +20,11 @@ import Loading from '../../components/Loading';
 import CreateIcon from '@material-ui/icons/Create';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 
-import introJs from 'intro.js';
-import 'intro.js/introjs.css';
-
 import Api from '../../api';
 
 import { useStore } from '../../store';
 
-import { ago, Endpoint } from '../../utils';
+import { ago, Endpoint, IntroHints } from '../../utils';
 
 import './index.scss';
 
@@ -50,24 +47,27 @@ export default observer((props: any) => {
     (async () => {
       const files = await Api.getFiles();
       store.files.setFiles(files);
+      const hints: any = [
+        {
+          element: '.intercom-launcher-frame',
+          hint: '如果遇到问题发送消息给我们，我们将尽快协助您解决问题。',
+          hintPosition: 'top-left',
+        },
+      ];
       if (files.length === 0) {
-        tryShowIntro();
+        hints.push({
+          element: '.create-btn',
+          hint: '点击创建你的第一篇文章，发布到区块链上吧～',
+          hintPosition: 'top-left',
+        });
       }
+      IntroHints.init(hints);
     })();
-  }, [store]);
 
-  const tryShowIntro = () => {
-    const consumed = localStorage.getItem('INTRO_CONSUMED');
-    if (consumed) {
-      return;
-    }
-    introJs()
-      .setOption('hintButtonLabel', '我知道了')
-      .addHints()
-      .onhintclose(() => {
-        localStorage.setItem('INTRO_CONSUMED', 'true');
-      });
-  };
+    return () => {
+      IntroHints.remove();
+    };
+  }, [store]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -206,13 +206,7 @@ export default observer((props: any) => {
           <div className="p-dashboard-main-head-title">文章</div>
 
           <Link to="/editor">
-            <Button
-              className="primary"
-              variant="contained"
-              color="primary"
-              data-hint="点击创建你的第一篇文章，发布到区块链上吧～"
-              data-position="bottom-left-aligned"
-            >
+            <Button className="primary create-btn" variant="contained" color="primary">
               创建文章
             </Button>
           </Link>

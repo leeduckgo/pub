@@ -3,7 +3,7 @@ export default {
   spellChecker: false,
   status: false,
   minHeight: '80px',
-  placeholder: '请输入内容',
+  placeholder: '开始创作你的文章...',
   toolbar: [
     'bold',
     'italic',
@@ -14,6 +14,6 @@ export default {
     '|',
     'link',
     '|',
-    'preview'
-  ]
+    'preview',
+  ],
 };

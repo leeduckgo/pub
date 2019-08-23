@@ -1,10 +1,11 @@
 import { parse } from 'query-string';
 
 export { default as Endpoint } from './endpoint';
+export { default as IntroHints } from './introHints';
 
 export const getQueryObject = () => {
-  return parse(window.location.search)
-}
+  return parse(window.location.search);
+};
 
 export const ago = (timestamp: string) => {
   const now = new Date().getTime();
@@ -39,3 +40,8 @@ export const ago = (timestamp: string) => {
   }
   return result;
 };
+
+export const sleep = (duration: number) =>
+  new Promise((resolve: any) => {
+    setTimeout(resolve, duration);
+  });
