@@ -122,6 +122,10 @@
     }
   }
 
+  .MuiTableCell-head {
+    padding: 12px 40px 12px 25px;
+  }
+
   .MuiTableRow-root {
     &.MuiTableRow-hover:hover {
       background: #f8fafc;
