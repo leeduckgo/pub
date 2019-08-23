@@ -10,7 +10,7 @@ html {
 
 /************************************** BODY STYLES **************************************/
 body {
-  font-family: 'Nunito Sans', "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  font-family: "open_sans,Open Sans,PingFang SC,Microsoft YaHei,微软雅黑,STXihei,华文细黑,sans-serif";
   font-size: 14px;
   margin: 0;
   padding: 0;
@@ -31,7 +31,7 @@ button.primary,
   background-color: $button-color !important;
 
   &:hover {
-    opacity: 0.9;
+    background: $hover-color !important;
   }
 
   &.Mui-disabled {
@@ -44,10 +44,6 @@ button.primary,
 a {
   color: $link-color;
   cursor: pointer;
-
-  &:hover {
-    opacity: 0.9;
-  }
 }
 
 /************************************** BORDER STYLES **************************************/
@@ -153,4 +149,44 @@ div[role="tooltip"] div {
 
 .MuiTabs-indicator {
   background: $link-color !important;
+}
+
+/************************************** INTRO JS STYLES **************************************/
+.introjs-tooltip {
+  background: #2f2f2f;
+  border: 1px solid rgba(0, 0, 0, .4);
+  border-radius: 3px;
+  color: #fff;
+  padding: 15px;
+  padding-bottom: 60px;
+
+  p {
+    line-height: 1.25;
+  }
+
+  .introjs-button {
+    background: $button-color;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 700;
+    position: relative;
+    transition: all .15s;
+    vertical-align: middle;
+    border: none;
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    font-size: 12px;
+    margin: 3px;
+    padding: 8px 12px;
+    text-shadow: none;
+    line-height: 1;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+
+    &:hover {
+      background: #9BC61B;
+    }
+  }
 }
