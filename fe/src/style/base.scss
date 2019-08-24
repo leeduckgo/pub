@@ -26,19 +26,28 @@ img {
 @include utilities();
 
 /************************************** BUTTON STYLES **************************************/
-button.primary,
-.bg-button-color {
-  text-transform: none;
+button {
+  text-transform: none !important;
 
-  background-color: $button-color !important;
-
-  &:hover {
-    background: $hover-color !important;
+  .MuiButton-label {
+    color: $white-color !important;
   }
 
   &.Mui-disabled {
     color: #fff !important;
     background-color: #999 !important;
+  }
+
+  &.primary {
+    background-color: $green-button-color !important;
+
+    &:hover {
+      background-color: $hover-green-button-color !important;
+    }
+  }
+
+  &.blue {
+    background-color: $blue-button-color !important;
   }
 }
 
@@ -46,6 +55,10 @@ button.primary,
 a {
   color: $link-color;
   cursor: pointer;
+
+  &:hover {
+    opacity: .85;
+  }
 }
 
 /************************************** BORDER STYLES **************************************/
@@ -96,7 +109,7 @@ a {
 /************************************** SNACKBAR STYLES **************************************/
 .MuiSnackbar-root {
   .MuiSnackbarContent-root {
-    background: $primary-color !important;
+    background: $blue-button-color !important;
   }
 
   button {
@@ -171,7 +184,7 @@ div[role="tooltip"] div {
   }
 
   .introjs-button {
-    background: $button-color;
+    background: $green-button-color;
     color: #fff;
     cursor: pointer;
     display: inline-block;
@@ -192,7 +205,7 @@ div[role="tooltip"] div {
     right: 15px;
 
     &:hover {
-      background: #9BC61B;
+      background: $hover-green-button-color;
     }
   }
 

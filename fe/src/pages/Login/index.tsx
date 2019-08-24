@@ -31,7 +31,7 @@ export default observer((props: any) => {
   return (
     <div className="login bg flex v-center h-center">
       <div className="flex column v-center h-center">
-        <div className="text-center po-text-50 link-color">
+        <div className="text-center po-text-50 primary-color">
           <Tooltip open={showTooltip} placement="top" title={'西乔，给我设计个 logo 吧～'}>
             <Mood />
           </Tooltip>

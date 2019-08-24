@@ -108,22 +108,22 @@
       }
 
       .edit-button {
-        background-color: $button-color;
+        background-color: $blue-button-color;
         margin-right: 20px;
         color: $white-color;
 
         &:hover {
-          background-color: $button-color;
+          background-color: $blue-button-color;
         }
       }
 
       .redirect-button {
-        background-color: $green-color;
+        background-color: $green-button-color;
         margin-right: 20px;
         color: $white-color;
 
         &:hover {
-          background-color: $green-color;
+          background-color: $green-button-color;
         }
       }
 
@@ -141,6 +141,7 @@
         width: 14px;
         height: 14px;
         margin-right: 2px;
+
         .MuiPaper-elevation1 {
           border-radius: 5px;
           box-shadow: 0 0 1px rgba(0, 0, 0, .12), 0 1px 6px rgba(0, 0, 0, .03), 0 6px 10px -8px rgba(0, 0, 0, .1);
@@ -149,7 +150,7 @@
       }
 
       &-button {
-        background: linear-gradient($green-light-color,$green-color);
+        background: linear-gradient($green-light-color, $green-button-color);
         font-weight: 500;
         color: white !important;
       }

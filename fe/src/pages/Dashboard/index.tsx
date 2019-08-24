@@ -225,10 +225,10 @@ export default observer((props: any) => {
           >
             <img className="p-dashboard-nav-img" src={store.user.avatar} width="34" alt="头像" />
             <div className="p-dashboard-nav-info flex v-center po-text-14">
-              <span className="p-dashboard-nav-info-name">{store.user.name}</span>
+              <span className="p-dashboard-nav-info-name dark-color">{store.user.name}</span>
             </div>
             <div className="flex v-center">
-              <ExpandLess className="p-dashboard-nav-info-icon" />
+              <ExpandLess className="p-dashboard-nav-info-icon dark-color" />
             </div>
           </Button>
         )}
@@ -264,7 +264,7 @@ export default observer((props: any) => {
           <div className="p-dashboard-main-head-title">文章</div>
 
           <Link to="/editor">
-            <Button className="primary create-btn" variant="contained" color="primary">
+            <Button className="primary create-btn" variant="contained">
               创建文章
             </Button>
           </Link>
