@@ -109,7 +109,6 @@ export default observer((props: any) => {
                   <TableCell component="th" scope="row">
                     {file.title}
                   </TableCell>
-                  <TableCell>{ago(file.updatedAt)}</TableCell>
                   <TableCell>
                     <Tooltip
                       title={
@@ -124,6 +123,7 @@ export default observer((props: any) => {
                       </span>
                     </Tooltip>
                   </TableCell>
+                  <TableCell>{ago(file.updatedAt)}</TableCell>
                   <TableCell>
                     {file.status === 'published' ? (
                       <Button

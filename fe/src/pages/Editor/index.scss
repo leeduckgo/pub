@@ -23,6 +23,36 @@
     }
   }
 
+  &-save {
+    position: fixed;
+    top: 0;
+    right: 25px;
+    >div {
+      display: inline-block;
+    }
+
+    &-publish {
+      box-sizing: border-box;
+      height: 45px;
+      margin-top: 25px;
+      padding: 0 25px;
+      color: $greyblue-color;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    &-draft {
+      box-sizing: border-box;
+      height: 45px;
+      margin-top: 25px;
+      padding-right: 25px;
+      color: $greyblue-color;
+      cursor: pointer;
+      font-size: 13px;
+      border-right: 1px solid $gray-lighter-color2;
+    }
+  }
+
   &-input-area {
     box-sizing: border-box;
     width: 100vw;
