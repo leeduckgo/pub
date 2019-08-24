@@ -3,6 +3,7 @@ const config = require('../../config');
 const api = require('../api');
 
 let fileId = null;
+let draftId = null;
 
 const generateTitle = () => 'test_file_title' + new Date().getTime();
 const generateContent = () => 'test_file_content' + new Date().getTime();
@@ -60,6 +61,41 @@ it('create file', () => {
     .expect(200)
     .then((res) => {
       fileId = res.body.id;
+    });
+});
+
+it('create draft', () => {
+  const file = {
+    title: generateTitle(),
+    content: generateContent(),
+    mimeType: 'text/markdown'
+  };
+  return api.post(`/api/files?type=DRAFT`)
+    .send({
+      payload: file
+    })
+    .set('Cookie', [`${config.authTokenKey}=${global.token}`])
+    .expect(200)
+    .then((res) => {
+      draftId = res.body.id;
+      res.body.status.should.be.equal('draft');
+    });
+});
+
+it('update draft', () => {
+  const content = generateContent();
+  const file = {
+    content
+  };
+  return api.put(`/api/files/${draftId}`)
+    .send({
+      payload: file
+    })
+    .set('Cookie', [`${config.authTokenKey}=${global.token}`])
+    .expect(200)
+    .then((res) => {
+      res.body.updatedFile.status.should.be.equal('draft');
+      res.body.updatedFile.content.should.be.equal(content);
     });
 });
 

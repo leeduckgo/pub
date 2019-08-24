@@ -7,6 +7,7 @@ const File = require('./sequelize/file');
 const Block = require('./block');
 
 const FILE_STATUS = {
+  DRAFT: 'draft',
   PUBLISHED: 'published',
   PENDING: 'pending'
 }
@@ -23,10 +24,14 @@ const packFile = async file => {
   const {
     rId
   } = fileJson;
-  assert(rId, Errors.ERR_IS_REQUIRED('rId'));
-  const block = await Block.get(rId);
-  const status = getStatusByBlock(block);
-  fileJson.status = status;
+  const isDraft = !rId;
+  if (isDraft) {
+    fileJson.status = FILE_STATUS.DRAFT;
+  } else {
+    const block = await Block.get(rId);
+    const status = getStatusByBlock(block);
+    fileJson.status = status;
+  }
   fileJson.content = removeFrontMatter(fileJson.content);
   delete fileJson.deleted;
   return fileJson;
@@ -84,7 +89,8 @@ exports.create = async (userId, data) => {
     msghash
   };
   const file = await File.create(payload);
-  return file.toJSON();
+  const derivedFile = await packFile(file);
+  return derivedFile;
 };
 
 exports.list = async (userId) => {
@@ -138,7 +144,8 @@ exports.update = async (id, data) => {
       deleted: false
     }
   });
-  return true;
+  const derivedFile = await exports.get(id);
+  return derivedFile;
 };
 
 exports.delete = async id => {

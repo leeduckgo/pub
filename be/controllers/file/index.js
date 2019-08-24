@@ -27,14 +27,20 @@ const appendFrontMatter = (user, file) => {
 }
 
 const createFile = async (user, data, options = {}) => {
+  const {
+    isDraft
+  } = options;
+  const shouldPushToChain = !isDraft;
   const derivedData = appendFrontMatter(user, data);
   const file = await File.create(user.id, derivedData);
-  const block = await Chain.push(file, options);
-  const rId = block.id;
-  await File.update(file.id, {
-    rId
-  });
-  file.rId = rId;
+  if (shouldPushToChain) {
+    const block = await Chain.push(file, options);
+    const rId = block.id;
+    await File.update(file.id, {
+      rId
+    });
+    file.rId = rId;
+  }
   return file;
 }
 
@@ -43,7 +49,10 @@ exports.create = async ctx => {
     user
   } = ctx.verification;
   const data = ctx.request.body.payload;
-  const file = await createFile(user, data);
+  const isDraft = ctx.query.type === 'DRAFT';
+  const file = await createFile(user, data, {
+    isDraft
+  });
   ctx.body = file;
 }
 
@@ -58,14 +67,12 @@ exports.remove = async ctx => {
 
 const getNewFilePayload = (file, payload) => {
   return {
-    userId: file.userId,
     title: file.title,
     content: file.content,
     mimeType: file.mimeType,
     description: file.description,
-    userId: file.userId,
     ...payload
-  }
+  };
 }
 
 exports.update = async ctx => {
@@ -77,18 +84,29 @@ exports.update = async ctx => {
   const file = await File.get(id);
   assert(file.userId === user.id, Errors.ERR_NO_PERMISSION);
   const {
-    status
+    rId
   } = file;
-  assert(status === File.FILE_STATUS.PUBLISHED, Errors.ERR_FILE_NOT_PUBLISHED)
-  const newFilePayload = getNewFilePayload(file, data);
-  const newFile = await createFile(user, newFilePayload, {
-    updatedFile: file
-  });
-  const deletedFile = await File.delete(file.id);
-  ctx.body = {
-    newFile,
-    deletedFile
-  };
+  const isDraft = !rId;
+  if (isDraft) {
+    const updatedFile = await File.update(file.id, data);
+    ctx.body = {
+      updatedFile
+    };
+  } else {
+    const {
+      status
+    } = file;
+    assert(status === File.FILE_STATUS.PUBLISHED, Errors.ERR_FILE_NOT_PUBLISHED)
+    const newFilePayload = getNewFilePayload(file, data);
+    const newFile = await createFile(user, newFilePayload, {
+      updatedFile: file
+    });
+    const deletedFile = await File.delete(file.id);
+    ctx.body = {
+      newFile,
+      deletedFile
+    };
+  }
 }
 
 exports.get = async ctx => {
