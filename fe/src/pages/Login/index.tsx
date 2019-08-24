@@ -36,7 +36,8 @@ export default observer((props: any) => {
             <Mood />
           </Tooltip>
         </div>
-        <Button className="push-top primary" variant="contained" color="primary" onClick={login}>
+        <div className="dark-color text-center push-top-xs">分享你的学习笔记</div>
+        <Button className="push-top-lg primary" variant="contained" color="primary" onClick={login}>
           使用 GitHub 账号登陆
           <ButtonProgress isDoing={loading} />
         </Button>
