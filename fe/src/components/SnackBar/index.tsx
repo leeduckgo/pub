@@ -6,15 +6,24 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import Slide from '@material-ui/core/Slide';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import ErrorIcon from '@material-ui/icons/Error';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 
 import { useStore } from '../../store';
 
+const variantIcon = {
+  success: CheckCircleIcon,
+  error: ErrorIcon,
+};
+
 const useStyles = makeStyles((theme: Theme) => ({
   success: {
     backgroundColor: '#8fb925',
+  },
+  error: {
+    backgroundColor: '#d32f2f!important',
   },
   icon: {
     fontSize: '20px!important',
@@ -38,6 +47,7 @@ export default observer((props: any) => {
   const TransitionUp = (props: any) => {
     return <Slide {...props} direction="up" />;
   }
+  const Icon = variantIcon[snackbar.type === 'error' ? 'error' : 'success'];
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -47,10 +57,10 @@ export default observer((props: any) => {
       onClose={() => snackbar.close()}
     >
       <SnackbarContent
-        className={clsx(classes['success'], classes.margin)}
+        className={clsx(classes[snackbar.type === 'error' ? 'error' : 'success'], classes.margin)}
         message={
           <span id="client-snackbar" className={classes.message}>
-            <CheckCircleIcon className={clsx(classes.icon, classes.iconVariant)} />
+            <Icon className={clsx(classes.icon, classes.iconVariant)} />
             {snackbar.msg}
           </span>
         }

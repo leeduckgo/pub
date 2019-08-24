@@ -15,6 +15,7 @@ import {
   TableCell,
   Tooltip,
   MenuList,
+  Snackbar,
 } from '@material-ui/core';
 
 import CreateIcon from '@material-ui/icons/Create';
@@ -47,23 +48,27 @@ export default observer((props: any) => {
 
   React.useEffect(() => {
     (async () => {
-      const files = await Api.getFiles();
-      store.files.setFiles(files);
-      const hints: any = [
-        {
-          element: '.intercom-launcher-frame',
-          hint: '如果遇到了问题，随时可以发送消息给我们，我们将尽快协助您解决问题',
-          hintPosition: 'top-left',
-        },
-      ];
-      if (files.length === 0) {
-        hints.push({
-          element: '.create-btn',
-          hint: '点击创建你的第一篇文章，发布到区块链上吧～',
-          hintPosition: 'top-left',
-        });
+      try {
+        const files = await Api.getFiles();
+        store.files.setFiles(files);
+        const hints: any = [
+          {
+            element: '.intercom-launcher-frame',
+            hint: '如果遇到了问题，随时可以发送消息给我们，我们将尽快协助您解决问题',
+            hintPosition: 'top-left',
+          },
+        ];
+        if (files.length === 0) {
+          hints.push({
+            element: '.create-btn',
+            hint: '点击创建你的第一篇文章，发布到区块链上吧～',
+            hintPosition: 'top-left',
+          });
+        }
+        IntroHints.init(hints);
+      } catch(err) {
+        store.snackbar.open(err.message, 2000, 'error');
       }
-      IntroHints.init(hints);
     })();
 
     return () => {

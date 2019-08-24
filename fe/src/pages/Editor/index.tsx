@@ -27,10 +27,16 @@ export default observer((props: any) => {
   const id = getQueryObject().id;
 
   React.useEffect(() => {
-    id &&
-      Api.getFile(id)
-        .then(file => setFile(file))
-        .catch(console.error);
+    (async () => {
+      try {
+        if (id) {
+          let file = await Api.getFile(id);
+          setFile(file);
+        }
+      } catch(err) {
+        store.snackbar.open(err.message, 2000, 'error');
+      }
+    })();
   }, [id]);
 
   React.useEffect(() => {
@@ -78,7 +84,7 @@ export default observer((props: any) => {
       }
       props.history.push('/dashboard');
     } catch (err) {
-      console.error(err);
+      store.snackbar.open(err.message, 2000, 'error');
     }
   };
 
@@ -89,7 +95,7 @@ export default observer((props: any) => {
       }
       props.history.push('/dashboard');
     } catch (err) {
-      console.error(err);
+      store.snackbar.open(err.message, 2000, 'error');
     }
   };
 
