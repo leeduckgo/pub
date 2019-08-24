@@ -202,7 +202,7 @@ export default observer((props: any) => {
   const { isFetched, files } = store.files;
 
   return (
-    <div className="p-dashboard flex">
+    <div className="p-dashboard flex po-fade-in">
       <nav className="p-dashboard-nav flex normal column sb po-b-br po-b-black-10">
         <section>
           <ul className="p-dashboard-nav-ul">

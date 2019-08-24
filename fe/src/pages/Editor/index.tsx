@@ -84,7 +84,7 @@ export default observer((props: any) => {
   };
 
   return (
-    <div className="p-editor flex h-center">
+    <div className="p-editor flex h-center po-fade-in">
       <div onClick={handleBack}>
         <nav className="p-editor-back flex v-center link-color">
           <NavigateBefore />
