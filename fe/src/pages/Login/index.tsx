@@ -12,10 +12,11 @@ export default observer((props: any) => {
   const [loading, setLoading] = React.useState(false);
   const [showTooltip, setShowTooltip] = React.useState(false);
 
-  const login = () => {
+  const login = (provider: string) => {
     setLoading(true);
-    const { REACT_APP_GITHUB_CALLBACK, REACT_APP_GITHUB_CLIENT_ID } = process.env;
-    window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${REACT_APP_GITHUB_CALLBACK}`;
+    // const { REACT_APP_GITHUB_CALLBACK, REACT_APP_GITHUB_CLIENT_ID } = process.env;
+    // window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${REACT_APP_GITHUB_CALLBACK}`;
+    window.location.href = `http://localhost:8097/api/auth/${provider}/login?redirect=http://localhost:4201/dashboard`;
   };
 
   if (store.user.isFetched && store.user.isLogin) {
@@ -37,10 +38,19 @@ export default observer((props: any) => {
           </Tooltip>
         </div>
         <div className="dark-color text-center push-top-xs">分享你的学习笔记</div>
-        <Button className="push-top-lg primary" variant="contained" color="primary" onClick={login}>
-          使用 GitHub 账号登陆
+        <Button
+          className="push-top-lg primary"
+          variant="contained"
+          color="primary"
+          onClick={() => login('mixin')}
+        >
+          使用 Mixin 账号登陆
           <ButtonProgress isDoing={loading} />
         </Button>
+        {/* <Button className="push-top-md primary" variant="contained" color="primary" onClick={login}>
+          使用 GitHub 账号登陆
+          <ButtonProgress isDoing={loading} />
+        </Button> */}
       </div>
     </div>
   );

@@ -73,5 +73,3 @@ const fetchProfile = (accessToken) => {
     }
   }).promise();
 }
-
-const generateToken = () => '假的 token';

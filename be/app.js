@@ -8,6 +8,7 @@ const logger = require('koa-logger');
 const cors = require('@koa/cors');
 const config = require('./config');
 const Sentry = require('@sentry/node');
+const session = require('koa-session');
 
 if (config.env === 'production') {
   Sentry.init({
@@ -18,6 +19,7 @@ if (config.env === 'production') {
 const index = require('./routes/index');
 const user = require('./routes/user');
 const github = require('./routes/github');
+const auth = require('./routes/auth');
 const logout = require('./routes/logout');
 const file = require('./routes/file');
 const storage = require('./routes/storage');
@@ -39,12 +41,19 @@ app.use(cors({
 }));
 app.use(convert(logger()));
 
+app.keys = config.sessionKeys;
+app.use(session(config.session, app));
+const passport = models.auth.buildPassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
 router.all('*', models.api.errorHandler);
 router.all('*', models.api.extendCtx);
 
 router.use('/', index.routes(), index.allowedMethods());
 router.use('/api/user', ensureAuthorization(), user.routes(), user.allowedMethods());
 router.use('/api/github', github.routes(), github.allowedMethods());
+router.use('/api/auth', auth.routes(), auth.allowedMethods());
 router.use('/api/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
 router.use('/api/files', file.routes(), file.allowedMethods());
 router.use('/api/storage', storage.routes(), storage.allowedMethods());

@@ -64,13 +64,11 @@ exports.createProfile = async (profile, options = {}) => {
 }
 
 const getPickedUpData = (provider, profile) => {
-  assert(['github', 'wechat'].includes(provider), Errors.ERR_IS_INVALID('provider'));
-  if (provider === 'github') {
-    return {
-      providerId: profile.id,
-      name: profile.name,
-      avatar: profile.avatar_url,
-      bio: profile.bio
-    }
+  assert(['github', 'mixin'].includes(provider), Errors.ERR_IS_INVALID('provider'));
+  return {
+    providerId: profile.id,
+    name: profile.name,
+    avatar: profile.avatar_url,
+    bio: profile.bio
   }
 }
