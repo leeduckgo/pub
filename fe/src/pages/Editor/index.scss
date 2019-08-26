@@ -39,6 +39,9 @@
       color: $greyblue-color;
       cursor: pointer;
       font-size: 13px;
+      > div {
+        color: $greyblue-color !important;
+      }
     }
 
     &-draft {
@@ -50,6 +53,9 @@
       cursor: pointer;
       font-size: 13px;
       border-right: 1px solid $gray-lighter-color2;
+      > div {
+        color: $greyblue-color !important;
+      }
     }
   }
 

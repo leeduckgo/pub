@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import SimpleMDE from 'react-simplemde-editor';
+import ButtonProgress from '../../components/ButtonProgress';
 
 import { Input } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
@@ -24,7 +25,7 @@ export default observer((props: any) => {
 
   const [file, setFile] = React.useState({ title: '', content: '' });
 
-  const id = getQueryObject().id;
+  let id = getQueryObject().id;
 
   React.useEffect(() => {
     (async () => {
@@ -88,14 +89,20 @@ export default observer((props: any) => {
     }
   };
 
+  const [isSaving, setIsSaving] = React.useState(false);
+
   const handleSave = async () => {
     try {
       if (file.title && file.content) {
-        id ? await Api.updateFile(file) : await Api.createFile(file);
+        setIsSaving(true);
+        const res = file.hasOwnProperty('id') ? await Api.updateFile(file) : await Api.saveDraft(file);
+        res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
+        store.snackbar.open('保存草稿成功', 2000);
       }
-      props.history.push('/dashboard');
     } catch (err) {
       store.snackbar.open(err.message, 2000, 'error');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -112,6 +119,7 @@ export default observer((props: any) => {
         <div onClick={handleSave}>
           <nav className="p-editor-save-draft flex v-center">
             保存草稿
+            <ButtonProgress isDoing={isSaving} />
           </nav>
         </div>
 
