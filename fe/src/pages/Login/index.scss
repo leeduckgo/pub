@@ -2,6 +2,34 @@
   height: 100vh;
 
   &.bg {
-    background: #F0F2F6;
+    background: #f0f2f6;
+  }
+
+  .login-btn {
+    width: 50px;
+    height: 50px;
+    background: #f4f8fb;
+
+    img {
+      width: 30px;
+    }
+
+    &.mixin {
+      img {
+        width: 26px;
+      }
+    }
+  }
+
+  .github-button {
+    background: #332b2d;
+  }
+
+  .mixin-button {
+    background: #3a7ee4;
+  }
+
+  .pressone-button {
+    background: #009ff2;
   }
 }

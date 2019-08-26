@@ -1,20 +1,24 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Button, Tooltip } from '@material-ui/core';
+import { Tooltip } from '@material-ui/core';
 import Mood from '@material-ui/icons/Mood';
-import ButtonProgress from '../../components/ButtonProgress';
+import Loading from '../../components/Loading';
 import { useStore } from '../../store';
 
 import './index.scss';
 
 export default observer((props: any) => {
   const store = useStore();
-  const [loading, setLoading] = React.useState(false);
+  const [provider, setProvider] = React.useState('');
   const [showTooltip, setShowTooltip] = React.useState(false);
 
-  const login = (provider: string) => {
-    setLoading(true);
-    window.location.href = `http://localhost:8097/api/auth/${provider}/login?redirect=http://localhost:4201/dashboard`;
+  const selectProvider = (provider: string) => {
+    setProvider(provider);
+  };
+
+  const getLoginUrl = (provider: string) => {
+    const { REACT_APP_API_ENDPOINT, REACT_APP_CLIENT_ENDPOINT } = process.env;
+    return `${REACT_APP_API_ENDPOINT}/api/auth/${provider}/login?redirect=${REACT_APP_CLIENT_ENDPOINT}/dashboard`;
   };
 
   if (store.user.isFetched && store.user.isLogin) {
@@ -29,40 +33,47 @@ export default observer((props: any) => {
 
   return (
     <div className="login bg flex v-center h-center po-fade-in">
-      <div className="flex column v-center h-center">
+      <div className="container flex column v-center h-center po-center bg-white-color pad-xl po-width-300 po-radius-5">
         <div className="text-center po-text-50 primary-color">
           <Tooltip open={showTooltip} placement="top" title={'西乔，给我设计个 logo 吧～'}>
             <Mood />
           </Tooltip>
         </div>
-        <div className="dark-color text-center push-top-xs">分享你的学习笔记</div>
-        <Button
-          className="push-top-lg primary"
-          variant="contained"
-          color="primary"
-          onClick={() => login('mixin')}
-        >
-          使用 Mixin 账号登陆
-          <ButtonProgress isDoing={loading} />
-        </Button>
-        <Button
-          className="push-top-md primary"
-          variant="contained"
-          color="primary"
-          onClick={() => login('github')}
-        >
-          使用 GitHub 账号登陆
-          <ButtonProgress isDoing={loading} />
-        </Button>
-        <Button
-          className="push-top-md primary"
-          variant="contained"
-          color="primary"
-          onClick={() => login('pressone')}
-        >
-          使用 PressOne 账号登陆
-          <ButtonProgress isDoing={loading} />
-        </Button>
+        <div className="dark-color text-center push-top-xs po-text-16">分享你的学习笔记</div>
+        <div className="hr po-width-90 po-center push-top-md po-b-bb po-b-black-10"></div>
+        <div className="dark-color text-center push-top-md">第三方账号登录</div>
+        <div className="flex v-center h-center push-top-md">
+          <Tooltip placement="top" title={'使用 Mixin 账号登陆'}>
+            <a
+              href={getLoginUrl('mixin')}
+              onClick={() => selectProvider('mixin')}
+              className="mixin login-btn po-radius-50 bg-gray-color mixin flex v-center h-center push-right-md"
+            >
+              {provider !== 'mixin' && <img src="https://static.press.one/pub/mixin.png" />}
+              {provider === 'mixin' && <Loading size={20} />}
+            </a>
+          </Tooltip>
+          <Tooltip placement="top" title={'使用 GitHub 账号登陆'}>
+            <a
+              href={getLoginUrl('github')}
+              onClick={() => selectProvider('github')}
+              className="github login-btn po-radius-50 bg-gray-color flex v-center h-center push-right-md"
+            >
+              {provider !== 'github' && <img src="https://static.press.one/pub/github.svg" />}
+              {provider === 'github' && <Loading size={20} />}
+            </a>
+          </Tooltip>
+          <Tooltip placement="top" title={'使用 PressOne 账号登陆'}>
+            <a
+              href={getLoginUrl('pressone')}
+              onClick={() => selectProvider('pressone')}
+              className="pressone login-btn po-radius-50 bg-gray-color flex v-center h-center"
+            >
+              {provider !== 'pressone' && <img src="https://static.press.one/pub/pressone.png" />}
+              {provider === 'pressone' && <Loading size={20} />}
+            </a>
+          </Tooltip>
+        </div>
       </div>
     </div>
   );
