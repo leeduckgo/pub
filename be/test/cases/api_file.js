@@ -67,7 +67,7 @@ it('create file', () => {
 it('create draft', () => {
   const file = {
     title: generateTitle(),
-    content: generateContent(),
+    content: 'draft_' + generateContent(),
     mimeType: 'text/markdown'
   };
   return api.post(`/api/files?type=DRAFT`)
@@ -83,7 +83,7 @@ it('create draft', () => {
 });
 
 it('update draft', () => {
-  const content = generateContent();
+  const content = 'draft_' + generateContent();
   const file = {
     content
   };
@@ -100,7 +100,7 @@ it('update draft', () => {
 });
 
 it('publish draft', () => {
-  const content = generateContent();
+  const content = 'draft_' + generateContent();
   const file = {
     content
   };
