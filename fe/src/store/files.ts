@@ -3,10 +3,11 @@ interface FilesStore {
   files: Array<any>;
   setFiles: Function;
   updateFiles: Function;
+  updateFile: Function;
 }
 
 export function createFilesStore() {
-  const filesStore: FilesStore = {
+  return {
     isFetched: false,
     files: [],
     setFiles(files: any) {
@@ -19,6 +20,8 @@ export function createFilesStore() {
         return item;
       });
     },
-  };
-  return filesStore;
+    updateFile(file: any, idx: number) {
+      this.files[idx] = file;
+    }
+  } as FilesStore;
 }
