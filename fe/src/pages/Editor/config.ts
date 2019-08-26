@@ -13,6 +13,7 @@ export default {
     'ordered-list',
     '|',
     'link',
+    'image',
     '|',
     'preview',
   ],
