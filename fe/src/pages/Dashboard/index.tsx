@@ -15,7 +15,6 @@ import {
   TableCell,
   Tooltip,
   MenuList,
-  Snackbar,
 } from '@material-ui/core';
 
 import CreateIcon from '@material-ui/icons/Create';
