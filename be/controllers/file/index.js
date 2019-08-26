@@ -11,17 +11,17 @@ exports.list = async ctx => {
   ctx.body = result;
 }
 
-const getFrontMatter = (user, file) => {
+const getFrontMatter = (user, title) => {
   return `---
-title: ${file.title}
+title: ${title}
 author: ${user.name}
 avatar: ${user.avatar}
 ---\n`;
 }
 
-const appendFrontMatter = (user, file) => {
+const appendFrontMatter = (user, title, file) => {
   if (file.content) {
-    file.content = getFrontMatter(user, file) + file.content;
+    file.content = getFrontMatter(user, title) + file.content;
   }
   return file;
 }
@@ -31,7 +31,8 @@ const createFile = async (user, data, options = {}) => {
     isDraft
   } = options;
   const shouldPushToChain = !isDraft;
-  const derivedData = appendFrontMatter(user, data);
+  assert(data.title, Errors.ERR_IS_REQUIRED('title'));
+  const derivedData = appendFrontMatter(user, data.title, data);
   const file = await File.create(user.id, derivedData);
   if (shouldPushToChain) {
     const block = await Chain.push(file, options);
@@ -88,7 +89,17 @@ exports.update = async ctx => {
   } = file;
   const isDraft = !rId;
   if (isDraft) {
-    const updatedFile = await File.update(file.id, data);
+    const derivedData = appendFrontMatter(user, file.title, data);
+    let updatedFile = await File.update(file.id, derivedData);
+    const shouldPushToChain = ctx.query.action === 'PUBLISH';
+    if (shouldPushToChain) {
+      const block = await Chain.push(updatedFile);
+      const rId = block.id;
+      await File.update(updatedFile.id, {
+        rId
+      });
+      updatedFile = await File.get(updatedFile.id);
+    }
     ctx.body = {
       updatedFile
     };

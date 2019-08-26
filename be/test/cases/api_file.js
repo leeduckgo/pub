@@ -99,6 +99,24 @@ it('update draft', () => {
     });
 });
 
+it('publish draft', () => {
+  const content = generateContent();
+  const file = {
+    content
+  };
+  return api.put(`/api/files/${draftId}?action=PUBLISH`)
+    .send({
+      payload: file
+    })
+    .set('Cookie', [`${config.authTokenKey}=${global.token}`])
+    .expect(200)
+    .then((res) => {
+      res.body.updatedFile.rId.should.not.be.equal(null);
+      res.body.updatedFile.status.should.be.equal('pending');
+      res.body.updatedFile.content.should.be.equal(content);
+    });
+});
+
 it('This file can not be updated because it\'s not published', () => {
   const file = {
     content: generateContent()
