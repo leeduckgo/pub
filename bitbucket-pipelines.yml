@@ -5,7 +5,7 @@ definitions:
 
 pipelines:
   branches:
-    disabled:
+    master:
       - step:
           name: pub
           size: 2x
