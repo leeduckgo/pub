@@ -7,8 +7,18 @@ export default {
   getFiles() {
     return request('/api/files')
   },
+  saveDraft(file: any) {
+    const path = '/api/files?type=DRAFT';
+    file.mimeType = file.mimeType || 'text/markdown';
+    const payload = { payload: file }
+    return request(path, {
+      method: 'POST',
+      body: payload
+    });
+  },
   createFile(file: any) {
     const path = '/api/files';
+    delete file.id;
     file.mimeType = file.mimeType || 'text/markdown';
     const payload = { payload: file }
     return request(path, {
@@ -26,6 +36,7 @@ export default {
     delete file.msghash;
     delete file.createdAt;
     delete file.updatedAt;
+    delete file.status;
     file.mimeType = file.mimeType || 'text/markdown';
     const payload = { payload: file }
     return request(path, {

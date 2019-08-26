@@ -1,21 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import SimpleMDE from 'react-simplemde-editor';
+import ButtonProgress from '../../components/ButtonProgress';
 
 import { Input } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
-import SimpleMDE from 'react-simplemde-editor';
-
 import { useStore } from '../../store';
-
+import { getQueryObject, IntroHints } from '../../utils';
 import Api from '../../api';
-
 import config from './config';
 
-import { getQueryObject, IntroHints } from '../../utils';
-
 import 'easymde/dist/easymde.min.css';
-
 import './index.scss';
 
 export default observer((props: any) => {
@@ -29,14 +25,20 @@ export default observer((props: any) => {
 
   const [file, setFile] = React.useState({ title: '', content: '' });
 
-  const id = getQueryObject().id;
+  let id = getQueryObject().id;
 
   React.useEffect(() => {
-    id &&
-      Api.getFile(id)
-        .then(file => setFile(file))
-        .catch(console.error);
-  }, [id]);
+    (async () => {
+      try {
+        if (id) {
+          let file = await Api.getFile(id);
+          setFile(file);
+        }
+      } catch(err) {
+        store.snackbar.open(err.message, 2000, 'error');
+      }
+    })();
+  }, [id, store.snackbar]);
 
   React.useEffect(() => {
     const hints = [
@@ -69,6 +71,10 @@ export default observer((props: any) => {
   };
 
   const handleBack = async () => {
+    props.history.push('/dashboard');
+  };
+
+  const handlePublish = async () => {
     try {
       if (file.title && file.content) {
         id ? await Api.updateFile(file) : await Api.createFile(file);
@@ -79,7 +85,24 @@ export default observer((props: any) => {
       }
       props.history.push('/dashboard');
     } catch (err) {
-      console.error(err);
+      store.snackbar.open(err.message, 2000, 'error');
+    }
+  };
+
+  const [isSaving, setIsSaving] = React.useState(false);
+
+  const handleSave = async () => {
+    try {
+      if (file.title && file.content) {
+        setIsSaving(true);
+        const res = file.hasOwnProperty('id') ? await Api.updateFile(file) : await Api.saveDraft(file);
+        res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
+        store.snackbar.open('保存草稿成功', 2000);
+      }
+    } catch (err) {
+      store.snackbar.open(err.message, 2000, 'error');
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -90,6 +113,21 @@ export default observer((props: any) => {
           <NavigateBefore />
           文章
         </nav>
+      </div>
+
+      <div className="p-editor-save">
+        <div onClick={handleSave}>
+          <nav className="p-editor-save-draft flex v-center">
+            保存草稿
+            <ButtonProgress isDoing={isSaving} />
+          </nav>
+        </div>
+
+        <div onClick={handlePublish}>
+          <nav className="p-editor-save-publish flex v-center">
+            发布上链
+          </nav>
+        </div>
       </div>
 
       <main className="p-editor-input-area">

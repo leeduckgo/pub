@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
+import ButtonProgress from '../../components/ButtonProgress';
 import Loading from '../../components/Loading';
 
 import {
@@ -47,23 +48,27 @@ export default observer((props: any) => {
 
   React.useEffect(() => {
     (async () => {
-      const files = await Api.getFiles();
-      store.files.setFiles(files);
-      const hints: any = [
-        {
-          element: '.intercom-launcher-frame',
-          hint: '如果遇到了问题，随时可以发送消息给我们，我们将尽快协助您解决问题',
-          hintPosition: 'top-left',
-        },
-      ];
-      if (files.length === 0) {
-        hints.push({
-          element: '.create-btn',
-          hint: '点击创建你的第一篇文章，发布到区块链上吧～',
-          hintPosition: 'top-left',
-        });
+      try {
+        const files = await Api.getFiles();
+        store.files.setFiles(files);
+        const hints: any = [
+          {
+            element: '.intercom-launcher-frame',
+            hint: '如果遇到了问题，随时可以发送消息给我们，我们将尽快协助您解决问题',
+            hintPosition: 'top-left',
+          },
+        ];
+        if (files.length === 0) {
+          hints.push({
+            element: '.create-btn',
+            hint: '点击创建你的第一篇文章，发布到区块链上吧～',
+            hintPosition: 'top-left',
+          });
+        }
+        IntroHints.init(hints);
+      } catch(err) {
+        store.snackbar.open(err.message, 2000, 'error');
       }
-      IntroHints.init(hints);
     })();
 
     return () => {
@@ -83,10 +88,17 @@ export default observer((props: any) => {
     props.history.push(`/editor?id=${fileId}`);
   };
 
-  const deleteFile = (id: number) => {
-    Api.deleteFile(id)
-      .then(() => store.files.setFiles(store.files.files.filter((item: any) => +item.id !== id)))
-      .catch(console.error);
+  const deleteFile = (file: any, idx: number) => {
+    (async () => {
+      try {
+        await Api.deleteFile(file.id);
+        store.files.files.splice(idx, 1);
+        store.files.setFiles([...store.files.files]);
+      } catch(err) {
+        store.files.updateFile({ ...file, delete: false}, idx);
+        store.snackbar.open(err.message, 2000, 'error');
+      }
+    })();
   };
 
   const renderPosts = (files: any) => {
@@ -104,12 +116,11 @@ export default observer((props: any) => {
             </TableHead>
 
             <TableBody>
-              {files.map((file: any) => (
+              {files.map((file: any, idx: number) => (
                 <TableRow key={file.id}>
                   <TableCell component="th" scope="row">
                     {file.title}
                   </TableCell>
-                  <TableCell>{ago(file.updatedAt)}</TableCell>
                   <TableCell>
                     <Tooltip
                       title={
@@ -124,6 +135,7 @@ export default observer((props: any) => {
                       </span>
                     </Tooltip>
                   </TableCell>
+                  <TableCell>{ago(file.updatedAt)}</TableCell>
                   <TableCell>
                     {file.status === 'published' ? (
                       <Button
@@ -179,11 +191,13 @@ export default observer((props: any) => {
                       variant="contained"
                       onClick={e => {
                         e.stopPropagation();
-                        deleteFile(+file.id);
+                        store.files.updateFile({ ...file, delete: true}, idx);
+                        deleteFile(file, idx);
                       }}
                     >
                       <DeleteIcon />
                       删除
+                      <ButtonProgress isDoing={file.delete} />
                     </Button>
                   </TableCell>
                 </TableRow>
