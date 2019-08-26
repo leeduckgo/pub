@@ -3926,6 +3926,13 @@ pascalcase@^0.1.1:
   resolved "https://registry.npm.taobao.org/pascalcase/download/pascalcase-0.1.1.tgz#b363e55e8006ca6fe21784d2db22bd15d7917f14"
   integrity sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
 
+passport-github2@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.npm.taobao.org/passport-github2/download/passport-github2-0.1.11.tgz#c92b56f3c38a44e766aac7e9e7c1384c5e93c999"
+  integrity sha1-yStW88OKROdmqsfp58E4TF6TyZk=
+  dependencies:
+    passport-oauth2 "1.x.x"
+
 passport-mixin@^0.1.24:
   version "0.1.24"
   resolved "https://registry.npm.taobao.org/passport-mixin/download/passport-mixin-0.1.24.tgz#b91c9c3351fb48a3a9125652becc590a88cd1c75"

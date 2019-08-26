@@ -1,7 +1,9 @@
 const User = require('./user');
 const Profile = require('./sequelize/profile');
 const Errors = require('../models/validator/errors');
+const Joi = require('joi');
 const {
+  attempt,
   assert
 } = require('../models/validator');
 
@@ -44,31 +46,26 @@ exports.createProfile = async (profile, options = {}) => {
     provider
   } = options;
   assert(provider, Errors.ERR_IS_REQUIRED('provider'));
-  assert(profile, Errors.ERR_IS_REQUIRED('profile'));
-  const pickedUpData = getPickedUpData(provider, profile);
+  attempt(profile, {
+    id: Joi.number().required(),
+    name: Joi.string().required(),
+    avatar: Joi.string().required(),
+    bio: Joi.any().optional(),
+    raw: Joi.string().required(),
+  });
   const user = await User.create({
-    providerId: pickedUpData.providerId,
+    providerId: profile.id,
     provider
   });
   assert(user, Errors.ERR_IS_REQUIRED('user'));
   const insertedProfile = await Profile.create({
     userId: user.id,
     provider,
-    providerId: pickedUpData.providerId,
-    name: pickedUpData.name,
-    avatar: pickedUpData.avatar,
-    bio: pickedUpData.bio,
-    raw: JSON.stringify(profile)
-  })
-  return insertedProfile.toJSON();
-}
-
-const getPickedUpData = (provider, profile) => {
-  assert(['github', 'mixin'].includes(provider), Errors.ERR_IS_INVALID('provider'));
-  return {
     providerId: profile.id,
     name: profile.name,
-    avatar: profile.avatar_url,
-    bio: profile.bio
-  }
+    avatar: profile.avatar,
+    bio: profile.bio,
+    raw: profile.raw
+  })
+  return insertedProfile.toJSON();
 }

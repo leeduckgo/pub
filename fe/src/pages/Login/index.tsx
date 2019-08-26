@@ -14,8 +14,6 @@ export default observer((props: any) => {
 
   const login = (provider: string) => {
     setLoading(true);
-    // const { REACT_APP_GITHUB_CALLBACK, REACT_APP_GITHUB_CLIENT_ID } = process.env;
-    // window.location.href = `https://github.com/login/oauth/authorize?client_id=${REACT_APP_GITHUB_CLIENT_ID}&redirect_uri=${REACT_APP_GITHUB_CALLBACK}`;
     window.location.href = `http://localhost:8097/api/auth/${provider}/login?redirect=http://localhost:4201/dashboard`;
   };
 
@@ -47,10 +45,24 @@ export default observer((props: any) => {
           使用 Mixin 账号登陆
           <ButtonProgress isDoing={loading} />
         </Button>
-        {/* <Button className="push-top-md primary" variant="contained" color="primary" onClick={login}>
+        <Button
+          className="push-top-md primary"
+          variant="contained"
+          color="primary"
+          onClick={() => login('github')}
+        >
           使用 GitHub 账号登陆
           <ButtonProgress isDoing={loading} />
-        </Button> */}
+        </Button>
+        <Button
+          className="push-top-md primary"
+          variant="contained"
+          color="primary"
+          onClick={() => login('pressone')}
+        >
+          使用 PressOne 账号登陆
+          <ButtonProgress isDoing={loading} />
+        </Button>
       </div>
     </div>
   );

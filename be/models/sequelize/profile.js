@@ -28,7 +28,8 @@ const Profile = sequelize.define('profiles', {
     type: Sequelize.STRING
   },
   raw: {
-    type: Sequelize.TEXT
+    type: Sequelize.TEXT,
+    allowNull: true
   }
 }, {
   timestamps: true

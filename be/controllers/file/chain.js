@@ -39,7 +39,7 @@ const getPostfix = mimeType => {
 const getFileUrl = file => {
   const name = file.msghash;
   const postfix = getPostfix(file.mimeType);
-  return `${config.domain}/api/storage/${name}.${postfix}`;
+  return `${config.serviceRoot}/api/storage/${name}.${postfix}`;
 }
 
 const getPayload = ({
@@ -104,12 +104,9 @@ exports.push = async (file, options = {}) => {
     user,
     topic: user.address,
   }, options);
-  console.log(` ------------- payload ---------------`);
-  console.log(payload)
   const block = await signBlock(payload);
   assert(block, Errors.ERR_NOT_FOUND('block'));
   const packedBlock = packBlock(block);
-  console.log(` ------------- packedBlock ---------------`, packedBlock);
   const dbBlock = await Block.create(packedBlock);
   return dbBlock;
 }
