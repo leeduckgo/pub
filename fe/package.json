@@ -22,6 +22,7 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "react-simplemde-editor": "^4.1.0",
+    "simplemde": "^1.11.2",
     "socket.io-client": "^2.2.0",
     "typescript": "^3.4.5"
   },
@@ -48,6 +49,7 @@
     ]
   },
   "devDependencies": {
+    "@types/simplemde": "^1.11.7",
     "@types/socket.io-client": "^1.4.32",
     "http-server": "^0.11.1"
   },

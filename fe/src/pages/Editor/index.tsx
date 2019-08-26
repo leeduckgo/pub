@@ -37,7 +37,7 @@ export default observer((props: any) => {
         store.snackbar.open(err.message, 2000, 'error');
       }
     })();
-  }, [id]);
+  }, [id, store.snackbar]);
 
   React.useEffect(() => {
     const hints = [
