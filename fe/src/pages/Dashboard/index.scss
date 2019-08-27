@@ -134,22 +134,22 @@
       }
 
       .edit-button {
-        background-color: $blue-button-color;
+        background-color: $blue-color;
         margin-right: 20px;
         color: $white-color;
 
         &:hover {
-          background-color: $blue-button-color;
+          background-color: $blue-color;
         }
       }
 
       .redirect-button {
-        background-color: $green-button-color;
+        background-color: $green-color;
         margin-right: 20px;
         color: $white-color;
 
         &:hover {
-          background-color: $green-button-color;
+          background-color: $green-color;
         }
       }
 
@@ -164,7 +164,7 @@
       }
 
       &-button {
-        background: linear-gradient($green-light-color, $green-button-color);
+        background: linear-gradient($green-light-color, $green-color);
         font-weight: 500;
         color: white !important;
       }

@@ -11,7 +11,7 @@
     height: 45px;
     margin-top: 25px;
     padding-right: 25px;
-    color: $blue-button-color;
+    color: $blue-color;
     cursor: pointer;
     font-size: 13px;
     border-right: 1px solid $gray-lighter-color2;
@@ -38,7 +38,7 @@
       height: 45px;
       margin-top: 25px;
       padding: 0 25px;
-      color: $blue-button-color;
+      color: $blue-color;
       cursor: pointer;
       font-size: 13px;
     }
@@ -48,12 +48,12 @@
       height: 45px;
       margin-top: 25px;
       padding-right: 25px;
-      color: $blue-button-color;
+      color: $blue-color;
       cursor: pointer;
       font-size: 13px;
       border-right: 1px solid $gray-lighter-color2;
       > div {
-        color: $blue-button-color !important;
+        color: $blue-color !important;
       }
     }
   }
@@ -120,9 +120,9 @@
     
     .confirm-publish {
       .MuiButton-label {
-        color: $blue-button-color!important;
+        color: $blue-color!important;
         > div {
-          color: $blue-button-color !important;
+          color: $blue-color !important;
         }
       }
     }

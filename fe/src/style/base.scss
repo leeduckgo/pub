@@ -39,15 +39,15 @@ button {
   // }
 
   &.primary {
-    background-color: $green-button-color !important;
+    background-color: $green-color !important;
 
     &:hover {
-      background-color: $hover-green-button-color !important;
+      background-color: $hover-green-color !important;
     }
   }
 
   &.blue {
-    background-color: $blue-button-color !important;
+    background-color: $blue-color !important;
   }
 }
 
@@ -109,7 +109,7 @@ a {
 /************************************** SNACKBAR STYLES **************************************/
 .MuiSnackbar-root {
   .MuiSnackbarContent-root {
-    background: $blue-button-color !important;
+    background: $blue-color !important;
   }
 
   button {
@@ -184,7 +184,7 @@ div[role="tooltip"] div {
   }
 
   .introjs-button {
-    background: $green-button-color;
+    background: $green-color;
     color: #fff;
     cursor: pointer;
     display: inline-block;
@@ -205,7 +205,7 @@ div[role="tooltip"] div {
     right: 15px;
 
     &:hover {
-      background: $hover-green-button-color;
+      background: $hover-green-color;
     }
   }
 

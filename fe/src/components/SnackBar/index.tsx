@@ -46,7 +46,7 @@ export default observer((props: any) => {
   const classes = useStyles();
   const TransitionUp = (props: any) => {
     return <Slide {...props} direction="up" />;
-  }
+  };
   const Icon = variantIcon[snackbar.type === 'error' ? 'error' : 'success'];
   return (
     <Snackbar
@@ -65,10 +65,16 @@ export default observer((props: any) => {
           </span>
         }
         action={[
-          snackbar.type === 'socket' ?
-            <span key="redirect"
-              onClick={() => { console.log('去聚合站！') }}>去看看</span> :
-            null,
+          snackbar.type === 'socket' ? (
+            <span
+              key="redirect"
+              onClick={() => {
+                console.log('去聚合站！');
+              }}
+            >
+              去看看
+            </span>
+          ) : null,
           <IconButton
             key="close"
             aria-label="close"

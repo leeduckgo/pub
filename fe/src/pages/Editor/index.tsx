@@ -92,10 +92,9 @@ export default observer((props: any) => {
           ? await Api.updateFile(file)
           : await Api.createDraft(file);
         res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
-        store.snackbar.open('保存草稿成功', 2000);
       }
     } catch (err) {
-      store.snackbar.open(err.message, 2000, 'error');
+      store.snackbar.open(err.message, 20000, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -150,7 +149,7 @@ export default observer((props: any) => {
         <div onClick={handleSave}>
           <nav className="p-editor-save-draft flex v-center">
             保存草稿
-            <ButtonProgress isDoing={isSaving} color="blue-button-color" />
+            <ButtonProgress isDoing={isSaving} isDone={!isSaving} color="blue-color" />
           </nav>
         </div>
 
@@ -195,7 +194,7 @@ export default observer((props: any) => {
           </Button>
           <Button className="confirm-publish" onClick={handlePublish} color="primary" autoFocus>
             确认发布
-            <ButtonProgress isDoing={isPublishing} color="blue-button-color" />
+            <ButtonProgress isDoing={isPublishing} color="blue-color" />
           </Button>
         </DialogActions>
       </Dialog>
