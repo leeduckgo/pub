@@ -43,7 +43,7 @@ export default observer((props: any) => {
           setFile(file);
         }
       } catch (err) {
-        store.snackbar.open(err.message, 2000, 'error');
+        store.snackbar.open('获取内容失败', 2000, 'error');
       }
     })();
   }, [id, store.snackbar]);
@@ -94,7 +94,8 @@ export default observer((props: any) => {
         res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
       }
     } catch (err) {
-      store.snackbar.open(err.message, 2000, 'error');
+      store.snackbar.open(err.status === 409 ? '已经存在相同内容的草稿，请再修改一下内容' :
+        '保存草稿失败，请稍后重试', 2000, 'error');
     } finally {
       setIsSaving(false);
     }
@@ -121,7 +122,8 @@ export default observer((props: any) => {
       }
     } catch (err) {
       setIsPublishing(false);
-      store.snackbar.open(err.message, 2000, 'error');
+      store.snackbar.open(err.status === 409 ? '已经存在相同内容的文章，请再修改一下内容' :
+        '文章发布失败，请稍后重试', 2000, 'error');
     }
   };
 
@@ -135,6 +137,12 @@ export default observer((props: any) => {
   const handleClose = () => {
     setOpen(false);
   };
+
+  // previewIcon
+  React.useEffect(() => {
+    let button = document.getElementsByClassName('preview');
+    if (button[0]) button[0].setAttribute('title', '预览 (Cmd-P)');
+  });
 
   return (
     <div className="p-editor flex h-center po-fade-in">
