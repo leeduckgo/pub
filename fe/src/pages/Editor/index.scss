@@ -27,6 +27,8 @@
     position: fixed;
     top: 0;
     right: 25px;
+    z-index: 999;
+
     >div {
       display: inline-block;
     }
@@ -61,6 +63,8 @@
     width: 100vw;
     max-width: 850px;
     padding-top: 40px;
+    margin-left: 120px;
+    margin-right: 140px;
 
     .MuiInput-root {
       margin-bottom: 20px;
