@@ -38,6 +38,7 @@ $dark-peach-color: #de7b56;
 $title-color: #707070;
 $accent-color: #ff687b;
 $pig-pink-color: #e27b88;
+$page-bg: #f7f7f7;
 
 body {
   @include colors(primary-color, $primary-color);
@@ -69,4 +70,5 @@ body {
   @include colors(title-color, $title-color);
   @include colors(accent-color, $accent-color);
   @include colors(pig-pink-color, $pig-pink-color);
+  @include colors(page-bg, $page-bg);
 }

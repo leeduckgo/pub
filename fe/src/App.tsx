@@ -9,26 +9,31 @@ import Editor from './pages/Editor';
 import Preload from './components/Preload';
 import Socket from './components/Socket';
 import SnackBar from './components/SnackBar';
+import Curtain from './components/Curtain';
 
 import { StoreProvider } from './store';
+import { isMobile } from './utils';
 
 import './style/base.scss';
 
 const AppRouter = () => {
   return (
-    <StoreProvider>
-      <Router>
-        <div>
-          <Preload />
-          <Socket />
-          <SnackBar />
-          <Route path="/" exact component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/dashboard" exact component={Dashboard} />
-          <Route path="/editor" exact component={Editor} />
-        </div>
-      </Router>
-    </StoreProvider>
+    isMobile() ? <Curtain /> :
+    (
+      <StoreProvider>
+        <Router>
+          <div>
+            <Preload />
+            <Socket />
+            <SnackBar />
+            <Route path="/" exact component={Home} />
+            <Route path="/login" component={Login} />
+            <Route path="/dashboard" exact component={Dashboard} />
+            <Route path="/editor" exact component={Editor} />
+          </div>
+        </Router>
+      </StoreProvider>
+    )
   );
 };
 

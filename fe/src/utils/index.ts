@@ -2,6 +2,7 @@ import { parse } from 'query-string';
 
 export { default as Endpoint } from './endpoint';
 export { default as IntroHints } from './introHints';
+export {FileStatus, FileStatusTip} from './enum';
 
 export const getQueryObject = () => {
   return parse(window.location.search);
@@ -46,14 +47,6 @@ export const sleep = (duration: number) =>
     setTimeout(resolve, duration);
   });
 
-export enum FileStatus {
-  'published' = '已上链',
-  'pending' = '正在上链...',
-  'draft' = '草稿',
-}
-
-export enum FileStatusTip {
-  'published' = '文章已显示在聚合站上',
-  'pending' = '未上链的文章不会显示在聚合站上',
-  'draft' = '未上链的文章不会显示在聚合站上',
-}
+export const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+};
