@@ -13,6 +13,9 @@ exports.create = () => {
 
   queue.add('SYNC', {}, {
     priority: 1,
+    repeat: {
+      every: 2000 * 1
+    },
     removeOnComplete: true,
     removeOnFail: true
   });
