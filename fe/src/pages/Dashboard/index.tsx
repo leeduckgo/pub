@@ -65,7 +65,7 @@ export default observer((props: any) => {
         }
         IntroHints.init(hints);
       } catch (err) {
-        store.snackbar.open(err.message, 2000, 'error');
+        store.snackbar.open('获取内容列表失败', 2000, 'error');
       }
     })();
 
