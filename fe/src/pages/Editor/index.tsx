@@ -94,7 +94,7 @@ export default observer((props: any) => {
         res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
       }
     } catch (err) {
-      store.snackbar.open(err.message, 20000, 'error');
+      store.snackbar.open(err.message, 2000, 'error');
     } finally {
       setIsSaving(false);
     }

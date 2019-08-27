@@ -67,6 +67,7 @@ export default observer((props: any) => {
         action={[
           snackbar.type === 'socket' ? (
             <span
+              className="po-cp"
               key="redirect"
               onClick={() => {
                 console.log('去聚合站！');
