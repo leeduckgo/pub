@@ -47,7 +47,7 @@ export default observer((props: any) => {
             <a
               href={getLoginUrl('mixin')}
               onClick={() => selectProvider('mixin')}
-              className="mixin login-btn po-radius-50 bg-gray-color mixin flex v-center h-center push-right-md"
+              className="mixin login-btn po-radius-50 mixin flex v-center h-center push-right-md po-b-ba po-b-black-05"
             >
               {provider !== 'mixin' && (
                 <img src="https://static.press.one/pub/mixin.png" alt="mixin" />
@@ -59,7 +59,7 @@ export default observer((props: any) => {
             <a
               href={getLoginUrl('github')}
               onClick={() => selectProvider('github')}
-              className="github login-btn po-radius-50 bg-gray-color flex v-center h-center push-right-md"
+              className="github login-btn po-radius-50 flex v-center h-center push-right-md po-b-ba po-b-black-05"
             >
               {provider !== 'github' && (
                 <img src="https://static.press.one/pub/github.svg" alt="github" />
@@ -71,7 +71,7 @@ export default observer((props: any) => {
             <a
               href={getLoginUrl('pressone')}
               onClick={() => selectProvider('pressone')}
-              className="pressone login-btn po-radius-50 bg-gray-color flex v-center h-center"
+              className="pressone login-btn po-radius-50 flex v-center h-center po-b-ba po-b-black-05"
             >
               {provider !== 'pressone' && (
                 <img src="https://static.press.one/pub/pressone.png" alt="pressone" />
