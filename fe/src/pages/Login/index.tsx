@@ -49,7 +49,9 @@ export default observer((props: any) => {
               onClick={() => selectProvider('mixin')}
               className="mixin login-btn po-radius-50 bg-gray-color mixin flex v-center h-center push-right-md"
             >
-              {provider !== 'mixin' && <img src="https://static.press.one/pub/mixin.png" />}
+              {provider !== 'mixin' && (
+                <img src="https://static.press.one/pub/mixin.png" alt="mixin" />
+              )}
               {provider === 'mixin' && <Loading size={20} />}
             </a>
           </Tooltip>
@@ -59,7 +61,9 @@ export default observer((props: any) => {
               onClick={() => selectProvider('github')}
               className="github login-btn po-radius-50 bg-gray-color flex v-center h-center push-right-md"
             >
-              {provider !== 'github' && <img src="https://static.press.one/pub/github.svg" />}
+              {provider !== 'github' && (
+                <img src="https://static.press.one/pub/github.svg" alt="github" />
+              )}
               {provider === 'github' && <Loading size={20} />}
             </a>
           </Tooltip>
@@ -69,7 +73,9 @@ export default observer((props: any) => {
               onClick={() => selectProvider('pressone')}
               className="pressone login-btn po-radius-50 bg-gray-color flex v-center h-center"
             >
-              {provider !== 'pressone' && <img src="https://static.press.one/pub/pressone.png" />}
+              {provider !== 'pressone' && (
+                <img src="https://static.press.one/pub/pressone.png" alt="pressone" />
+              )}
               {provider === 'pressone' && <Loading size={20} />}
             </a>
           </Tooltip>
