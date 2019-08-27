@@ -9,10 +9,9 @@ const User = sequelize.define('users', {
   },
   providerId: {
     type: Sequelize.BIGINT,
-    unique: true
   },
   provider: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
   },
   address: {
     type: Sequelize.STRING,
