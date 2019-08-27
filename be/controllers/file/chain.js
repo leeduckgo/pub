@@ -102,7 +102,7 @@ exports.push = async (file, options = {}) => {
   const payload = getPayload({
     file,
     user,
-    topic: user.address,
+    topic: config.boxTopic,
   }, options);
   const block = await signBlock(payload);
   assert(block, Errors.ERR_NOT_FOUND('block'));
