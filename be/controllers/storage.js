@@ -15,7 +15,9 @@ exports.get = async ctx => {
   assert(postfix, Errors.ERR_IS_REQUIRED('postfix'));
   const mimeType = mimeTypes[postfix];
   assert(mimeType, Errors.ERR_IS_INVALID('mimeType'));
-  const file = await File.getByMsghash(msghash);
+  const file = await File.getByMsghash(msghash, {
+    withRawContent: true
+  });
   assert(file, Errors.ERR_NOT_FOUND('file'));
   assert(file.mimeType === mimeType, Errors.ERR_NOT_FOUND('mimeType'));
   ctx.body = file.content;

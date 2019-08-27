@@ -18,7 +18,7 @@ const removeFrontMatter = (content = '') => {
   return content = content.replace(/^---(.|\n)*?---\n/, '');
 }
 
-const packFile = async file => {
+const packFile = async (file, options = {}) => {
   assert(file, Errors.ERR_NOT_FOUND('file'));
   const fileJson = file.toJSON();
   const {
@@ -32,7 +32,12 @@ const packFile = async file => {
     const status = getStatusByBlock(block);
     fileJson.status = status;
   }
-  fileJson.content = removeFrontMatter(fileJson.content);
+  const {
+    withRawContent
+  } = options;
+  if (!withRawContent) {
+    fileJson.content = removeFrontMatter(fileJson.content);
+  }
   delete fileJson.deleted;
   return fileJson;
 }
@@ -83,6 +88,8 @@ exports.create = async (userId, data) => {
   assert(userId, Errors.ERR_IS_REQUIRED('userId'));
   verifyData(data);
   const msghash = prsUtil.keccak256(data.content);
+  const maybeExistedFile = await exports.getByMsghash(msghash);
+  assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
   const payload = {
     ...data,
     userId,
@@ -120,7 +127,7 @@ const getStatusByBlock = block => {
   return FILE_STATUS.PENDING;
 }
 
-exports.get = async id => {
+exports.get = async (id, options = {}) => {
   assert(id, Errors.ERR_IS_REQUIRED('id'));
   const file = await File.findOne({
     where: {
@@ -129,7 +136,12 @@ exports.get = async id => {
     }
   });
   assert(file, Errors.ERR_NOT_FOUND('file'));
-  const derivedFile = await packFile(file);
+  const {
+    withRawContent
+  } = options;
+  const derivedFile = await packFile(file, {
+    withRawContent
+  });
   return derivedFile;
 };
 
@@ -138,6 +150,11 @@ exports.update = async (id, data) => {
   verifyData(data, {
     isUpdating: true
   });
+  if (data.content) {
+    const msghash = prsUtil.keccak256(data.content);
+    const maybeExistedFile = await exports.getByMsghash(msghash);
+    assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
+  }
   await File.update(data, {
     where: {
       id,
@@ -160,7 +177,7 @@ exports.delete = async id => {
   return true;
 };
 
-exports.getByMsghash = async msghash => {
+exports.getByMsghash = async (msghash, options = {}) => {
   assert(msghash, Errors.ERR_IS_REQUIRED('msghash'));
   const file = await File.findOne({
     where: {
@@ -168,12 +185,19 @@ exports.getByMsghash = async msghash => {
       deleted: false
     }
   });
-  assert(file, Errors.ERR_NOT_FOUND('file'));
-  const derivedFile = await packFile(file);
+  if (!file) {
+    return null
+  }
+  const {
+    withRawContent
+  } = options;
+  const derivedFile = await packFile(file, {
+    withRawContent
+  });
   return derivedFile;
 };
 
-exports.getByRId = async rId => {
+exports.getByRId = async (rId, options = {}) => {
   assert(rId, Errors.ERR_IS_REQUIRED('rId'));
   const file = await File.findOne({
     where: {
@@ -181,7 +205,14 @@ exports.getByRId = async rId => {
       deleted: false
     }
   });
-  assert(file, Errors.ERR_NOT_FOUND('file'));
-  const derivedFile = await packFile(file);
+  if (!file) {
+    return null
+  }
+  const {
+    withRawContent
+  } = options;
+  const derivedFile = await packFile(file, {
+    withRawContent
+  });
   return derivedFile;
 };
