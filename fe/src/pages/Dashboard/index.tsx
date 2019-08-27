@@ -27,7 +27,7 @@ import Api from '../../api';
 
 import { useStore } from '../../store';
 
-import { ago, Endpoint, IntroHints } from '../../utils';
+import { ago, Endpoint, IntroHints, FileStatus, FileStatusTip } from '../../utils';
 
 import './index.scss';
 
@@ -123,21 +123,17 @@ export default observer((props: any) => {
                   </TableCell>
                   <TableCell>
                     <Tooltip
-                      title={
-                        file.status === 'published'
-                          ? '文章已显示在聚合站上'
-                          : '未上链的文章不会显示在聚合站上'
-                      }
+                      title={FileStatusTip[file.status]}
                       placement="right"
                     >
-                      <span className={file.status === 'published' ? 'published' : 'pending'}>
-                        {file.status === 'published' ? '已上链' : '正在上链...'}
+                      <span className={file.status}>
+                        {FileStatus[file.status]}
                       </span>
                     </Tooltip>
                   </TableCell>
                   <TableCell>{ago(file.updatedAt)}</TableCell>
                   <TableCell>
-                    {file.status === 'published' ? (
+                    {file.status !== 'pending' ? (
                       <Button
                         className="edit-button"
                         size="small"

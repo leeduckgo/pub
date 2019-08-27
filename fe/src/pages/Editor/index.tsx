@@ -74,28 +74,13 @@ export default observer((props: any) => {
     props.history.push('/dashboard');
   };
 
-  const handlePublish = async () => {
-    try {
-      if (file.title && file.content) {
-        id ? await Api.updateFile(file) : await Api.createFile(file);
-        store.snackbar.open(
-          '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
-          8000,
-        );
-      }
-      props.history.push('/dashboard');
-    } catch (err) {
-      store.snackbar.open(err.message, 2000, 'error');
-    }
-  };
-
   const [isSaving, setIsSaving] = React.useState(false);
 
   const handleSave = async () => {
     try {
       if (file.title && file.content) {
         setIsSaving(true);
-        const res = file.hasOwnProperty('id') ? await Api.updateFile(file) : await Api.saveDraft(file);
+        const res = file.hasOwnProperty('id') ? await Api.updateFile(file) : await Api.createDraft(file);
         res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
         store.snackbar.open('保存草稿成功', 2000);
       }
@@ -103,6 +88,26 @@ export default observer((props: any) => {
       store.snackbar.open(err.message, 2000, 'error');
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const [isPublishing, setIsPublishing] = React.useState(false);
+
+  const handlePublish = async () => {
+    try {
+      if (file.title && file.content) {
+        setIsPublishing(true);
+        id ? await Api.updateFile(file, true) : await Api.createFile(file);
+        store.snackbar.open(
+          '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
+          8000,
+        );
+        setIsPublishing(false);
+        props.history.push('/dashboard');
+      }
+    } catch (err) {
+      setIsPublishing(false);
+      store.snackbar.open(err.message, 2000, 'error');
     }
   };
 
@@ -126,6 +131,7 @@ export default observer((props: any) => {
         <div onClick={handlePublish}>
           <nav className="p-editor-save-publish flex v-center">
             发布上链
+            <ButtonProgress isDoing={isPublishing} />
           </nav>
         </div>
       </div>
