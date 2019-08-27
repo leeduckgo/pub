@@ -7,7 +7,7 @@ import { Menu, MenuItem, TableRow, TableCell, Tooltip } from '@material-ui/core'
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Settings from '@material-ui/icons/Settings';
 import CreateIcon from '@material-ui/icons/Create';
 
 import Api from '../../api';
@@ -58,7 +58,9 @@ export default observer((props: any) => {
           <span className={`po-semibold ${file.status}`}>{FileStatus[file.status]}</span>
         </Tooltip>
       </TableCell>
-      <TableCell>{ago(file.updatedAt)}</TableCell>
+      <TableCell>
+        <span className="gray-color">{ago(file.updatedAt)}</span>
+      </TableCell>
       <TableCell>
         {file.status !== 'pending' ? (
           <IconButton
@@ -99,7 +101,7 @@ export default observer((props: any) => {
           aria-haspopup="true"
           onClick={handleMenuClick}
         >
-          <MoreVertIcon className="po-text-20" />
+          <Settings className="po-text-20" />
         </IconButton>
         <Menu
           id="dashboard-post-menu"
