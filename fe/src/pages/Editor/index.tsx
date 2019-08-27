@@ -107,7 +107,12 @@ export default observer((props: any) => {
     try {
       if (file.title && file.content) {
         setIsPublishing(true);
-        id ? await Api.updateFile(file, true) : await Api.createFile(file);
+        id
+          ? await Api.updateFile(file, true)
+          : await Api.createFile({
+              title: file.title,
+              content: file.content,
+            });
         store.snackbar.open(
           '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
           8000,
