@@ -5,32 +5,34 @@ export default {
     return request('/api/user');
   },
   getFiles() {
-    return request('/api/files')
+    return request('/api/files');
   },
   createDraft(file: any) {
     const path = '/api/files?type=DRAFT';
     file.mimeType = file.mimeType || 'text/markdown';
-    const payload = { payload: file }
+    const payload = { payload: file };
     return request(path, {
       method: 'POST',
-      body: payload
+      body: payload,
     });
   },
   createFile(file: any) {
     const path = '/api/files';
     delete file.id;
     file.mimeType = file.mimeType || 'text/markdown';
-    const payload = { payload: file }
+    const payload = { payload: file };
     return request(path, {
       method: 'POST',
-      body: payload
+      body: payload,
     });
   },
   getFile(id: any) {
-    return request(`/api/files/${id}`)
+    return request(`/api/files/${id}`);
   },
   updateFile(file: any, publish?: boolean) {
-    const path = publish ? `/api/files/${file.id}?action=PUBLISH` : `/api/files/${file.id}`;
+    const isDraft = file.status === 'draft';
+    const path =
+      isDraft && publish ? `/api/files/${file.id}?action=PUBLISH` : `/api/files/${file.id}`;
     delete file.id;
     delete file.userId;
     delete file.msghash;
@@ -38,15 +40,15 @@ export default {
     delete file.updatedAt;
     delete file.status;
     file.mimeType = file.mimeType || 'text/markdown';
-    const payload = { payload: file }
+    const payload = { payload: file };
     return request(path, {
       method: 'PUT',
-      body: payload
+      body: payload,
     });
   },
   deleteFile(id: any) {
     return request(`/api/files/${id}`, {
-      method: 'DELETE'
-    })
+      method: 'DELETE',
+    });
   },
 };
