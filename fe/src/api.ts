@@ -7,7 +7,7 @@ export default {
   getFiles() {
     return request('/api/files')
   },
-  saveDraft(file: any) {
+  createDraft(file: any) {
     const path = '/api/files?type=DRAFT';
     file.mimeType = file.mimeType || 'text/markdown';
     const payload = { payload: file }
@@ -29,8 +29,8 @@ export default {
   getFile(id: any) {
     return request(`/api/files/${id}`)
   },
-  updateFile(file: any) {
-    const path = `/api/files/${file.id}`;
+  updateFile(file: any, publish?: boolean) {
+    const path = publish ? `/api/files/${file.id}?action=PUBLISH` : `/api/files/${file.id}`;
     delete file.id;
     delete file.userId;
     delete file.msghash;
