@@ -84,7 +84,6 @@ const handleOauthCallback = async (ctx, next, provider) => {
 
 const tryCreateUser = async (ctx, user, provider) => {
   const profile = providerGetter[provider](user);
-  console.log(` ------------- profile ---------------`, profile);
   const isNewUser = !await Profile.isExist(profile.id, {
     provider,
   });

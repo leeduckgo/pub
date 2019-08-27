@@ -15,8 +15,7 @@ const Profile = sequelize.define('profiles', {
     type: Sequelize.STRING
   },
   providerId: {
-    type: Sequelize.BIGINT,
-    unique: true
+    type: Sequelize.BIGINT
   },
   name: {
     type: Sequelize.STRING
@@ -25,14 +24,17 @@ const Profile = sequelize.define('profiles', {
     type: Sequelize.STRING
   },
   bio: {
-    type: Sequelize.STRING
+    type: Sequelize.STRING,
+    allowNull: true,
   },
   raw: {
     type: Sequelize.TEXT,
     allowNull: true
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  charset: 'utf8',
+  collate: 'utf8_general_ci'
 });
 
 Profile.sync();

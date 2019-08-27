@@ -42,6 +42,8 @@ const Block = sequelize.define('blocks', {
   }
 }, {
   timestamps: true,
+  charset: 'utf8',
+  collate: 'utf8_general_ci'
 });
 
 Block.sync();

@@ -36,7 +36,9 @@ const File = sequelize.define('files', {
     defaultValue: false
   }
 }, {
-  timestamps: true
+  timestamps: true,
+  charset: 'utf8',
+  collate: 'utf8_general_ci'
 });
 
 File.sync();

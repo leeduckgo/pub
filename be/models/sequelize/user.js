@@ -24,7 +24,9 @@ const User = sequelize.define('users', {
     type: Sequelize.TEXT
   },
 }, {
-  timestamps: true
+  timestamps: true,
+  charset: 'utf8',
+  collate: 'utf8_general_ci'
 });
 
 User.sync();
