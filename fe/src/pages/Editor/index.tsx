@@ -3,13 +3,15 @@ import { observer } from 'mobx-react-lite';
 import SimpleMDE from 'react-simplemde-editor';
 import ButtonProgress from '../../components/ButtonProgress';
 
-import { Button,
-         Dialog,
-         DialogContent,
-         DialogContentText,
-         DialogActions,
-         DialogTitle,
-         Input } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  DialogTitle,
+  Input,
+} from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
 import { useStore } from '../../store';
@@ -40,7 +42,7 @@ export default observer((props: any) => {
           let file = await Api.getFile(id);
           setFile(file);
         }
-      } catch(err) {
+      } catch (err) {
         store.snackbar.open(err.message, 2000, 'error');
       }
     })();
@@ -86,7 +88,9 @@ export default observer((props: any) => {
     try {
       if (file.title && file.content) {
         setIsSaving(true);
-        const res = file.hasOwnProperty('id') ? await Api.updateFile(file) : await Api.createDraft(file);
+        const res = file.hasOwnProperty('id')
+          ? await Api.updateFile(file)
+          : await Api.createDraft(file);
         res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
         store.snackbar.open('保存草稿成功', 2000);
       }
@@ -122,11 +126,11 @@ export default observer((props: any) => {
 
   const handleClickOpen = () => {
     setOpen(true);
-  }
+  };
 
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   return (
     <div className="p-editor flex h-center po-fade-in">
@@ -141,14 +145,12 @@ export default observer((props: any) => {
         <div onClick={handleSave}>
           <nav className="p-editor-save-draft flex v-center">
             保存草稿
-            <ButtonProgress isDoing={isSaving} />
+            <ButtonProgress isDoing={isSaving} color="blue-button-color" />
           </nav>
         </div>
 
         <div onClick={handleClickOpen}>
-          <nav className="p-editor-save-publish flex v-center">
-            发布上链
-          </nav>
+          <nav className="p-editor-save-publish flex v-center">发布上链</nav>
         </div>
       </div>
 
@@ -176,7 +178,7 @@ export default observer((props: any) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{"文章即将发布..."}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{'文章即将发布...'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             点击确认确定之后，文章将发布到区块链上
@@ -186,9 +188,9 @@ export default observer((props: any) => {
           <Button className="cancel-publish" onClick={handleClose} color="primary">
             我需要再改一下
           </Button>
-          <Button className="confirm-publish"  onClick={handlePublish} color="primary" autoFocus>
+          <Button className="confirm-publish" onClick={handlePublish} color="primary" autoFocus>
             确认发布
-            <ButtonProgress isDoing={isPublishing} />
+            <ButtonProgress isDoing={isPublishing} color="blue-button-color" />
           </Button>
         </DialogActions>
       </Dialog>

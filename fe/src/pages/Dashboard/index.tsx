@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
-import ButtonProgress from '../../components/ButtonProgress';
 import Loading from '../../components/Loading';
 
 import {
@@ -14,20 +13,19 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  Tooltip,
   MenuList,
 } from '@material-ui/core';
 
 import CreateIcon from '@material-ui/icons/Create';
-import HomeIcon from '@material-ui/icons/Home';
-import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 
 import Api from '../../api';
 
 import { useStore } from '../../store';
 
-import { ago, Endpoint, IntroHints, FileStatus, FileStatusTip } from '../../utils';
+import { Endpoint, IntroHints } from '../../utils';
+
+import PostEntry from './postEntry';
 
 import './index.scss';
 
@@ -66,7 +64,7 @@ export default observer((props: any) => {
           });
         }
         IntroHints.init(hints);
-      } catch(err) {
+      } catch (err) {
         store.snackbar.open(err.message, 2000, 'error');
       }
     })();
@@ -82,23 +80,6 @@ export default observer((props: any) => {
 
   const handleClose = () => {
     setAnchorEl(null);
-  };
-
-  const editFile = (fileId: number) => {
-    props.history.push(`/editor?id=${fileId}`);
-  };
-
-  const deleteFile = (file: any, idx: number) => {
-    (async () => {
-      try {
-        await Api.deleteFile(file.id);
-        store.files.files.splice(idx, 1);
-        store.files.setFiles([...store.files.files]);
-      } catch(err) {
-        store.files.updateFile({ ...file, delete: false}, idx);
-        store.snackbar.open(err.message, 2000, 'error');
-      }
-    })();
   };
 
   const renderPosts = (files: any) => {
@@ -117,86 +98,7 @@ export default observer((props: any) => {
 
             <TableBody>
               {files.map((file: any, idx: number) => (
-                <TableRow key={file.id}>
-                  <TableCell component="th" scope="row">
-                    {file.title}
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip
-                      title={FileStatusTip[file.status]}
-                      placement="right"
-                    >
-                      <span className={file.status}>
-                        {FileStatus[file.status]}
-                      </span>
-                    </Tooltip>
-                  </TableCell>
-                  <TableCell>{ago(file.updatedAt)}</TableCell>
-                  <TableCell>
-                    {file.status !== 'pending' ? (
-                      <Button
-                        className="edit-button"
-                        size="small"
-                        variant="contained"
-                        onClick={e => {
-                          e.stopPropagation();
-                          editFile(+file.id);
-                        }}
-                      >
-                        <CreateIcon />
-                        编辑
-                      </Button>
-                    ) : (
-                      <Tooltip title="文章上链成功之后，才能编辑" placement="right">
-                        <span>
-                          <Button
-                            className="edit-button"
-                            disabled
-                            size="small"
-                            variant="contained"
-                            onClick={e => {
-                              e.stopPropagation();
-                              editFile(+file.id);
-                            }}
-                          >
-                            <CreateIcon />
-                            编辑
-                          </Button>
-                        </span>
-                      </Tooltip>
-                    )}
-                    {file.status === 'published' ? (
-                      <Tooltip title="查看显示在聚合站上的文章" placement="right">
-                        <Button
-                          className="redirect-button"
-                          size="small"
-                          variant="contained"
-                          onClick={e => {
-                            e.stopPropagation();
-                            console.log('去聚合站！');
-                          }}
-                        >
-                          <HomeIcon />
-                          查看文章
-                        </Button>
-                      </Tooltip>
-                    ) : null}
-                    <Button
-                      className="delete-button"
-                      size="small"
-                      variant="contained"
-                      onClick={e => {
-                        e.stopPropagation();
-                        store.files.updateFile({ ...file, delete: true}, idx);
-                        deleteFile(file, idx);
-                      }}
-                    >
-                      <DeleteIcon />
-                      删除
-                      <ButtonProgress isDoing={file.delete} />
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                <PostEntry file={file} history={props.history} key={idx} idx={idx} />
               ))}
             </TableBody>
           </Table>

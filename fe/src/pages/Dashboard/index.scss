@@ -32,6 +32,17 @@
       transition: none;
       margin: 2px 5px;
       background-color: $gray-lighter-color;
+
+      .MuiSvgIcon-root {
+        width: 14px;
+        height: 14px;
+
+        .MuiPaper-elevation1 {
+          border-radius: 5px;
+          box-shadow: 0 0 1px rgba(0, 0, 0, .12), 0 1px 6px rgba(0, 0, 0, .03), 0 6px 10px -8px rgba(0, 0, 0, .1);
+          overflow: hidden;
+        }
+      }
     }
 
     &-button {
@@ -62,6 +73,11 @@
         width: 20px !important;
         height: 20px !important;
       }
+
+      .MuiSvgIcon-root {
+        width: 14px;
+        height: 14px;
+      }
     }
   }
 
@@ -89,9 +105,9 @@
 
       span.draft {
         display: inline-block;
-        background-color: $orangey-yellow-color;
-        padding: 0 5px;
-        color: $white-color;
+        padding: 2px 5px;
+        color: #ad26b4;
+        background: rgba(173, 38, 180, .2);
         border-radius: 3px;
         min-width: 10px;
         font-size: 13px;
@@ -99,9 +115,9 @@
 
       span.pending {
         display: inline-block;
-        background-color: $gray-lighter-color1;
-        padding: 0 5px;
-        color: $white-color;
+        padding: 2px 5px;
+        background: #e5eff5;
+        color: #738a94;
         border-radius: 3px;
         min-width: 10px;
         font-size: 13px;
@@ -109,8 +125,8 @@
 
       span.published {
         display: inline-block;
+        padding: 2px 5px;
         background-color: $green-light-color;
-        padding: 0 5px;
         color: $white-color;
         border-radius: 3px;
         min-width: 10px;
@@ -144,18 +160,6 @@
 
         &:hover {
           background-color: $red-color;
-        }
-      }
-
-      .MuiSvgIcon-root {
-        width: 14px;
-        height: 14px;
-        margin-right: 2px;
-
-        .MuiPaper-elevation1 {
-          border-radius: 5px;
-          box-shadow: 0 0 1px rgba(0, 0, 0, .12), 0 1px 6px rgba(0, 0, 0, .03), 0 6px 10px -8px rgba(0, 0, 0, .1);
-          overflow: hidden;
         }
       }
 
@@ -203,5 +207,10 @@
       background: #f8fafc;
     }
   }
+}
 
+#dashboard-post-menu {
+  .MuiListItem-root {
+    min-height: auto;
+  }
 }

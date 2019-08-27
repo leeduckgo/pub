@@ -5,8 +5,11 @@ import Done from '@material-ui/icons/Done';
 import './index.scss';
 
 interface IProps {
+  size?: number;
+  color?: string;
   isDoing: boolean;
   isDone?: boolean;
+  noMargin?: boolean;
 }
 
 interface IState {
@@ -32,13 +35,17 @@ export default class ButtonProgress extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { isDoing } = this.props;
+    const { isDoing, color = 'white-color', size = 12 } = this.props;
     const { isShowDone } = this.state;
     if (isDoing) {
-      return <CircularProgress size={12} className="button-circular-progress white-color" />;
+      return (
+        <span className="button-circular-progress flex h-center v-center">
+          <CircularProgress size={size} className={`${color}`} />
+        </span>
+      );
     }
     if (isShowDone) {
-      return <Done className="white-color push-left-xs po-text-16" />;
+      return <Done className={`${color} push-left-xs po-text-16"`} />;
     }
     return null;
   }

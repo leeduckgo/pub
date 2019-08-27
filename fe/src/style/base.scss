@@ -33,10 +33,10 @@ button {
     color: $white-color !important;
   }
 
-  &.Mui-disabled {
-    color: #fff !important;
-    background-color: #999 !important;
-  }
+  // &.Mui-disabled {
+  //   color: #fff !important;
+  //   background-color: #999 !important;
+  // }
 
   &.primary {
     background-color: $green-button-color !important;
