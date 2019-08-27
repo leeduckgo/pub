@@ -3,7 +3,13 @@ import { observer } from 'mobx-react-lite';
 import SimpleMDE from 'react-simplemde-editor';
 import ButtonProgress from '../../components/ButtonProgress';
 
-import { Input } from '@material-ui/core';
+import { Button,
+         Dialog,
+         DialogContent,
+         DialogContentText,
+         DialogActions,
+         DialogTitle,
+         Input } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
 import { useStore } from '../../store';
@@ -111,6 +117,17 @@ export default observer((props: any) => {
     }
   };
 
+  // dialog
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  }
+
   return (
     <div className="p-editor flex h-center po-fade-in">
       <div onClick={handleBack}>
@@ -128,10 +145,9 @@ export default observer((props: any) => {
           </nav>
         </div>
 
-        <div onClick={handlePublish}>
+        <div onClick={handleClickOpen}>
           <nav className="p-editor-save-publish flex v-center">
             发布上链
-            <ButtonProgress isDoing={isPublishing} />
           </nav>
         </div>
       </div>
@@ -153,6 +169,29 @@ export default observer((props: any) => {
           options={config}
         />
       </main>
+      <Dialog
+        className="publish-dialog"
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"文章即将发布..."}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            点击确认确定之后，文章将发布到区块链上
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button className="cancel-publish" onClick={handleClose} color="primary">
+            我需要再改一下
+          </Button>
+          <Button className="confirm-publish"  onClick={handlePublish} color="primary" autoFocus>
+            确认发布
+            <ButtonProgress isDoing={isPublishing} />
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 });
