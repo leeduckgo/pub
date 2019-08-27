@@ -52,11 +52,12 @@ export default {
       title: "插入图片 (Cmd-⌥-I)",
     },
     '|',
-    {
-      name: "preview",
-      action: simplemde.togglePreview,
-      className: "fa fa-eye no-disable",
-      title: "预览 (Cmd-P)",
-    },
+    // {
+    //   name: "preview",
+    //   action: simplemde.togglePreview,
+    //   className: "fa fa-eye no-disable",
+    //   title: "预览 (Cmd-P)",
+    // },
+    'preview'
   ],
 };

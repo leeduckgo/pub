@@ -137,6 +137,12 @@ export default observer((props: any) => {
     setOpen(false);
   };
 
+  // previewIcon
+  React.useEffect(() => {
+    let button = document.getElementsByClassName('preview');
+    if (button[0]) button[0].setAttribute('title', '预览 (Cmd-P)');
+  });
+
   return (
     <div className="p-editor flex h-center po-fade-in">
       <div onClick={handleBack}>
