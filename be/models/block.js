@@ -63,14 +63,16 @@ exports.sync = async () => {
     log('区块没有 blockNum 或者 blockTransactionId，本次同步失败，开始尝试下一次...');
     return;
   }
-  await Block.update({
-    blockNum,
-    blockTransactionId
-  }, {
-    where: {
-      id: unSyncBlock.id
-    }
-  })
-  const file = await File.getByRId(unSyncBlock.id);
-  socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
+  setTimeout(async () => {
+    await Block.update({
+      blockNum,
+      blockTransactionId
+    }, {
+      where: {
+        id: unSyncBlock.id
+      }
+    })
+    const file = await File.getByRId(unSyncBlock.id);
+    socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
+  }, xmlRefreshDuration * 2);
 }
