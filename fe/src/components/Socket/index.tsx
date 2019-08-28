@@ -32,6 +32,7 @@ export default observer(() => {
       `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
       8000,
       'socket',
+      { rId: data.rId },
     );
   });
   socket.on('connect_error', () => {

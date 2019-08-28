@@ -48,6 +48,7 @@ export default observer((props: any) => {
     return <Slide {...props} direction="up" />;
   };
   const Icon = variantIcon[snackbar.type === 'error' ? 'error' : 'success'];
+  const { REACT_APP_MEDIUM_URL } = process.env;
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -70,7 +71,7 @@ export default observer((props: any) => {
               className="po-cp"
               key="redirect"
               onClick={() => {
-                console.log('去聚合站！');
+                window.open(`${REACT_APP_MEDIUM_URL}/${snackbar.meta.rId}`);
               }}
             >
               去看看

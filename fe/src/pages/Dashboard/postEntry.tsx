@@ -51,6 +51,7 @@ export default observer((props: any) => {
   };
 
   const { file, idx } = props;
+  const { REACT_APP_MEDIUM_URL } = process.env;
 
   return (
     <TableRow key={idx}>
@@ -87,15 +88,11 @@ export default observer((props: any) => {
         )}
         {file.status === 'published' ? (
           <Tooltip title="查看显示在聚合站上的文章" placement="top">
-            <IconButton
-              className="push-right-xs"
-              onClick={e => {
-                e.stopPropagation();
-                console.log('去聚合站！');
-              }}
-            >
-              <OpenInNewIcon />
-            </IconButton>
+            <a href={`${REACT_APP_MEDIUM_URL}/${file.rId}`}>
+              <IconButton className="push-right-xs">
+                <OpenInNewIcon />
+              </IconButton>
+            </a>
           </Tooltip>
         ) : null}
         <IconButton
