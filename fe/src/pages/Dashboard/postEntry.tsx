@@ -124,17 +124,25 @@ export default observer((props: any) => {
             },
           }}
         >
-          <MenuItem
-            className="flex v-center gray-darker-color po-text-16"
-            onClick={e => {
-              deleteFile(file, idx);
-            }}
-          >
-            <span className="flex v-center po-text-20 push-right-xs">
-              <DeleteIcon />
-            </span>
-            <span className="po-bold">删除</span>
-            <ButtonProgress color={'primary-color'} size={12} isDoing={deleting} />
+          <MenuItem>
+            <Tooltip
+              title="删除的文章大概 5 分钟之后会从聚合站消失"
+              placement="left"
+              disableHoverListener={file.status !== 'published'}
+            >
+              <div
+                className="flex v-center gray-darker-color"
+                onClick={e => {
+                  deleteFile(file, idx);
+                }}
+              >
+                <span className="flex v-center po-text-20 push-right-xs">
+                  <DeleteIcon />
+                </span>
+                <span className="po-bold">删除</span>
+                <ButtonProgress color={'primary-color'} size={12} isDoing={deleting} />
+              </div>
+            </Tooltip>
           </MenuItem>
         </Menu>
       </TableCell>
