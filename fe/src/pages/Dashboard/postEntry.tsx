@@ -59,7 +59,7 @@ export default observer((props: any) => {
         <div className="po-bold title">{file.title}</div>
       </TableCell>
       <TableCell>
-        <Tooltip title={FileStatusTip[file.status]} placement="right">
+        <Tooltip title={FileStatusTip[file.status]} placement="top">
           <span className={`po-semibold ${file.status}`}>{FileStatus[file.status]}</span>
         </Tooltip>
       </TableCell>
