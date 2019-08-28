@@ -51,7 +51,7 @@ export default observer((props: any) => {
   return (
     <TableRow key={idx}>
       <TableCell component="th" scope="row">
-        {file.title}
+        <div className="po-bold title">{file.title}</div>
       </TableCell>
       <TableCell>
         <Tooltip title={FileStatusTip[file.status]} placement="right">
