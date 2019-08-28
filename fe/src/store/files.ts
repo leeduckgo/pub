@@ -6,13 +6,20 @@ interface FilesStore {
   updateFile: Function;
 }
 
+const sortByUpdatedAt = (files: any) => {
+  return files.sort((f1: any, f2: any) => {
+    return new Date(f2.updatedAt).getTime() - new Date(f1.updatedAt).getTime();
+  });
+};
+
 export function createFilesStore() {
   return {
     isFetched: false,
     files: [],
     setFiles(files: any) {
       this.isFetched = true;
-      this.files = files;
+      const sortedFiles = sortByUpdatedAt(files);
+      this.files = sortedFiles;
     },
     updateFiles(file: any) {
       this.files = this.files.map(item => {
@@ -22,6 +29,6 @@ export function createFilesStore() {
     },
     updateFile(file: any, idx: number) {
       this.files[idx] = file;
-    }
+    },
   } as FilesStore;
 }
