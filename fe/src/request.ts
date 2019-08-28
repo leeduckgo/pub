@@ -17,7 +17,7 @@ export default async (url: any, options: any = {}) => {
     return resData;
   } else {
     throw Object.assign(new Error(), {
-      status: resData.status,
+      status: res.status,
       message: resData.message,
     });
   }
