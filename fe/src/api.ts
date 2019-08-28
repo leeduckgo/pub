@@ -18,7 +18,6 @@ export default {
   },
   createFile(file: any) {
     const path = '/api/files';
-    delete file.id;
     file.mimeType = file.mimeType || 'text/markdown';
     const payload = { payload: file };
     return request(path, {
@@ -29,16 +28,8 @@ export default {
   getFile(id: any) {
     return request(`/api/files/${id}`);
   },
-  updateFile(file: any, publish?: boolean) {
-    const isDraft = file.status === 'draft';
-    const path =
-      isDraft && publish ? `/api/files/${file.id}?action=PUBLISH` : `/api/files/${file.id}`;
-    delete file.id;
-    delete file.userId;
-    delete file.msghash;
-    delete file.createdAt;
-    delete file.updatedAt;
-    delete file.status;
+  updateFile(id: number | undefined, file: any, publish?: boolean) {
+    const path = publish ? `/api/files/${id}?action=PUBLISH` : `/api/files/${id}`;
     file.mimeType = file.mimeType || 'text/markdown';
     const payload = { payload: file };
     return request(path, {

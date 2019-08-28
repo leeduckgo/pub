@@ -22,6 +22,13 @@ import config from './config';
 import 'easymde/dist/easymde.min.css';
 import './index.scss';
 
+interface File {
+  title: string,
+  content: string,
+  status?: string,
+  id?: number,
+}
+
 export default observer((props: any) => {
   const store = useStore();
 
@@ -31,7 +38,7 @@ export default observer((props: any) => {
     }, 0);
   }
 
-  const [file, setFile] = React.useState({ title: '', content: '' });
+  const [file, setFile] = React.useState({ title: '', content: '' } as File);
 
   let id = getQueryObject().id;
 
@@ -88,9 +95,13 @@ export default observer((props: any) => {
     try {
       if (file.title && file.content) {
         setIsSaving(true);
+        let param: File = {
+          title: file.title,
+          content: file.content
+        }
         const res = file.hasOwnProperty('id')
-          ? await Api.updateFile(file)
-          : await Api.createDraft(file);
+          ? await Api.updateFile(file.id, param)
+          : await Api.createDraft(param);
         res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
       }
     } catch (err) {
@@ -112,12 +123,13 @@ export default observer((props: any) => {
     try {
       if (file.title && file.content) {
         setIsPublishing(true);
-        id
-          ? await Api.updateFile(file, true)
-          : await Api.createFile({
-              title: file.title,
-              content: file.content,
-            });
+        let param: File = {
+          title: file.title,
+          content: file.content,
+        };
+        file.id
+          ? await Api.updateFile(file.id, param, file.status === 'draft')
+          : await Api.createFile(param);
         store.snackbar.open(
           '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
           8000,
