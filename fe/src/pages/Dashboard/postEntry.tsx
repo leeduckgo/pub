@@ -20,6 +20,7 @@ export default observer((props: any) => {
   const store = useStore();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [deleting, setDeleting] = React.useState(false);
 
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -36,12 +37,15 @@ export default observer((props: any) => {
   const deleteFile = (file: any, idx: number) => {
     (async () => {
       try {
+        setDeleting(true);
         await Api.deleteFile(file.id);
         store.files.files.splice(idx, 1);
         store.files.setFiles([...store.files.files]);
+        handleMenuClose();
       } catch (err) {
         store.files.updateFile({ ...file, delete: false }, idx);
         store.snackbar.open('删除内容失败', 2000, 'error');
+        setDeleting(false);
       }
     })();
   };
@@ -126,7 +130,6 @@ export default observer((props: any) => {
           <MenuItem
             className="flex v-center gray-darker-color po-text-16"
             onClick={e => {
-              store.files.updateFile({ ...file, delete: true }, idx);
               deleteFile(file, idx);
             }}
           >
@@ -134,7 +137,7 @@ export default observer((props: any) => {
               <DeleteIcon />
             </span>
             <span className="po-bold">删除</span>
-            <ButtonProgress color={'primary-color'} size={12} isDoing={file.delete} />
+            <ButtonProgress color={'primary-color'} size={12} isDoing={deleting} />
           </MenuItem>
         </Menu>
       </TableCell>
