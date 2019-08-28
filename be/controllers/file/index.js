@@ -16,6 +16,7 @@ const getFrontMatter = (user, title) => {
 title: ${title}
 author: ${user.name}
 avatar: ${user.avatar}
+published: ${new Date().toISOString()}
 ---\n`;
 }
 
