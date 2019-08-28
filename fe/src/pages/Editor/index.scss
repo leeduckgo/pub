@@ -52,7 +52,8 @@
       cursor: pointer;
       font-size: 13px;
       border-right: 1px solid $gray-lighter-color2;
-      > div {
+
+      >div {
         color: $blue-color !important;
       }
     }
@@ -80,7 +81,6 @@
     }
 
     .CodeMirror {
-      background: $gray-lighter-color;
       font-size: 16px;
       padding: 16px;
       line-height: 1.8;
@@ -108,16 +108,18 @@
 
   .MuiDialogActions-root {
     padding: 16px 24px;
+
     .cancel-publish {
       .MuiButton-label {
-        color: $black-color!important;
+        color: $black-color !important;
       }
     }
-    
+
     .confirm-publish {
       .MuiButton-label {
-        color: $blue-color!important;
-        > div {
+        color: $blue-color !important;
+
+        >div {
           color: $blue-color !important;
         }
       }
