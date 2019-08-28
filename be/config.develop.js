@@ -100,9 +100,7 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   sentryDsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9',
 
-  boxTopic: '6d318BE3657FBc0515a0ab4945c21Be0f17D935f',
-
-  xmlRefreshDuration: 1000 * 60
+  boxTopic: '6d318BE3657FBc0515a0ab4945c21Be0f17D935f'
 };
 
 module.exports = config;
