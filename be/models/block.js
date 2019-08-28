@@ -72,7 +72,7 @@ exports.sync = async () => {
     }
   })
   const file = await File.getByRId(unSyncBlock.id);
-  setTimeout(async () => {
+  setTimeout(() => {
     socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
   }, xmlRefreshDuration * 2);
 }

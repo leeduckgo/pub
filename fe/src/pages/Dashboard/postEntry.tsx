@@ -88,7 +88,7 @@ export default observer((props: any) => {
         )}
         {file.status === 'published' ? (
           <Tooltip title="查看显示在聚合站上的文章" placement="top">
-            <a href={`${REACT_APP_MEDIUM_URL}/${file.rId}`}>
+            <a href={`${REACT_APP_MEDIUM_URL}/${file.rId}`} target="_blank">
               <IconButton className="push-right-xs">
                 <OpenInNewIcon />
               </IconButton>
