@@ -18,7 +18,6 @@ exports.get = async id => {
   return block ? block.toJSON() : null;
 };
 
-
 const log = (message) => {
   console.log(`【同步区块】: ${message}`)
 }
@@ -27,6 +26,24 @@ exports.create = async (block) => {
   const dbBlock = await Block.create(block);
   return dbBlock.toJSON();
 }
+
+exports.update = async (id, data) => {
+  assert(id, Errors.ERR_IS_REQUIRED('id'));
+  assert(data, Errors.ERR_IS_REQUIRED('data'));
+  assert(data.blockNum, Errors.ERR_IS_REQUIRED('blockNum'));
+  assert(data.blockTransactionId, Errors.ERR_IS_REQUIRED('blockTransactionId'));
+  const dbBlock = await Block.update({
+    blockNum: data.blockNum,
+    blockTransactionId: data.blockTransactionId
+  }, {
+    where: {
+      id
+    }
+  });
+  const file = await File.getByRId(id);
+  socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
+  return dbBlock ? dbBlock.toJSON() : null;
+};
 
 const getBlock = (rId) => {
   return request({

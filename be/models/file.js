@@ -208,11 +208,6 @@ exports.getByRId = async (rId, options = {}) => {
   if (!file) {
     return null
   }
-  const {
-    withRawContent
-  } = options;
-  const derivedFile = await packFile(file, {
-    withRawContent
-  });
+  const derivedFile = await packFile(file);
   return derivedFile;
 };

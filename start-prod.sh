@@ -1,1 +1,1 @@
-cd fe && yarn server & ./start-be.sh & ./start-queue.sh
+cd fe && yarn server & ./start-be.sh

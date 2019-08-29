@@ -16,8 +16,8 @@ export default observer(() => {
   if (!user.isFetched || !user.isLogin) {
     return null;
   }
-  const { REACT_APP_SOCKET_ENDPOINT } = process.env;
-  const socket = io(String(REACT_APP_SOCKET_ENDPOINT));
+  const { REACT_APP_API_ENDPOINT } = process.env;
+  const socket = io(String(REACT_APP_API_ENDPOINT));
   socket.on('connect', () => {
     log('connect', '连接成功');
     socket.emit('authenticate', user.id);
@@ -26,16 +26,14 @@ export default observer(() => {
     log('authenticate', data);
   });
   socket.on('file_published', (data: any) => {
-    setTimeout(() => {
-      log('file_published', data);
-      files.updateFiles(data);
-      snackbar.open(
-        `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
-        8000,
-        'socket',
-        { rId: data.rId },
-      );
-    }, 1000 * 60 * 2);
+    log('file_published', data);
+    files.updateFiles(data);
+    snackbar.open(
+      `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
+      8000,
+      'socket',
+      { rId: data.rId },
+    );
   });
   socket.on('connect_error', () => {
     console.error('Socket 连接失败, 请检查队列服务是否启动？');
