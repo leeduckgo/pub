@@ -31,6 +31,7 @@ const packFile = async (file, options = {}) => {
     const block = await Block.get(rId);
     const status = getStatusByBlock(block);
     fileJson.status = status;
+    fileJson.block = block;
   }
   const {
     withRawContent

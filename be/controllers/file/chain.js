@@ -48,9 +48,9 @@ const getPayload = ({
   topic,
 }, options = {}) => {
 
-  assert(file, Errors.ERR_IS_REQUIRED(file));
-  assert(user, Errors.ERR_IS_REQUIRED(user));
-  assert(topic, Errors.ERR_IS_REQUIRED(topic));
+  assert(file, Errors.ERR_IS_REQUIRED('file'));
+  assert(user, Errors.ERR_IS_REQUIRED('user'));
+  assert(topic, Errors.ERR_IS_REQUIRED('topic'));
 
   const data = {
     file_hash: file.msghash,
@@ -61,12 +61,13 @@ const getPayload = ({
     updatedFile
   } = options;
   if (updatedFile) {
+    assert(updatedFile.block, Errors.ERR_IS_REQUIRED('updatedFile.block'));
     const {
       blockTransactionId,
       blockNum
-    } = updatedFile;
-    assert(blockTransactionId, Errors.ERR_IS_REQUIRED(blockTransactionId));
-    assert(blockNum, Errors.ERR_IS_REQUIRED(blockNum));
+    } = updatedFile.block;
+    assert(blockTransactionId, Errors.ERR_IS_REQUIRED('blockTransactionId'));
+    assert(blockNum, Errors.ERR_IS_REQUIRED('blockNum'));
     data.updated_file_id = `${blockTransactionId}@${blockNum}`;
   }
 
@@ -99,11 +100,16 @@ exports.push = async (file, options = {}) => {
   const user = await User.get(file.userId, {
     withKeys: true
   });
+  const {
+    updatedFile
+  } = options;
   const payload = getPayload({
     file,
     user,
     topic: config.boxTopic,
-  }, options);
+  }, {
+    updatedFile
+  });
   const block = await signBlock(payload);
   assert(block, Errors.ERR_NOT_FOUND('block'));
   const packedBlock = packBlock(block);
