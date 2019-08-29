@@ -21,10 +21,10 @@ const Profile = sequelize.define('profiles', {
     type: Sequelize.STRING
   },
   avatar: {
-    type: Sequelize.STRING
+    type: Sequelize.TEXT,
   },
   bio: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: true,
   },
   raw: {
