@@ -27,15 +27,13 @@ export default observer(() => {
   });
   socket.on('file_published', (data: any) => {
     log('file_published', data);
-    setTimeout(() => {
-      files.updateFiles(data);
-      snackbar.open(
-        `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
-        8000,
-        'socket',
-        { rId: data.rId },
-      );
-    }, 1000 * 60);
+    files.updateFiles(data);
+    snackbar.open(
+      `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
+      8000,
+      'socket',
+      { rId: data.rId },
+    );
   });
   socket.on('connect_error', () => {
     console.error('Socket 连接失败, 请检查队列服务是否启动？');
