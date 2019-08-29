@@ -52,6 +52,8 @@ export default observer((props: any) => {
 
   const { file, idx } = props;
   const { REACT_APP_MEDIUM_URL } = process.env;
+  const isPending = file.status === 'pending';
+  const isPublished = file.status === 'published';
 
   return (
     <TableRow key={idx}>
@@ -67,26 +69,21 @@ export default observer((props: any) => {
         <span className="gray-color">{ago(file.updatedAt)}</span>
       </TableCell>
       <TableCell>
-        {file.status !== 'pending' ? (
-          <IconButton
-            className="push-right-xs"
-            onClick={e => {
-              e.stopPropagation();
-              editFile(+file.id);
-            }}
-          >
-            <CreateIcon />
-          </IconButton>
-        ) : (
-          <Tooltip title="文章上链成功之后，才能编辑" placement="top">
-            <span className="push-right-xs">
-              <IconButton disabled>
-                <CreateIcon />
-              </IconButton>
-            </span>
-          </Tooltip>
-        )}
-        {file.status === 'published' ? (
+        <Tooltip title={isPending ? '文章上链成功之后，才能编辑' : '编辑'} placement="top">
+          <span>
+            <IconButton
+              disabled={isPending}
+              className="push-right-xs"
+              onClick={e => {
+                e.stopPropagation();
+                editFile(+file.id);
+              }}
+            >
+              <CreateIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
+        {isPublished ? (
           <Tooltip title="查看显示在聚合站上的文章" placement="top">
             <a
               href={`${REACT_APP_MEDIUM_URL}/${file.rId}`}
@@ -132,7 +129,7 @@ export default observer((props: any) => {
             <Tooltip
               title="删除的文章大概 5 分钟之后会从聚合站消失"
               placement="left"
-              disableHoverListener={file.status !== 'published'}
+              disableHoverListener={!isPublished}
             >
               <div
                 className="flex v-center gray-darker-color"
