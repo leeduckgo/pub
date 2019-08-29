@@ -32,7 +32,7 @@ exports.update = async (id, data) => {
   assert(data, Errors.ERR_IS_REQUIRED('data'));
   assert(data.blockNum, Errors.ERR_IS_REQUIRED('blockNum'));
   assert(data.blockTransactionId, Errors.ERR_IS_REQUIRED('blockTransactionId'));
-  const dbBlock = await Block.update({
+  await Block.update({
     blockNum: data.blockNum,
     blockTransactionId: data.blockTransactionId
   }, {
@@ -42,7 +42,7 @@ exports.update = async (id, data) => {
   });
   const file = await File.getByRId(id);
   socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
-  return dbBlock ? dbBlock.toJSON() : null;
+  return true;
 };
 
 const getBlock = (rId) => {
