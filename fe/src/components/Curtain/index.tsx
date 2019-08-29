@@ -1,4 +1,5 @@
 import React from 'react';
+import ComputerIcon from '@material-ui/icons/Computer';
 
 export default () => {
   return (
@@ -7,8 +8,11 @@ export default () => {
         className="page-layout user-center flex column v-center h-center"
         style={{ height: '100vh' }}
       >
-        <span className="po-text-18 headline-color">请在电脑端打开链接</span>
+        <div className="po-text-56 primary-color">
+          <ComputerIcon />
+        </div>
+        <span className="push-top-sm po-text-18 primary-color po-bold">请在电脑端打开链接</span>
       </div>
     </div>
-  )
-}
+  );
+};
