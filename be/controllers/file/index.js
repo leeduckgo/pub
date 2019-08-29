@@ -34,7 +34,7 @@ const createFile = async (user, data, options = {}) => {
   const shouldPushToChain = !isDraft;
   assert(data.title, Errors.ERR_IS_REQUIRED('title'));
   const derivedData = appendFrontMatter(user, data.title, data);
-  const file = await File.create(user.id, derivedData);
+  let file = await File.create(user.id, derivedData);
   if (shouldPushToChain) {
     const {
       updatedFile
@@ -43,10 +43,9 @@ const createFile = async (user, data, options = {}) => {
       updatedFile
     });
     const rId = block.id;
-    await File.update(file.id, {
+    file = await File.update(file.id, {
       rId
     });
-    file.rId = rId;
   }
   return file;
 }
@@ -118,10 +117,10 @@ exports.update = async ctx => {
     const newFile = await createFile(user, newFilePayload, {
       updatedFile: file
     });
-    const deletedFile = await File.delete(file.id);
+    await File.delete(file.id);
     ctx.body = {
       newFile,
-      deletedFile
+      updatedFile: file
     };
   }
 }
