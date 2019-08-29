@@ -16,10 +16,12 @@ exports.mediumCallback = async (ctx) => {
   const dbUnSyncBlock = await Block.get(block.id);
   assert(dbUnSyncBlock, Errors.ERR_NOT_FOUND('block'));
   log(`区块ID，${block.id}`);
-  await Block.update(block.id, {
-    blockNum: block.blockNum,
-    blockTransactionId: block.blockTransactionId,
-  });
+  setTimeout(async () => {
+    await Block.update(block.id, {
+      blockNum: block.blockNum,
+      blockTransactionId: block.blockTransactionId,
+    });
+  }, 1000 * 60 * 2);
   ctx.body = {
     success: true
   };
