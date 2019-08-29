@@ -36,7 +36,12 @@ const createFile = async (user, data, options = {}) => {
   const derivedData = appendFrontMatter(user, data.title, data);
   const file = await File.create(user.id, derivedData);
   if (shouldPushToChain) {
-    const block = await Chain.push(file, options);
+    const {
+      updatedFile
+    } = options;
+    const block = await Chain.push(file, {
+      updatedFile
+    });
     const rId = block.id;
     await File.update(file.id, {
       rId
