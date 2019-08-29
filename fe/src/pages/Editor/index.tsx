@@ -2,6 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import SimpleMDE from 'react-simplemde-editor';
 import ButtonProgress from '../../components/ButtonProgress';
+import Loading from '../../components/Loading';
 
 import {
   Button,
@@ -15,7 +16,7 @@ import {
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
 import { useStore } from '../../store';
-import { getQueryObject, IntroHints } from '../../utils';
+import { getQueryObject, IntroHints, sleep } from '../../utils';
 import Api from '../../api';
 import config from './config';
 
@@ -23,10 +24,10 @@ import 'easymde/dist/easymde.min.css';
 import './index.scss';
 
 interface File {
-  title: string,
-  content: string,
-  status?: string,
-  id?: number,
+  title: string;
+  content: string;
+  status?: string;
+  id?: number;
 }
 
 export default observer((props: any) => {
@@ -39,6 +40,7 @@ export default observer((props: any) => {
   }
 
   const [file, setFile] = React.useState({ title: '', content: '' } as File);
+  const [isFetching, setIsFetching] = React.useState(true);
 
   let id = getQueryObject().id;
 
@@ -52,6 +54,8 @@ export default observer((props: any) => {
       } catch (err) {
         store.snackbar.open('获取内容失败', 2000, 'error');
       }
+      await sleep(1000);
+      setIsFetching(false);
     })();
   }, [id, store.snackbar]);
 
@@ -97,8 +101,8 @@ export default observer((props: any) => {
         setIsSaving(true);
         let param: File = {
           title: file.title,
-          content: file.content
-        }
+          content: file.content,
+        };
         const res = file.hasOwnProperty('id')
           ? await Api.updateFile(file.id, param)
           : await Api.createDraft(param);
@@ -166,6 +170,30 @@ export default observer((props: any) => {
     if (button[0]) button[0].setAttribute('title', '预览 (Cmd-P)');
   });
 
+  const renderEditor = () => {
+    return (
+      <div>
+        <main className="p-editor-input-area">
+          <Input
+            autoFocus
+            fullWidth
+            required
+            placeholder="文章标题"
+            value={file.title}
+            onChange={handleTitleChange}
+          />
+
+          <SimpleMDE
+            className="p-editor-markdown push-top-sm"
+            value={file.content}
+            onChange={handleContentChange}
+            options={config}
+          />
+        </main>
+      </div>
+    );
+  };
+
   return (
     <div className="p-editor flex h-center po-fade-in">
       <div onClick={handleBack}>
@@ -188,23 +216,10 @@ export default observer((props: any) => {
         </div>
       </div>
 
-      <main className="p-editor-input-area">
-        <Input
-          autoFocus
-          fullWidth
-          required
-          placeholder="文章标题"
-          value={file.title}
-          onChange={handleTitleChange}
-        />
+      {isFetching && <Loading isPage={true} />}
 
-        <SimpleMDE
-          className="p-editor-markdown push-top-sm"
-          value={file.content}
-          onChange={handleContentChange}
-          options={config}
-        />
-      </main>
+      {!isFetching && renderEditor()}
+
       <Dialog
         className="publish-dialog"
         open={open}
