@@ -23,6 +23,7 @@ published: ${new Date().toISOString()}
 const appendFrontMatter = (user, title, file) => {
   if (file.content) {
     file.content = getFrontMatter(user, title) + file.content;
+    file.content = file.content.trim();
   }
   return file;
 }
