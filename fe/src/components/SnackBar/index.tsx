@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import clsx from 'clsx';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-import Slide from '@material-ui/core/Slide';
+// import Slide from '@material-ui/core/Slide';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import IconButton from '@material-ui/core/IconButton';
@@ -44,15 +44,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 export default observer((props: any) => {
   const { snackbar } = useStore();
   const classes = useStyles();
-  const TransitionUp = (props: any) => {
-    return <Slide {...props} direction="up" />;
-  };
+  // const TransitionUp = (props: any) => {
+  //   return <Slide {...props} direction="up" />;
+  // };
   const Icon = variantIcon[snackbar.type === 'error' ? 'error' : 'success'];
   const { REACT_APP_MEDIUM_URL } = process.env;
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      TransitionComponent={TransitionUp}
+      // TransitionComponent={TransitionUp}
       open={snackbar.isOpenning}
       autoHideDuration={snackbar.autoHideDuration}
       onClose={() => snackbar.close()}
