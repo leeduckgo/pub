@@ -20,7 +20,7 @@ published: ${new Date().toISOString()}
 ---\n`;
 }
 
-const appendFrontMatter = (user, title, file) => {
+const tryAppendFrontMatter = (user, title, file) => {
   if (file.content) {
     file.content = getFrontMatter(user, title) + file.content;
     file.content = file.content.trim();
@@ -34,7 +34,7 @@ const createFile = async (user, data, options = {}) => {
   } = options;
   const shouldPushToChain = !isDraft;
   assert(data.title, Errors.ERR_IS_REQUIRED('title'));
-  const derivedData = appendFrontMatter(user, data.title, data);
+  const derivedData = tryAppendFrontMatter(user, data.title, data);
   let file = await File.create(user.id, derivedData);
   if (shouldPushToChain) {
     const {
@@ -95,7 +95,7 @@ exports.update = async ctx => {
   } = file;
   const isDraft = !rId;
   if (isDraft) {
-    const derivedData = appendFrontMatter(user, file.title, data);
+    const derivedData = tryAppendFrontMatter(user, file.title, data);
     let updatedFile = await File.update(file.id, derivedData);
     const shouldPushToChain = ctx.query.action === 'PUBLISH';
     if (shouldPushToChain) {
@@ -114,7 +114,8 @@ exports.update = async ctx => {
       status
     } = file;
     assert(status === File.FILE_STATUS.PUBLISHED, Errors.ERR_FILE_NOT_PUBLISHED)
-    const newFilePayload = getNewFilePayload(file, data);
+    const derivedData = tryAppendFrontMatter(user, file.title, data);
+    const newFilePayload = getNewFilePayload(file, derivedData);
     const newFile = await createFile(user, newFilePayload, {
       updatedFile: file
     });
