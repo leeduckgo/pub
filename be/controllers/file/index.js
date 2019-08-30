@@ -33,7 +33,6 @@ const createFile = async (user, data, options = {}) => {
     isDraft
   } = options;
   const shouldPushToChain = !isDraft;
-  assert(data.title, Errors.ERR_IS_REQUIRED('title'));
   const derivedData = tryAppendFrontMatter(user, data.title, data);
   let file = await File.create(user.id, derivedData);
   if (shouldPushToChain) {
@@ -57,6 +56,7 @@ exports.create = async ctx => {
   } = ctx.verification;
   const data = ctx.request.body.payload;
   const isDraft = ctx.query.type === 'DRAFT';
+  assert(data, Errors.ERR_IS_REQUIRED('data'));
   const file = await createFile(user, data, {
     isDraft
   });
@@ -72,21 +72,12 @@ exports.remove = async ctx => {
   ctx.body = deletedFile;
 }
 
-const getNewFilePayload = (file, payload) => {
-  return {
-    title: file.title,
-    content: file.content,
-    mimeType: file.mimeType,
-    description: file.description,
-    ...payload
-  };
-}
-
 exports.update = async ctx => {
   const {
     user
   } = ctx.verification;
   const data = ctx.request.body.payload;
+  assert(data, Errors.ERR_IS_REQUIRED('data'));
   const id = ~~ctx.params.id;
   const file = await File.get(id);
   assert(file.userId === user.id, Errors.ERR_NO_PERMISSION);
@@ -113,10 +104,9 @@ exports.update = async ctx => {
     const {
       status
     } = file;
-    assert(status === File.FILE_STATUS.PUBLISHED, Errors.ERR_FILE_NOT_PUBLISHED)
-    const derivedData = tryAppendFrontMatter(user, file.title, data);
-    const newFilePayload = getNewFilePayload(file, derivedData);
-    const newFile = await createFile(user, newFilePayload, {
+    assert(status === File.FILE_STATUS.PUBLISHED, Errors.ERR_FILE_NOT_PUBLISHED);
+    const derivedData = tryAppendFrontMatter(user, data.title, data);
+    const newFile = await createFile(user, derivedData, {
       updatedFile: file
     });
     await File.delete(file.id);
