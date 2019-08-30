@@ -29,16 +29,33 @@ exports.oauthLogin = async ctx => {
   return authenticate[provider](ctx);
 };
 
+const hasPermission = (provider, providerId) => {
+  return config.whitelist[provider].includes(~~providerId);
+}
+
 exports.oauthCallback = async (ctx, next) => {
   const {
     provider
   } = ctx.params;
 
+  let user;
   if (provider === 'pressone') {
-    await handlePressOneCallback(ctx, provider);
+    user = await handlePressOneCallback(ctx, provider);
   } else {
-    await handleOauthCallback(ctx, next, provider);
+    user = await handleOauthCallback(ctx, next, provider);
   }
+
+  assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
+
+  const profile = providerGetter[provider](user);
+  const noPermission = !hasPermission(provider, profile.id);
+  if (noPermission) {
+    ctx.redirect(config.permissionDenyUrl);
+    return false;
+  }
+
+  await tryCreateUser(ctx, user, provider);
+
   ctx.redirect(ctx.session.auth.redirect);
 }
 
@@ -54,8 +71,7 @@ const handlePressOneCallback = async (ctx, provider) => {
       accept: 'application/json'
     },
   }).promise();
-  assert(user, Errors.ERR_NOT_FOUND('pressone user'));
-  await tryCreateUser(ctx, user, provider);
+  return user
 }
 
 const handleOauthCallback = async (ctx, next, provider) => {
@@ -79,7 +95,7 @@ const handleOauthCallback = async (ctx, next, provider) => {
   const {
     user
   } = ctx.session.passport;
-  await tryCreateUser(ctx, user, provider);
+  return user;
 }
 
 const tryCreateUser = async (ctx, user, provider) => {
