@@ -105,8 +105,7 @@ exports.update = async ctx => {
       status
     } = file;
     assert(status === File.FILE_STATUS.PUBLISHED, Errors.ERR_FILE_NOT_PUBLISHED);
-    const derivedData = tryAppendFrontMatter(user, data.title, data);
-    const newFile = await createFile(user, derivedData, {
+    const newFile = await createFile(user, data, {
       updatedFile: file
     });
     await File.delete(file.id);
