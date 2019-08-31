@@ -204,7 +204,7 @@ exports.getByMsghash = async (msghash, options = {}) => {
   return derivedFile;
 };
 
-exports.getByRId = async (rId, options = {}) => {
+exports.getByRId = async (rId) => {
   assert(rId, Errors.ERR_IS_REQUIRED('rId'));
   const file = await File.findOne({
     where: {
