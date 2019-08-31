@@ -33,6 +33,8 @@ const packFile = async (file, options = {}) => {
     fileJson.status = status;
     fileJson.block = block;
   }
+  console.log(` ------------- read content ---------------`, fileJson.content);
+  fileJson.content = fileJson.content.toString('utf8');
   const {
     withRawContent
   } = options;
@@ -91,6 +93,8 @@ exports.create = async (userId, data) => {
   const msghash = prsUtil.keccak256(data.content);
   const maybeExistedFile = await exports.getByMsghash(msghash);
   assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
+  data.content = Buffer.from(data.content, 'utf8');
+  console.log(` ------------- create content ---------------`, data.content);
   const payload = {
     ...data,
     userId,
@@ -155,6 +159,8 @@ exports.update = async (id, data) => {
     const msghash = prsUtil.keccak256(data.content);
     const maybeExistedFile = await exports.getByMsghash(msghash);
     assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
+    data.content = Buffer.from(data.content, 'utf8');
+    console.log(` ------------- update content ---------------`, data.content);
   }
   await File.update(data, {
     where: {
