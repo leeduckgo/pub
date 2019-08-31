@@ -7,8 +7,10 @@ const {
   assert,
   Errors
 } = require('../models/validator');
-const Profile = require('../models/profile')
-const Token = require('../models/token')
+const Profile = require('../models/profile');
+const Token = require('../models/token');
+const User = require('../models/user');
+const Chain = require('./chain');
 
 const providers = ['pressone', 'github', 'mixin'];
 
@@ -29,16 +31,33 @@ exports.oauthLogin = async ctx => {
   return authenticate[provider](ctx);
 };
 
+const hasPermission = (provider, providerId) => {
+  return config.whitelist[provider].includes(~~providerId);
+}
+
 exports.oauthCallback = async (ctx, next) => {
   const {
     provider
   } = ctx.params;
 
+  let user;
   if (provider === 'pressone') {
-    await handlePressOneCallback(ctx, provider);
+    user = await handlePressOneCallback(ctx, provider);
   } else {
-    await handleOauthCallback(ctx, next, provider);
+    user = await handleOauthCallback(ctx, next, provider);
   }
+
+  assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
+
+  const profile = providerGetter[provider](user);
+  const noPermission = !hasPermission(provider, profile.id);
+  if (noPermission) {
+    ctx.redirect(config.permissionDenyUrl);
+    return false;
+  }
+
+  await tryCreateUser(ctx, user, provider);
+
   ctx.redirect(ctx.session.auth.redirect);
 }
 
@@ -54,8 +73,7 @@ const handlePressOneCallback = async (ctx, provider) => {
       accept: 'application/json'
     },
   }).promise();
-  assert(user, Errors.ERR_NOT_FOUND('pressone user'));
-  await tryCreateUser(ctx, user, provider);
+  return user
 }
 
 const handleOauthCallback = async (ctx, next, provider) => {
@@ -79,7 +97,7 @@ const handleOauthCallback = async (ctx, next, provider) => {
   const {
     user
   } = ctx.session.passport;
-  await tryCreateUser(ctx, user, provider);
+  return user;
 }
 
 const tryCreateUser = async (ctx, user, provider) => {
@@ -92,13 +110,25 @@ const tryCreateUser = async (ctx, user, provider) => {
     insertedProfile = await Profile.createProfile(profile, {
       provider
     });
+
+    // 暂时只给 mixin 登陆的账号授权，其他账号可以用来测试【无授权】的情况
+    if (provider === 'mixin') {
+      const insertedUser = await User.get(insertedProfile.userId);
+      await Chain.pushTopic({
+        userAddress: insertedUser.address,
+        topicAddress: config.boxTopicAddress
+      });
+      console.log(` ------------- allow 区块已提交 ---------------`);
+    }
   } else {
     insertedProfile = await Profile.get(profile.id);
   }
+
   const token = await Token.create({
     userId: insertedProfile.userId,
     providerId: insertedProfile.providerId
   });
+
   ctx.cookies.set(
     config.authTokenKey,
     token, {

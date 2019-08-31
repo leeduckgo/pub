@@ -100,7 +100,18 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   sentryDsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9',
 
-  boxTopic: '6d318BE3657FBc0515a0ab4945c21Be0f17D935f'
+  boxTopicAddress: '53c8d8cc3498e0f43a8025db4026e06af1ff63b9',
+
+  permissionDenyUrl: 'http://localhost:4201/permissionDeny',
+
+  whitelist: {
+    mixin: [
+      1095057
+    ],
+    github: [
+      8716838
+    ]
+  }
 };
 
 module.exports = config;

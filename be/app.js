@@ -21,6 +21,7 @@ const user = require('./routes/user');
 const auth = require('./routes/auth');
 const logout = require('./routes/logout');
 const file = require('./routes/file');
+const topic = require('./routes/topic');
 const storage = require('./routes/storage');
 const ping = require('./routes/ping');
 const webhook = require('./routes/webhook');
@@ -55,6 +56,7 @@ router.use('/api/user', ensureAuthorization(), user.routes(), user.allowedMethod
 router.use('/api/auth', auth.routes(), auth.allowedMethods());
 router.use('/api/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
 router.use('/api/files', file.routes(), file.allowedMethods());
+router.use('/api/topics', topic.routes(), topic.allowedMethods());
 router.use('/api/storage', storage.routes(), storage.allowedMethods());
 router.use('/api/ping', ping.routes(), ping.allowedMethods());
 router.use('/api/webhook', webhook.routes(), webhook.allowedMethods());

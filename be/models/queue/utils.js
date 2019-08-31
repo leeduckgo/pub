@@ -1,7 +1,7 @@
 const Queue = require('bull');
 const config = require('../../config');
 
-exports.createQueue = (name, options) => {
+exports.createQueue = (name, options = {}) => {
   options = {
     redis: {
       port: config.redis.port,

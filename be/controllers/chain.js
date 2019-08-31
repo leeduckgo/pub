@@ -1,15 +1,16 @@
 const request = require('request-promise');
 const {
   mimeTypes
-} = require('../../utils')
-const config = require('../../config');
-const User = require('../../models/user');
+} = require('../utils')
+const config = require('../config');
+const User = require('../models/user');
 const PrsUtil = require('prs-utility');
 const {
   assert,
   Errors
-} = require('../../models/validator');
-const Block = require('../../models/block');
+} = require('../models/validator');
+const Block = require('../models/block');
+const Topic = require('../models/topic');
 
 const SIGN_URL = `${config.prsEndpoint}/api/v2/datasign`;
 
@@ -42,7 +43,7 @@ const getFileUrl = file => {
   return `${config.serviceRoot}/api/storage/${name}.${postfix}`;
 }
 
-const getPayload = ({
+const getFilePayload = ({
   file,
   user,
   topic,
@@ -85,6 +86,26 @@ const getPayload = ({
   return payload;
 }
 
+const getTopicPayload = (options = {}) => {
+  const {
+    userAddress,
+    topic
+  } = options;
+  const data = {
+    allow: userAddress,
+    topic: topic.address
+  }
+  const payload = {
+    user_address: topic.address,
+    type: 'PIP:2001',
+    meta: [],
+    data,
+    hash: PrsUtil.hashBlockData(data),
+    signature: PrsUtil.signBlockData(data, topic.privateKey).signature
+  };
+  return payload;
+}
+
 const packBlock = block => {
   const result = {};
   delete block['createdAt'];
@@ -96,19 +117,40 @@ const packBlock = block => {
   return result;
 }
 
-exports.push = async (file, options = {}) => {
+exports.pushFile = async (file, options = {}) => {
   const user = await User.get(file.userId, {
     withKeys: true
   });
   const {
     updatedFile
   } = options;
-  const payload = getPayload({
+  const payload = getFilePayload({
     file,
     user,
     topic: config.boxTopic,
   }, {
     updatedFile
+  });
+  const block = await signBlock(payload);
+  assert(block, Errors.ERR_NOT_FOUND('block'));
+  const packedBlock = packBlock(block);
+  const dbBlock = await Block.create(packedBlock);
+  return dbBlock;
+}
+
+exports.pushTopic = async (options = {}) => {
+  const {
+    userAddress,
+    topicAddress
+  } = options;
+  assert(userAddress, Errors.ERR_IS_REQUIRED('userAddress'));
+  assert(topicAddress, Errors.ERR_IS_REQUIRED('topicAddress'));
+  const topic = await Topic.getByAddress(topicAddress, {
+    withKeys: true
+  });
+  const payload = getTopicPayload({
+    userAddress,
+    topic
   });
   const block = await signBlock(payload);
   assert(block, Errors.ERR_NOT_FOUND('block'));
