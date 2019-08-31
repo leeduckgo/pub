@@ -107,6 +107,17 @@ export default observer((props: any) => {
           ? await Api.updateFile(file.id, param)
           : await Api.createDraft(param);
         res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
+      } else {
+        if (file.title) store.snackbar.open(
+          '内容不能为空',
+          2000,
+          'error'
+        );
+        else store.snackbar.open(
+          '标题不能为空',
+          2000,
+          'error'
+        );
       }
     } catch (err) {
       store.snackbar.open(
@@ -140,6 +151,17 @@ export default observer((props: any) => {
         );
         setIsPublishing(false);
         props.history.push('/dashboard');
+      } else {
+        if (file.title) store.snackbar.open(
+          '内容不能为空',
+          2000,
+          'error'
+        );
+        else store.snackbar.open(
+          '标题不能为空',
+          2000,
+          'error'
+        );
       }
     } catch (err) {
       setIsPublishing(false);
@@ -230,7 +252,7 @@ export default observer((props: any) => {
         <DialogTitle id="alert-dialog-title">{'文章即将发布...'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <div className="po-text-16">点击确认发布之后，文章将发布到区块链上</div>
+            <span className="po-text-16">点击确认发布之后，文章将发布到区块链上</span>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
