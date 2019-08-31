@@ -3,7 +3,7 @@ const {
   assert,
   Errors
 } = require('../../models/validator')
-const Chain = require('./chain');
+const Chain = require('../chain');
 
 exports.list = async ctx => {
   const userId = ctx.verification.user.id;
@@ -39,7 +39,7 @@ const createFile = async (user, data, options = {}) => {
     const {
       updatedFile
     } = options;
-    const block = await Chain.push(file, {
+    const block = await Chain.pushFile(file, {
       updatedFile
     });
     const rId = block.id;
@@ -90,7 +90,7 @@ exports.update = async ctx => {
     let updatedFile = await File.update(file.id, derivedData);
     const shouldPushToChain = ctx.query.action === 'PUBLISH';
     if (shouldPushToChain) {
-      const block = await Chain.push(updatedFile);
+      const block = await Chain.pushFile(updatedFile);
       const rId = block.id;
       await File.update(updatedFile.id, {
         rId

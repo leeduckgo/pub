@@ -2,12 +2,10 @@ require('should');
 const config = require('../../config');
 const api = require('../api');
 
-const generateName = () => 'test_topic' + new Date().getTime();
+const generateName = () => 'test_topic_' + new Date().getTime();
 
 it('can not create file when missing name', () => {
-  const topic = {
-    name: generateName(),
-  };
+  const topic = {};
   return api.post(`/api/topics`)
     .send({
       payload: topic
@@ -18,7 +16,7 @@ it('can not create file when missing name', () => {
 
 it('create topic', () => {
   const topic = {
-    name: generateContent(),
+    name: generateName(),
   };
   return api.post(`/api/topics`)
     .send({

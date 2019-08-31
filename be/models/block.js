@@ -7,6 +7,8 @@ const {
   Errors
 } = require('../models/validator');
 const request = require('request-promise');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.get = async id => {
   assert(id, Errors.ERR_IS_REQUIRED('id'));
@@ -59,7 +61,10 @@ exports.sync = async () => {
   const dbUnSyncBlock = await Block.findOne({
     where: {
       blockNum: null,
-      blockTransactionId: null
+      blockTransactionId: null,
+      data: {
+        [Op.like]: `%"allow":%`
+      }
     }
   });
   if (!dbUnSyncBlock) {
@@ -88,6 +93,4 @@ exports.sync = async () => {
       id: unSyncBlock.id
     }
   })
-  const file = await File.getByRId(unSyncBlock.id);
-  socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
 }

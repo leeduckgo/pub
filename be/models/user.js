@@ -29,7 +29,6 @@ const packProfile = profile => ({
   bio: profile.bio,
 })
 
-
 const generateKey = () => {
   const {
     privateKey,
@@ -75,7 +74,7 @@ exports.create = async (data) => {
   return packUser(user.toJSON());
 }
 
-exports.get = async (id, options) => {
+exports.get = async (id, options = {}) => {
   const [user, profile] = await Promise.all([
     User.findOne({
       where: {

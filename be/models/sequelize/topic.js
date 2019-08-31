@@ -9,6 +9,9 @@ const Topic = sequelize.define('topics', {
   },
   userId: {
     type: Sequelize.BIGINT,
+  },
+  name: {
+    type: Sequelize.STRING,
     unique: true
   },
   address: {
