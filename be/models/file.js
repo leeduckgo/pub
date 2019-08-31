@@ -93,6 +93,8 @@ exports.create = async (userId, data) => {
   const msghash = prsUtil.keccak256(data.content);
   const maybeExistedFile = await exports.getByMsghash(msghash);
   assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
+  console.log(` ------------- create raw content ---------------`);
+  console.log(data.content);
   data.content = Buffer.from(data.content, 'utf8');
   console.log(` ------------- create content ---------------`, data.content);
   const payload = {
@@ -155,14 +157,20 @@ exports.update = async (id, data) => {
   verifyData(data, {
     isUpdating: true
   });
+  const payload = data;
   if (data.content) {
     const msghash = prsUtil.keccak256(data.content);
     const maybeExistedFile = await exports.getByMsghash(msghash);
     assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
+    console.log(` ------------- update raw content ---------------`);
+    console.log(data.content);
     data.content = Buffer.from(data.content, 'utf8');
     console.log(` ------------- update content ---------------`, data.content);
+    console.log(` ------------- update msghash ---------------`, msghash);
+    payload.msghash = msghash;
   }
-  await File.update(data, {
+
+  await File.update(payload, {
     where: {
       id,
       deleted: false

@@ -86,7 +86,7 @@ exports.update = async ctx => {
   } = file;
   const isDraft = !rId;
   if (isDraft) {
-    const derivedData = tryAppendFrontMatter(user, file.title, data);
+    const derivedData = tryAppendFrontMatter(user, data.title || file.title, data);
     let updatedFile = await File.update(file.id, derivedData);
     const shouldPushToChain = ctx.query.action === 'PUBLISH';
     if (shouldPushToChain) {
