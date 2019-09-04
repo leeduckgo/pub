@@ -23,6 +23,8 @@ import config from './config';
 import 'easymde/dist/easymde.min.css';
 import './index.scss';
 
+const MAX_CONTENT_LENGTH = 20000;
+
 interface File {
   title: string;
   content: string;
@@ -98,6 +100,10 @@ export default observer((props: any) => {
   const handleSave = async () => {
     try {
       if (file.title && file.content) {
+        if (file.content.length > MAX_CONTENT_LENGTH) {
+          store.snackbar.open('内容最多 2 万字', 2000, 'error');
+          return;
+        }
         setIsSaving(true);
         let param: File = {
           title: file.title,
@@ -187,6 +193,9 @@ export default observer((props: any) => {
             placeholder="文章标题"
             value={file.title}
             onChange={handleTitleChange}
+            inputProps={{
+              maxLength: 100,
+            }}
           />
 
           <SimpleMDE
