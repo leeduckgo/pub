@@ -194,7 +194,7 @@ export default observer((props: any) => {
             value={file.title}
             onChange={handleTitleChange}
             inputProps={{
-              maxLength: 100,
+              maxLength: 30,
             }}
           />
 
