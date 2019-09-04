@@ -14,6 +14,8 @@ const Chain = require('./chain');
 
 const providers = ['pressone', 'github', 'mixin'];
 
+const DEFAULT_AVATAR = 'https://static.press.one/pub/avatar.png';
+
 exports.oauthLogin = async ctx => {
   const {
     authenticate
@@ -142,7 +144,7 @@ const providerGetter = {
     return {
       id: user._json.id,
       name: user.username,
-      avatar: user._json.avatar_url,
+      avatar: user._json.avatar_url || DEFAULT_AVATAR,
       bio: user._json.bio,
       raw: user._raw,
     };
@@ -152,7 +154,7 @@ const providerGetter = {
     return {
       id: user._json.identity_number,
       name: user._json.full_name,
-      avatar: user._json.avatar_url,
+      avatar: user._json.avatar_url || DEFAULT_AVATAR,
       bio: '',
       raw: JSON.stringify(user._json)
     }
@@ -162,7 +164,7 @@ const providerGetter = {
     return {
       id: user.id,
       name: user.name,
-      avatar: user.avatar,
+      avatar: user.avatar || DEFAULT_AVATAR,
       bio: user.bio,
       raw: JSON.stringify(user)
     }
