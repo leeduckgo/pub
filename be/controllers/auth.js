@@ -33,8 +33,37 @@ exports.oauthLogin = async ctx => {
   return authenticate[provider](ctx);
 };
 
-const hasPermission = (provider, providerId) => {
-  return config.whitelist[provider].includes(~~providerId);
+const checkPermission = async (provider, profile) => {
+  const providerId = profile.id;
+  const isInWhiteList = config.whitelist[provider].includes(~~providerId);
+  if (isInWhiteList) {
+    return true;
+  }
+  const hasProviderPermission = await providerPermissionChecker[provider](profile);
+  return hasProviderPermission;
+}
+
+const providerPermissionChecker = {
+  mixin: async profile => {
+    const rawJson = JSON.parse(profile.raw);
+    const IsInMixinBoxGroup = await checkIsInMixinBoxGroup(rawJson.user_id);
+    return IsInMixinBoxGroup;
+  }
+};
+
+const checkIsInMixinBoxGroup = async mixinUuid => {
+  try {
+    await request({
+      uri: `https://xiaolai-ri-openapi.groups.xue.cn/v1/users/${mixinUuid}`,
+      json: true,
+      headers: {
+        Authorization: `Bearer e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+      },
+    }).promise();
+    return true;
+  } catch (err) {
+    return false;
+  }
 }
 
 exports.oauthCallback = async (ctx, next) => {
@@ -52,7 +81,8 @@ exports.oauthCallback = async (ctx, next) => {
   assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
 
   const profile = providerGetter[provider](user);
-  const noPermission = !hasPermission(provider, profile.id);
+  const hasPermission = await checkPermission(provider, profile);
+  const noPermission = !hasPermission;
   if (noPermission) {
     ctx.redirect(config.permissionDenyUrl);
     return false;
@@ -170,3 +200,4 @@ const providerGetter = {
     }
   }
 }
+
