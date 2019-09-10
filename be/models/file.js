@@ -5,6 +5,7 @@ const {
 const prsUtil = require('prs-utility');
 const File = require('./sequelize/file');
 const Block = require('./block');
+const config = require('../config');
 
 const FILE_STATUS = {
   DRAFT: 'draft',
@@ -33,7 +34,6 @@ const packFile = async (file, options = {}) => {
     fileJson.status = status;
     fileJson.block = block;
   }
-  console.log(` ------------- read content ---------------`, fileJson.content);
   fileJson.content = fileJson.content.toString('utf8');
   const {
     withRawContent
@@ -93,14 +93,12 @@ exports.create = async (userId, data) => {
   const msghash = prsUtil.keccak256(data.content);
   const maybeExistedFile = await exports.getByMsghash(msghash);
   assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
-  console.log(` ------------- create raw content ---------------`);
-  console.log(data.content);
   data.content = Buffer.from(data.content, 'utf8');
-  console.log(` ------------- create content ---------------`, data.content);
   const payload = {
     ...data,
     userId,
-    msghash
+    msghash,
+    topicAddress: config.settings.topicAddress
   };
   const file = await File.create(payload);
   const derivedFile = await packFile(file);
@@ -112,7 +110,8 @@ exports.list = async (userId) => {
   const files = await File.findAll({
     where: {
       userId,
-      deleted: false
+      deleted: false,
+      topicAddress: config.settings.topicAddress
     }
   });
   const list = await Promise.all(
