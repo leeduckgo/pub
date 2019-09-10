@@ -1,6 +1,6 @@
 export default {
   getApi: () => {
-    const { REACT_APP_API_ENDPOINT } = process.env;
-    return REACT_APP_API_ENDPOINT || window.location.origin;
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    return isDevelopment ? 'http://localhost:8097' : window.location.origin;
   },
 };

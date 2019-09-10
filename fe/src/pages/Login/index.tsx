@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Tooltip } from '@material-ui/core';
 import Mood from '@material-ui/icons/Mood';
 import Loading from '../../components/Loading';
+import { Endpoint } from '../../utils';
 import { useStore } from '../../store';
 
 import './index.scss';
@@ -18,8 +19,7 @@ export default observer((props: any) => {
   };
 
   const getLoginUrl = (provider: string) => {
-    const { REACT_APP_API_ENDPOINT, REACT_APP_CLIENT_ENDPOINT } = process.env;
-    return `${REACT_APP_API_ENDPOINT}/api/auth/${provider}/login?redirect=${REACT_APP_CLIENT_ENDPOINT}/dashboard`;
+    return `${Endpoint.getApi()}/api/auth/${provider}/login?redirect=${window.location.origin}/dashboard`;
   };
 
   if (user.isFetched && user.isLogin) {

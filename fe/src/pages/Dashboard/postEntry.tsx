@@ -51,7 +51,7 @@ export default observer((props: any) => {
   };
 
   const { file, idx } = props;
-  const { REACT_APP_MEDIUM_URL } = process.env;
+  const { postsEndpoint } = store.settings.settings;
   const isPending = file.status === 'pending';
   const isPublished = file.status === 'published';
 
@@ -86,7 +86,7 @@ export default observer((props: any) => {
         {isPublished ? (
           <Tooltip title="查看显示在聚合站上的文章" placement="top">
             <a
-              href={`${REACT_APP_MEDIUM_URL}/${file.rId}`}
+              href={`${postsEndpoint}/${file.rId}`}
               target="_blank"
               rel="noopener noreferrer"
             >

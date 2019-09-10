@@ -42,13 +42,13 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default observer((props: any) => {
-  const { snackbar } = useStore();
+  const { snackbar, settings } = useStore();
   const classes = useStyles();
   // const TransitionUp = (props: any) => {
   //   return <Slide {...props} direction="up" />;
   // };
   const Icon = variantIcon[snackbar.type === 'error' ? 'error' : 'success'];
-  const { REACT_APP_MEDIUM_URL } = process.env;
+  const { postsEndpoint } = settings.settings;
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
@@ -71,7 +71,7 @@ export default observer((props: any) => {
               className="po-cp"
               key="redirect"
               onClick={() => {
-                window.open(`${REACT_APP_MEDIUM_URL}/${snackbar.meta.rId}`);
+                window.open(`${postsEndpoint}/${snackbar.meta.rId}`);
               }}
             >
               去看看

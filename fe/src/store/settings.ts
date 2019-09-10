@@ -1,4 +1,7 @@
 interface Settings {
+  postsEndpoint: string;
+  slogan: string;
+  authProviders: string[];
   topicAddress: string,
   denyText: string,
   denyActionText: string,
@@ -14,6 +17,9 @@ interface SettingsStore {
 export function createSettingsStore() {
   return {
     settings: {
+      postsEndpoint: '',
+      slogan: '',
+      authProviders: [],
       topicAddress: '',
       denyText: '',
       denyActionText: '',

@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import io from 'socket.io-client';
+import { Endpoint } from '../../utils';
 import { useStore } from '../../store';
 
 const log = (event: string, data: any) => {
@@ -16,8 +17,7 @@ export default observer(() => {
   if (!user.isFetched || !user.isLogin) {
     return null;
   }
-  const { REACT_APP_API_ENDPOINT } = process.env;
-  const socket = io(String(REACT_APP_API_ENDPOINT));
+  const socket = io(String(Endpoint.getApi()));
   socket.on('connect', () => {
     log('connect', '连接成功');
     socket.emit('authenticate', user.id);
