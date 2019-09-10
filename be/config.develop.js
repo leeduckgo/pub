@@ -101,8 +101,16 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
   sentryDsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9',
 
   permissionDenyUrl: 'http://localhost:4201/permissionDeny',
-  
+
+  whitelist: {
+    mixin: [
+      1095057
+    ],
+    github: []
+  },
+
   settings: {
+    title: 'BOX 定投践行社群写作工具 | 自学网',
     postsEndpoint: 'http://localhost:4008',
     slogan: '分享你的定投笔记',
     authProviders: ['mixin'],
@@ -110,13 +118,6 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
     denyText: '您需要加入【BOX 定投践行群】才能使用这个写作工具',
     denyActionText: '如何加入？',
     denyActionLink: 'https://support.exinone.com/hc/zh-cn/articles/360032511651-关于加入-BOX-定投践行群-的说明'
-  },
-
-  whitelist: {
-    mixin: [
-      1095057
-    ],
-    github: []
   },
   
   boxGroupToken: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',

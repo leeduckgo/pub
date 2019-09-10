@@ -14,6 +14,7 @@ export default function Preload() {
       try {
         const settings = await Api.fetchSettings();
         store.settings.setSettings(settings);
+        document.title = settings.title;
       } catch (err) {}
       store.user.setIsFetched();
     })();

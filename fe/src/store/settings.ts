@@ -1,4 +1,5 @@
 interface Settings {
+  title: string;
   postsEndpoint: string;
   slogan: string;
   authProviders: string[];
@@ -17,6 +18,7 @@ interface SettingsStore {
 export function createSettingsStore() {
   return {
     settings: {
+      title: '',
       postsEndpoint: '',
       slogan: '',
       authProviders: [],
