@@ -103,6 +103,7 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
   permissionDenyUrl: 'http://localhost:4201/permissionDeny',
   
   settings: {
+    postsEndpoint: 'http://localhost:4008',
     slogan: '分享你的定投笔记',
     authProviders: ['mixin'],
     topicAddress: '53c8d8cc3498e0f43a8025db4026e06af1ff63b9',
