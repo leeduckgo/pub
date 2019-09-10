@@ -100,18 +100,29 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   sentryDsn: 'https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9',
 
-  boxTopicAddress: '53c8d8cc3498e0f43a8025db4026e06af1ff63b9',
-
   permissionDenyUrl: 'http://localhost:4201/permissionDeny',
+  
+  settings: {
+    slogan: '分享你的定投笔记',
+    authProviders: ['mixin'],
+    topicAddress: '53c8d8cc3498e0f43a8025db4026e06af1ff63b9',
+    denyText: '您需要加入【BOX 定投践行群】才能使用这个写作工具',
+    denyActionText: '如何加入？',
+    denyActionLink: 'https://support.exinone.com/hc/zh-cn/articles/360032511651-关于加入-BOX-定投践行群-的说明'
+  },
 
   whitelist: {
     mixin: [
       1095057
     ],
-    github: [
-      8716838
-    ]
-  }
+    github: []
+  },
+  
+  boxGroupToken: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
+
+  xueUserExtraApi: 'https://dev.prsdev.club/hub/api/users-extra',
+
+  xueAdminToken: '06d60bd1df9d5bd240b19c37313f822fd996b61912099e4d843fc0a29caf5895b997e93bbdbe1835359acb8a45f67e07c04d953794784f8ff7a2fd1a4b0103cd'
 };
 
 module.exports = config;
