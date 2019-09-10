@@ -34,8 +34,9 @@ interface File {
 
 export default observer((props: any) => {
   const store = useStore();
+  const { user } = store;
 
-  if (store.user.isFetched && !store.user.isLogin) {
+  if (user.isFetched && !user.isLogin) {
     setTimeout(() => {
       props.history.push('/login');
     }, 0);
@@ -53,9 +54,7 @@ export default observer((props: any) => {
           let file = await Api.getFile(id);
           setFile(file);
         }
-      } catch (err) {
-        store.snackbar.open('获取内容失败', 2000, 'error');
-      }
+      } catch (err) {}
       await sleep(1000);
       setIsFetching(false);
     })();

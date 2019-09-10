@@ -31,12 +31,13 @@ import './index.scss';
 
 export default observer((props: any) => {
   const store = useStore();
+  const { user } = store;
 
   const logout = () => {
     window.location.href = `${Endpoint.getApi()}/api/logout?from=${window.location.origin}/login`;
   };
 
-  if (store.user.isFetched && !store.user.isLogin) {
+  if (user.isFetched && !user.isLogin) {
     setTimeout(() => {
       props.history.push('/login');
     }, 0);
@@ -65,9 +66,7 @@ export default observer((props: any) => {
           });
         }
         IntroHints.init(hints);
-      } catch (err) {
-        store.snackbar.open('获取内容列表失败', 2000, 'error');
-      }
+      } catch (err) {}
     })();
 
     return () => {
@@ -129,16 +128,16 @@ export default observer((props: any) => {
           </ul>
         </section>
 
-        {store.user.isLogin && (
+        {user.isLogin && (
           <Button
             className="p-dashboard-nav-button flex"
             aria-controls="dashboard-menu"
             aria-haspopup="true"
             onClick={handleClick}
           >
-            <img className="p-dashboard-nav-img" src={store.user.avatar} width="34" alt="头像" />
+            <img className="p-dashboard-nav-img" src={user.avatar} width="34" alt="头像" />
             <div className="p-dashboard-nav-info flex v-center po-text-14">
-              <span className="p-dashboard-nav-info-name dark-color">{store.user.name}</span>
+              <span className="p-dashboard-nav-info-name dark-color">{user.name}</span>
             </div>
             <div className="flex v-center">
               <ExpandLess className="p-dashboard-nav-info-icon dark-color" />
@@ -146,7 +145,7 @@ export default observer((props: any) => {
           </Button>
         )}
 
-        {store.user.isLogin && (
+        {user.isLogin && (
           <Popover
             id="dashboard-menu"
             className="p-dashboard-popover"
