@@ -57,6 +57,17 @@ const getBlock = (rId) => {
   }).promise();
 }
 
+exports.getAllowBlockByAddress = async address => {
+  const block = await Block.findOne({
+    where: {
+      data: {
+        [Op.like]: `%"allow":"${address}"%`
+      }
+    }
+  });
+  return block.toJSON();
+}
+
 exports.sync = async () => {
   const dbUnSyncBlock = await Block.findOne({
     where: {
