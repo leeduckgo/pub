@@ -48,7 +48,11 @@ const providerPermissionChecker = {
     const rawJson = JSON.parse(profile.raw);
     const IsInMixinBoxGroup = await checkIsInMixinBoxGroup(rawJson.user_id);
     return IsInMixinBoxGroup;
-  }
+  },
+  github: async profile => {
+    const isPaidUserOfXue = await checkIsPaidUserOfXue(profile.name);
+    return isPaidUserOfXue;
+  },
 };
 
 const checkIsInMixinBoxGroup = async mixinUuid => {
@@ -57,10 +61,26 @@ const checkIsInMixinBoxGroup = async mixinUuid => {
       uri: `https://xiaolai-ri-openapi.groups.xue.cn/v1/users/${mixinUuid}`,
       json: true,
       headers: {
-        Authorization: `Bearer e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+        Authorization: `Bearer ${config.boxGroupToken}`
       },
     }).promise();
     return true;
+  } catch (err) {
+    return false;
+  }
+}
+
+const checkIsPaidUserOfXue = async githubNickName => {
+  try {
+    const user = await request({
+      uri: `${config.xueUserExtraApi}/${githubNickName}`,
+      json: true,
+      headers: {
+        'x-po-auth-token': config.xueAdminToken
+      },
+    }).promise();
+    const isPaidUser = user.balance > 0;
+    return isPaidUser;
   } catch (err) {
     return false;
   }
