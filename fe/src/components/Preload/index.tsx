@@ -11,6 +11,10 @@ export default function Preload() {
         const user = await Api.fetchUser();
         store.user.setUser(user);
       } catch (err) {}
+      try {
+        const settings = await Api.fetchSettings();
+        store.settings.setSettings(settings);
+      } catch (err) {}
       store.user.setIsFetched();
     })();
   }, [store]);

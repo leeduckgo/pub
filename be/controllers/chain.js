@@ -127,7 +127,7 @@ exports.pushFile = async (file, options = {}) => {
   const payload = getFilePayload({
     file,
     user,
-    topic: config.boxTopicAddress,
+    topic: config.settings.topicAddress,
   }, {
     updatedFile
   });

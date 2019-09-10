@@ -42,4 +42,7 @@ export default {
       method: 'DELETE',
     });
   },
+  fetchSettings() {
+    return request(`/api/settings`);
+  }
 };

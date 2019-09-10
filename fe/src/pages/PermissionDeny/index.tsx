@@ -1,7 +1,15 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import BlockIcon from '@material-ui/icons/Block';
+import { useStore } from '../../store';
 
-export default () => {
+export default observer(() => {
+  const store = useStore();
+
+  if (!store.settings.isFetched) {
+    return null;
+  }
+
   return (
     <div className="page-layout-wrapper bg-page-bg">
       <div
@@ -12,15 +20,15 @@ export default () => {
           <BlockIcon />
         </div>
         <span className="push-top-sm po-text-18 primary-color po-bold">
-          您需要加入【BOX 定投践行群】才能使用这个写作工具
+          {store.settings.settings.denyText}
         </span>
         <a
           className="push-top po-bold"
-          href="https://support.exinone.com/hc/zh-cn/articles/360032511651-关于加入-BOX-定投践行群-的说明"
+          href={store.settings.settings.denyActionLink}
         >
-          如何加入？
+          {store.settings.settings.denyActionText}
         </a>
       </div>
     </div>
   );
-};
+});

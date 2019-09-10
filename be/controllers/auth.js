@@ -148,7 +148,7 @@ const tryCreateUser = async (ctx, user, provider) => {
       const insertedUser = await User.get(insertedProfile.userId);
       await Chain.pushTopic({
         userAddress: insertedUser.address,
-        topicAddress: config.boxTopicAddress
+        topicAddress: config.settings.topicAddress
       });
       console.log(` ------------- allow 区块已提交 ---------------`);
     }

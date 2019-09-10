@@ -4,6 +4,7 @@ import { useLocalStore } from 'mobx-react-lite';
 import { createUserStore } from './user';
 import { createFilesStore } from './files';
 import { createSnackbarStore } from './snackbar';
+import { createSettingsStore } from './settings';
 
 const storeContext = React.createContext<any>(null);
 
@@ -16,6 +17,7 @@ export const StoreProvider = ({ children }: IProps) => {
     user: useLocalStore(createUserStore),
     files: useLocalStore(createFilesStore),
     snackbar: useLocalStore(createSnackbarStore),
+    settings: useLocalStore(createSettingsStore),
   };
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };
