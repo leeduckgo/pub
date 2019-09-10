@@ -106,7 +106,7 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
     postsEndpoint: 'http://localhost:4008',
     slogan: '分享你的定投笔记',
     authProviders: ['mixin'],
-    topicAddress: '53c8d8cc3498e0f43a8025db4026e06af1ff63b9',
+    topicAddress: '982c3165cd167532a9924d048fec0a7eda9ad2a0',
     denyText: '您需要加入【BOX 定投践行群】才能使用这个写作工具',
     denyActionText: '如何加入？',
     denyActionLink: 'https://support.exinone.com/hc/zh-cn/articles/360032511651-关于加入-BOX-定投践行群-的说明'
