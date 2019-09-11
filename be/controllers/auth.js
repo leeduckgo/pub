@@ -169,13 +169,14 @@ const tryCreateUser = async (ctx, user, provider) => {
 
   // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况
   const isProduction = config.env === 'production';
-  if (isProduction && ['mixin', 'github'].includes(provider)) {
+  const { topicAddress } = config.settings;
+  if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
     const insertedUser = await User.get(insertedProfile.userId);
     const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
     if (!allowBlock) {
       await Chain.pushTopic({
         userAddress: insertedUser.address,
-        topicAddress: config.settings.topicAddress
+        topicAddress
       });
       console.log(` ------------- allow 区块已提交 ---------------`);
     }
