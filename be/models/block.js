@@ -65,7 +65,7 @@ exports.getAllowBlockByAddress = async address => {
       }
     }
   });
-  return block.toJSON();
+  return block ? block.toJSON() : null;
 }
 
 exports.sync = async () => {
