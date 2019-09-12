@@ -35,27 +35,26 @@
 
     &-publish {
       box-sizing: border-box;
-      height: 45px;
+      height: 40px;
       margin-top: 25px;
-      padding: 0 25px;
-      color: $blue-color;
+      padding: 0 20px;
+      background: $primary-color;
+      color: $white-color;
+      border-radius: 5px;
       cursor: pointer;
-      font-size: 13px;
+      font-weight: bold;
     }
 
     &-draft {
       box-sizing: border-box;
-      height: 45px;
+      height: 40px;
       margin-top: 25px;
-      padding-right: 25px;
-      color: $blue-color;
+      padding: 0 20px;
+      color: $primary-color;
       cursor: pointer;
-      font-size: 13px;
-      border-right: 1px solid $gray-lighter-color2;
-
-      >div {
-        color: $blue-color !important;
-      }
+      border: 1px solid $primary-color;
+      border-radius: 5px;
+      font-weight: bold;
     }
   }
 
@@ -110,19 +109,19 @@
     padding: 16px 24px;
 
     .cancel-publish {
-      .MuiButton-label {
-        color: $black-color !important;
-      }
+      height: 40px;
+      line-height: 40px;
     }
 
     .confirm-publish {
-      .MuiButton-label {
-        color: $blue-color !important;
-
-        >div {
-          color: $blue-color !important;
-        }
-      }
+      box-sizing: border-box;
+      height: 40px;
+      padding: 0 20px;
+      background: $primary-color;
+      color: $white-color;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
     }
   }
 }

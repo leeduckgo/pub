@@ -222,9 +222,9 @@ export default observer((props: any) => {
       <div className="p-editor-save">
         {!isPublished && (
           <div onClick={handleSave}>
-            <nav className="p-editor-save-draft flex v-center">
+            <nav className="p-editor-save-draft flex v-center push-right">
               保存草稿
-              <ButtonProgress isDoing={isSaving} isDone={!isSaving} color="blue-color" />
+              <ButtonProgress isDoing={isSaving} isDone={!isSaving} color="link-color" />
             </nav>
           </div>
         )}
@@ -252,13 +252,13 @@ export default observer((props: any) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button className="cancel-publish" onClick={handleClose} color="primary">
+          <a className="cancel-publish link-color push-right" onClick={handleClose}>
             我需要再改一下
-          </Button>
-          <Button className="confirm-publish" onClick={handlePublish} color="primary" autoFocus>
+          </a>
+          <div className="confirm-publish flex v-center" onClick={handlePublish}>
             确认发布
-            <ButtonProgress isDoing={isPublishing} color="blue-color" />
-          </Button>
+            <ButtonProgress isDoing={isPublishing} color="white-color" />
+          </div>
         </DialogActions>
       </Dialog>
     </div>

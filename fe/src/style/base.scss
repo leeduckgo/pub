@@ -10,7 +10,7 @@ html {
 
 /************************************** BODY STYLES **************************************/
 body {
-  font-family: "open_sans,Open Sans,PingFang SC,Microsoft YaHei,微软雅黑,STXihei,华文细黑,sans-serif" !important;
+  font-family: "open_sans,Open Sans,PingFang SC,Microsoft YaHei,微软雅黑,STXihei,华文细黑,Roboto,PingFang SC" !important;
   font-size: 14px;
   margin: 0;
   padding: 0;
@@ -33,11 +33,6 @@ button {
     color: $white-color !important;
   }
 
-  // &.Mui-disabled {
-  //   color: #fff !important;
-  //   background-color: #999 !important;
-  // }
-
   &.primary {
     background-color: $green-color !important;
 
@@ -48,6 +43,10 @@ button {
 
   &.blue {
     background-color: $blue-color !important;
+  }
+
+  &.MuiButton-contained {
+    box-shadow: none !important;
   }
 }
 

@@ -12,7 +12,6 @@ export default observer((props: any) => {
   const store = useStore();
   const { user, settings } = store;
   const [provider, setProvider] = React.useState('');
-  const [showTooltip, setShowTooltip] = React.useState(false);
 
   const selectProvider = (provider: string) => {
     setProvider(provider);
@@ -26,10 +25,6 @@ export default observer((props: any) => {
     setTimeout(() => {
       props.history.push('/dashboard');
     }, 0);
-  } else {
-    setTimeout(() => {
-      setShowTooltip(true);
-    }, 2000);
   }
 
   if (!settings.isFetched) {
@@ -44,10 +39,8 @@ export default observer((props: any) => {
   return (
     <div className="login bg flex v-center h-center po-fade-in">
       <div className="container flex column v-center h-center po-center bg-white-color pad-xl po-width-300 po-radius-5">
-        <div className="text-center po-text-56 primary-color">
-          <Tooltip open={showTooltip} placement="top" title={'西乔，给我设计个 logo 吧～'}>
-            <Mood />
-          </Tooltip>
+        <div className="text-center po-text-56">
+          <img src="https://static.press.one/pub/logo_cn.png" width="120" />
         </div>
         <div className="dark-color text-center push-top-xs po-text-16">{settings.settings.slogan}</div>
         <div className="hr po-width-90 po-center push-top-md po-b-bb po-b-black-10"></div>
