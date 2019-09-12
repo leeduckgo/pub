@@ -20,8 +20,11 @@ pipelines:
             - docker push $IMAGE_NAME
     release:
       - step:
-          name: medium
+          name: pub
+          size: 2x
           services:
+            - docker
+          caches:
             - docker
           script:
             - ssh -tt base@base.tinfinite.com "sudo chmod 755 -R build_shortcuts && cd ./build_shortcuts && ./14_build_pub.sh"
