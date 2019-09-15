@@ -3,6 +3,9 @@ import { observer } from 'mobx-react-lite';
 import SimpleMDE from 'react-simplemde-editor';
 import ButtonProgress from '../../components/ButtonProgress';
 import Loading from '../../components/Loading';
+import ConfirmDialog from '../../components/ConfirmDialog';
+import Help from '@material-ui/icons/Help';
+import { getMarkdownCheatSheet } from './MarkdownCheatSheet';
 
 import {
   Dialog,
@@ -43,6 +46,7 @@ export default observer((props: any) => {
 
   const [file, setFile] = React.useState({ title: '', content: '' } as File);
   const [isFetching, setIsFetching] = React.useState(true);
+  const [showMdCheatSheet, setShowMdCheatSheet] = React.useState(false);
 
   let id = getQueryObject().id;
 
@@ -62,9 +66,9 @@ export default observer((props: any) => {
   React.useEffect(() => {
     const hints = [
       {
-        element: '.CodeMirror-scroll',
+        element: '.md-ref',
         hint: '支持 Markdown 语法',
-        hintPosition: 'top-left',
+        hintPosition: 'middle-middle',
       },
       {
         element: '.preview',
@@ -180,6 +184,14 @@ export default observer((props: any) => {
     if (button[0]) button[0].setAttribute('title', '预览 (Cmd-P)');
   });
 
+  const openMdCheatSheet = () => {
+    setShowMdCheatSheet(true);
+  };
+
+  const closeMdCheatSheet = () => {
+    setShowMdCheatSheet(false);
+  };
+
   const renderEditor = () => {
     return (
       <div>
@@ -201,6 +213,27 @@ export default observer((props: any) => {
             value={file.content}
             onChange={handleContentChange}
             options={config}
+          />
+
+          <div className="flex sb">
+            <div></div>
+            <div
+              className="md-ref flex v-center push-top-sm link-color po-cp"
+              onClick={openMdCheatSheet}
+            >
+              <div className="po-text-16">
+                <Help className="push-right-xs" />
+              </div>
+              Markdown 语法参考
+            </div>
+          </div>
+
+          <ConfirmDialog
+            open={showMdCheatSheet}
+            content={getMarkdownCheatSheet()}
+            okText="关闭"
+            cancel={closeMdCheatSheet}
+            ok={closeMdCheatSheet}
           />
         </main>
       </div>

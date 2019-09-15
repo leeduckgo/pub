@@ -10,18 +10,12 @@
     align-items: baseline;
   }
 
-  &.row {
-    &.end {
-      align-items: flex-end;
-    }
+  &.end {
+    justify-content: flex-end;
   }
 
   &.column {
     flex-direction: column;
-
-    &.end {
-      justify-content: flex-end;
-    }
   }
 
   &.wrap {
