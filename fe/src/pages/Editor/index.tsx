@@ -5,7 +5,6 @@ import ButtonProgress from '../../components/ButtonProgress';
 import Loading from '../../components/Loading';
 
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -252,9 +251,9 @@ export default observer((props: any) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <a className="cancel-publish link-color push-right" onClick={handleClose}>
+          <div className="cancel-publish link-color push-right po-cp" onClick={handleClose}>
             我需要再改一下
-          </a>
+          </div>
           <div className="confirm-publish flex v-center" onClick={handlePublish}>
             确认发布
             <ButtonProgress isDoing={isPublishing} color="white-color" />

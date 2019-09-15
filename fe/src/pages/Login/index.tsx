@@ -1,7 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Tooltip } from '@material-ui/core';
-import Mood from '@material-ui/icons/Mood';
 import Loading from '../../components/Loading';
 import { Endpoint } from '../../utils';
 import { useStore } from '../../store';
@@ -40,7 +39,7 @@ export default observer((props: any) => {
     <div className="login bg flex v-center h-center po-fade-in">
       <div className="container flex column v-center h-center po-center bg-white-color pad-xl po-width-300 po-radius-5">
         <div className="text-center po-text-56">
-          <img src="https://static.press.one/pub/logo_cn.png" width="120" />
+          <img src="https://static.press.one/pub/logo_cn.png" width="120" alt="fly-pub" />
         </div>
         <div className="dark-color text-center push-top-xs po-text-16">{settings.settings.slogan}</div>
         <div className="hr po-width-90 po-center push-top-md po-b-bb po-b-black-10"></div>
