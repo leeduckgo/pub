@@ -30,11 +30,15 @@ export default class ConfirmDialog extends React.Component<IProps, any> {
             )}
             <div className="push-top-md flex end border-top pad-top push-right push-left pad-bottom">
               {cancelText && cancel && (
-                <a href="" className="gray-color push-right-md" onClick={() => cancel()}>
+                <a
+                  href="javascript:;"
+                  className="gray-color push-right-md"
+                  onClick={() => cancel()}
+                >
                   {cancelText}
                 </a>
               )}
-              <a href="" className="link-color push-right" onClick={() => ok()}>
+              <a href="javascript:;" className="link-color push-right" onClick={() => ok()}>
                 {okText}
               </a>
             </div>

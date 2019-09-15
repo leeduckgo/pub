@@ -218,10 +218,10 @@ export default observer((props: any) => {
           <div className="flex sb">
             <div></div>
             <div
-              className="md-ref flex v-center push-top-sm link-color po-cp"
+              className="md-ref flex v-center push-top-sm help-color po-cp"
               onClick={openMdCheatSheet}
             >
-              <div className="po-text-16">
+              <div className="po-text-18 flex">
                 <Help className="push-right-xs" />
               </div>
               Markdown 语法参考

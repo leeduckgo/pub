@@ -39,6 +39,7 @@ $title-color: #707070;
 $accent-color: #ff687b;
 $pig-pink-color: #e27b88;
 $page-bg: #f7f7f7;
+$help-color: #77a0b2;
 
 body {
   @include colors(primary-color, $primary-color);
@@ -71,4 +72,5 @@ body {
   @include colors(accent-color, $accent-color);
   @include colors(pig-pink-color, $pig-pink-color);
   @include colors(page-bg, $page-bg);
+  @include colors(help-color, $help-color);
 }
