@@ -32,7 +32,7 @@ const IntroHints: IntroHints = {
     });
     setTimeout(() => {
       intro.addHints().onhintclose((stepId: number) => {
-        const hint = hintsPayload[stepId];
+        const hint = availableHints[stepId];
         localStorage.setItem(getStorageKey(hint), 'true');
       });
     }, 3000);
