@@ -1,9 +1,9 @@
-# cd /pressone/pub
-# git reset --hard HEAD
-# git pull
-# git checkout release
-# git clean -f -d
-# git pull
+cd /pressone/pub
+git reset --hard HEAD
+git pull
+git checkout release
+git clean -f -d
+git pull
 
 IMAGE_NAME="dh-cn.press.one/pressone/pub"
 
