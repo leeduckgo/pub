@@ -43,6 +43,7 @@ exports.update = async (id, data) => {
     }
   });
   const file = await File.getByRId(id);
+  assert(file, Errors.ERR_NOT_FOUND('file'));
   socketIo.sendToUser(file.userId, socketIo.EVENTS.FILE_PUBLISHED, file);
   return true;
 };
