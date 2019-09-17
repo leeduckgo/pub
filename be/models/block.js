@@ -72,10 +72,7 @@ exports.sync = async () => {
   const dbUnSyncBlock = await Block.findOne({
     where: {
       blockNum: null,
-      blockTransactionId: null,
-      data: {
-        [Op.like]: `%"allow":%`
-      }
+      blockTransactionId: null
     }
   });
   if (!dbUnSyncBlock) {
