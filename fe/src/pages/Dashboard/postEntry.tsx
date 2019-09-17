@@ -54,6 +54,8 @@ export default observer((props: any) => {
   const { postsEndpoint } = store.settings.settings;
   const isPending = file.status === 'pending';
   const isPublished = file.status === 'published';
+  const isDraft = file.status === 'draft';
+  const canDelete = false;
 
   return (
     <TableRow key={idx}>
@@ -69,7 +71,7 @@ export default observer((props: any) => {
         <span className="gray-color">{ago(file.updatedAt)}</span>
       </TableCell>
       <TableCell>
-        <Tooltip title={isPending ? '文章上链成功之后，才能编辑' : '编辑'} placement="top">
+        {/* <Tooltip title={isPending ? '文章上链成功之后，才能编辑' : '编辑'} placement="top">
           <span>
             <IconButton
               disabled={isPending}
@@ -82,70 +84,85 @@ export default observer((props: any) => {
               <CreateIcon />
             </IconButton>
           </span>
-        </Tooltip>
+        </Tooltip> */}
+        {isDraft && (
+          <Tooltip title="编辑" placement="top">
+            <span>
+              <IconButton
+                className="push-right-xs"
+                onClick={e => {
+                  e.stopPropagation();
+                  editFile(+file.id);
+                }}
+              >
+                <CreateIcon />
+              </IconButton>
+            </span>
+          </Tooltip>
+        )}
         {isPublished ? (
           <Tooltip title="查看显示在聚合站上的文章" placement="top">
-            <a
-              href={`${postsEndpoint}/${file.rId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <a href={`${postsEndpoint}/${file.rId}`} target="_blank" rel="noopener noreferrer">
               <IconButton className="push-right-xs">
                 <OpenInNewIcon />
               </IconButton>
             </a>
           </Tooltip>
         ) : null}
-        <IconButton
-          className="po-text-20"
-          aria-label="more"
-          aria-controls="dashboard-post-menu"
-          aria-haspopup="true"
-          onClick={handleMenuClick}
-        >
-          <Settings className="po-text-20" />
-        </IconButton>
-        <Menu
-          id="dashboard-post-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          PaperProps={{
-            style: {
-              width: 100,
-            },
-          }}
-        >
-          <MenuItem>
-            <Tooltip
-              title="删除的文章大概 5 分钟之后会从聚合站消失"
-              placement="left"
-              disableHoverListener={!isPublished}
+        {canDelete && (
+          <div>
+            <IconButton
+              className="po-text-20"
+              aria-label="more"
+              aria-controls="dashboard-post-menu"
+              aria-haspopup="true"
+              onClick={handleMenuClick}
             >
-              <div
-                className="flex v-center gray-darker-color"
-                onClick={e => {
-                  deleteFile(file, idx);
-                }}
-              >
-                <span className="flex v-center po-text-20 push-right-xs">
-                  <DeleteIcon />
-                </span>
-                <span className="po-bold">删除</span>
-                <ButtonProgress color={'primary-color'} size={12} isDoing={deleting} />
-              </div>
-            </Tooltip>
-          </MenuItem>
-        </Menu>
+              <Settings className="po-text-20" />
+            </IconButton>
+            <Menu
+              id="dashboard-post-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              PaperProps={{
+                style: {
+                  width: 100,
+                },
+              }}
+            >
+              <MenuItem>
+                <Tooltip
+                  title="删除的文章大概 5 分钟之后会从聚合站消失"
+                  placement="left"
+                  disableHoverListener={!isPublished}
+                >
+                  <div
+                    className="flex v-center gray-darker-color"
+                    onClick={e => {
+                      deleteFile(file, idx);
+                    }}
+                  >
+                    <span className="flex v-center po-text-20 push-right-xs">
+                      <DeleteIcon />
+                    </span>
+                    <span className="po-bold">删除</span>
+                    <ButtonProgress color={'primary-color'} size={12} isDoing={deleting} />
+                  </div>
+                </Tooltip>
+              </MenuItem>
+            </Menu>
+          </div>
+        )}
       </TableCell>
     </TableRow>
   );
