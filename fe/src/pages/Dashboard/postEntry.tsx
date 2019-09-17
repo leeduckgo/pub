@@ -52,7 +52,7 @@ export default observer((props: any) => {
 
   const { file, idx } = props;
   const { postsEndpoint } = store.settings.settings;
-  const isPending = file.status === 'pending';
+  // const isPending = file.status === 'pending';
   const isPublished = file.status === 'published';
   const isDraft = file.status === 'draft';
   const canDelete = false;
