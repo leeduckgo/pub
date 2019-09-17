@@ -12,3 +12,5 @@ if (process.env.NODE_ENV === 'production') {
 ReactDOM.render(<App />, document.getElementById('root'));
 
 serviceWorker.unregister();
+
+// 测试专用: 2019-09-17 11:15
