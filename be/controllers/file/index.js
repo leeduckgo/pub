@@ -3,6 +3,7 @@ const {
   assert,
   Errors
 } = require('../../models/validator')
+const Log = require('../../models/log');
 const Chain = require('../chain');
 
 exports.list = async ctx => {
@@ -46,6 +47,8 @@ const createFile = async (user, data, options = {}) => {
     file = await File.update(file.id, {
       rId
     });
+    Log.create(user.id, `创建文章 ${file.title} ，id ${file.id}`);
+    Log.create(user.id, `发布内容区块 ${block.id}`);
   }
   return file;
 }
@@ -69,6 +72,7 @@ exports.remove = async ctx => {
   const file = await File.get(id);
   assert(file.userId === userId, Errors.ERR_NO_PERMISSION);
   const deletedFile = await File.delete(id);
+  Log.create(file.userId, `删除文章 ${file.title}，id ${file.id}`);
   ctx.body = deletedFile;
 }
 
@@ -96,7 +100,9 @@ exports.update = async ctx => {
         rId
       });
       updatedFile = await File.get(updatedFile.id);
+      Log.create(file.userId, `发布内容区块 ${block.id}`);
     }
+    Log.create(file.userId, `更新文章 ${updatedFile.title}，id ${updatedFile.id}`);
     ctx.body = {
       updatedFile
     };
@@ -109,6 +115,7 @@ exports.update = async ctx => {
       updatedFile: file
     });
     await File.delete(file.id);
+    Log.create(file.userId, `更新文章 ${updatedFile.title}，id ${updatedFile.id}`);
     ctx.body = {
       newFile,
       updatedFile: file

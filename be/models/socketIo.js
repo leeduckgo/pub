@@ -2,6 +2,7 @@ const socketIo = require('socket.io');
 const redisAdapter = require('socket.io-redis');
 const User = require('./user');
 const Cache = require('./cache');
+const Log = require('./log');
 const {
   assert,
   Errors
@@ -66,6 +67,7 @@ exports.sendToUser = async (userId, event, data) => {
   const userSocket = await Cache.pGet(sessionKey, userKey);
   assert(userSocket, Errors.ERR_NOT_FOUND('userSocket'));
   io.to(userSocket).emit(event, data);
+  Log.create(userId, `收到提醒：event ${event}, data ${JSON.stringify(data)}`);
 }
 
 exports.getSocketIo = () => io;

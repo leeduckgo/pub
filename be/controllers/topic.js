@@ -1,4 +1,5 @@
 const Topic = require('../models/topic');
+const Log = require('../models/log');
 
 exports.create = async ctx => {
   const {
@@ -9,5 +10,6 @@ exports.create = async ctx => {
     userId: user.id,
     ...data
   });
+  Log.create(user.id, `创建 Topic，id ${topic.id}`);
   ctx.body = topic;
 }

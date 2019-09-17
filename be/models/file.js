@@ -161,11 +161,7 @@ exports.update = async (id, data) => {
     const msghash = prsUtil.keccak256(data.content);
     const maybeExistedFile = await exports.getByMsghash(msghash);
     assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
-    console.log(` ------------- update raw content ---------------`);
-    console.log(data.content);
     data.content = Buffer.from(data.content, 'utf8');
-    console.log(` ------------- update content ---------------`, data.content);
-    console.log(` ------------- update msghash ---------------`, msghash);
     payload.msghash = msghash;
   }
 

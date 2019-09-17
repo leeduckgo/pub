@@ -11,6 +11,7 @@ const Profile = require('../models/profile');
 const Token = require('../models/token');
 const User = require('../models/user');
 const Block = require('../models/block');
+const Log = require('../models/log');
 const Chain = require('./chain');
 
 const providers = ['pressone', 'github', 'mixin'];
@@ -102,9 +103,11 @@ exports.oauthCallback = async (ctx, next) => {
   assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
 
   const profile = providerGetter[provider](user);
+  Log.createAnonymity(profile.id, `登陆 oauth 成功`);
   const hasPermission = await checkPermission(provider, profile);
   const noPermission = !hasPermission;
   if (noPermission) {
+    Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
     ctx.redirect(config.permissionDenyUrl);
     return false;
   }
@@ -163,22 +166,26 @@ const tryCreateUser = async (ctx, user, provider) => {
     insertedProfile = await Profile.createProfile(profile, {
       provider
     });
+    Log.create(insertedProfile.userId, `我被创建了`);
   } else {
     insertedProfile = await Profile.get(profile.id);
+    Log.create(insertedProfile.userId, `登陆成功`);
   }
 
   // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况
   const isProduction = config.env === 'production';
-  const { topicAddress } = config.settings;
+  const {
+    topicAddress
+  } = config.settings;
   if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
     const insertedUser = await User.get(insertedProfile.userId);
     const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
     if (!allowBlock) {
-      await Chain.pushTopic({
+      const block = await Chain.pushTopic({
         userAddress: insertedUser.address,
         topicAddress
       });
-      console.log(` ------------- allow 区块已提交 ---------------`);
+      Log.create(insertedProfile.userId, `提交 allow 区块, blockId ${block.id}`);
     }
   }
 
@@ -226,4 +233,3 @@ const providerGetter = {
     }
   }
 }
-
