@@ -1,5 +1,5 @@
 const User = require('./user');
-const Log = require('./sequelize/Log');
+const Log = require('./sequelize/log');
 
 exports.create = async (userId, message) => {
   const user = await User.get(userId);
