@@ -44,7 +44,7 @@ const buildPassport = () => {
 const authenticate = {
   github: passport.authenticate('github', {
     failureRedirect: config.github.loginUrl,
-    scope: ['user']
+    scope: ['read:user']
   }),
 
   mixin: passport.authenticate('mixin', {
