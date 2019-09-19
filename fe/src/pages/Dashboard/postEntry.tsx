@@ -52,7 +52,7 @@ export default observer((props: any) => {
 
   const { file, idx } = props;
   const { postsEndpoint } = store.settings.settings;
-  // const isPending = file.status === 'pending';
+  const isPending = file.status === 'pending';
   const isPublished = file.status === 'published';
   const isDraft = file.status === 'draft';
   const canDelete = false;
@@ -71,7 +71,11 @@ export default observer((props: any) => {
         <span className="gray-color">{ago(file.updatedAt)}</span>
       </TableCell>
       <TableCell>
-        {/* <Tooltip title={isPending ? '文章上链成功之后，才能编辑' : '编辑'} placement="top">
+        <Tooltip
+          className="po-hidden"
+          title={isPending ? '文章上链成功之后，才能编辑' : '编辑'}
+          placement="top"
+        >
           <span>
             <IconButton
               disabled={isPending}
@@ -84,7 +88,7 @@ export default observer((props: any) => {
               <CreateIcon />
             </IconButton>
           </span>
-        </Tooltip> */}
+        </Tooltip>
         {isDraft && (
           <Tooltip title="编辑" placement="top">
             <span>
