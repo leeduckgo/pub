@@ -77,7 +77,8 @@ const getFilePayload = ({
     type: 'PIP:2001',
     meta: {
       uris: [getFileUrl(file)],
-      mime: `${file.mimeType};charset=UTF-8`
+      mime: `${file.mimeType};charset=UTF-8`,
+      encryption: "aes-256-cbc"
     },
     data,
     hash: PrsUtil.hashBlockData(data),
