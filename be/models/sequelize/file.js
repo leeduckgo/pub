@@ -20,6 +20,9 @@ const File = sequelize.define('files', {
   content: {
     type: Sequelize.TEXT
   },
+  encryptedContent: {
+    type: Sequelize.TEXT
+  },
   msghash: {
     type: Sequelize.STRING,
     unique: true
