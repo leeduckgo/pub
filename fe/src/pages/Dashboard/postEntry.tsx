@@ -71,24 +71,6 @@ export default observer((props: any) => {
         <span className="gray-color">{ago(file.updatedAt)}</span>
       </TableCell>
       <TableCell>
-        <Tooltip
-          className="po-hidden"
-          title={isPending ? '文章上链成功之后，才能编辑' : '编辑'}
-          placement="top"
-        >
-          <span>
-            <IconButton
-              disabled={isPending}
-              className="push-right-xs"
-              onClick={e => {
-                e.stopPropagation();
-                editFile(+file.id);
-              }}
-            >
-              <CreateIcon />
-            </IconButton>
-          </span>
-        </Tooltip>
         {isDraft && (
           <Tooltip title="编辑" placement="top">
             <span>
@@ -113,6 +95,24 @@ export default observer((props: any) => {
             </a>
           </Tooltip>
         ) : null}
+        <Tooltip
+          className="po-hidden"
+          title={isPending ? '文章上链成功之后，才能编辑' : '编辑'}
+          placement="top"
+        >
+          <span>
+            <IconButton
+              disabled={isPending}
+              className="push-right-xs"
+              onClick={e => {
+                e.stopPropagation();
+                editFile(+file.id);
+              }}
+            >
+              <CreateIcon />
+            </IconButton>
+          </span>
+        </Tooltip>
         {canDelete && (
           <div>
             <IconButton
