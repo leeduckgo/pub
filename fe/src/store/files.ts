@@ -2,8 +2,8 @@ interface FilesStore {
   isFetched: Boolean;
   files: Array<any>;
   setFiles: Function;
-  updateFiles: Function;
   updateFile: Function;
+  updateFileByIdx: Function;
 }
 
 const sortByUpdatedAt = (files: any) => {
@@ -21,14 +21,21 @@ export function createFilesStore() {
       const sortedFiles = sortByUpdatedAt(files);
       this.files = sortedFiles;
     },
-    updateFiles(file: any) {
+    updateFile(file: any) {
+      console.log(` ------------- update file ---------------`, file);
       this.files = this.files.map(item => {
-        if (+item.id === +file.id) item.status = file.status;
+        if (+item.id === +file.id) {
+          return file;
+        }
         return item;
       });
     },
-    updateFile(file: any, idx: number) {
+    updateFileByIdx(file: any, idx: number) {
       this.files[idx] = file;
+    },
+    addFile(file: any) {
+      console.log(` ------------- add file ---------------`, file);
+      this.files.unshift(file);
     },
   } as FilesStore;
 }

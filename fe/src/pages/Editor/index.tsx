@@ -111,10 +111,16 @@ export default observer((props: any) => {
           title: file.title,
           content: file.content,
         };
-        const res = file.hasOwnProperty('id')
-          ? await Api.updateFile(file.id, param)
-          : await Api.createDraft(param);
-        res.hasOwnProperty('updatedFile') ? setFile(res.updatedFile) : setFile(res);
+        const isUpdating = file.hasOwnProperty('id');
+        if (isUpdating) {
+          const res = await Api.updateFile(file.id, param);
+          setFile(res.updatedFile);
+          store.files.updateFile(res.updatedFile);
+        } else {
+          const res = await Api.createDraft(param);
+          setFile(res);
+          store.files.addFile(res);
+        }
       } else {
         if (file.title) store.snackbar.open('内容不能为空', 2000, 'error');
         else store.snackbar.open('标题不能为空', 2000, 'error');
@@ -142,9 +148,14 @@ export default observer((props: any) => {
           title: file.title,
           content: file.content,
         };
-        file.id
-          ? await Api.updateFile(file.id, param, file.status === 'draft')
-          : await Api.createFile(param);
+        const isUpdating = file.hasOwnProperty('id');
+        if (isUpdating) {
+          const res = await Api.updateFile(file.id, param, file.status === 'draft');
+          store.files.updateFile(res.updatedFile);
+        } else {
+          const res = await Api.createFile(param);
+          store.files.addFile(res);
+        }
         store.snackbar.open(
           '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
           8000,
