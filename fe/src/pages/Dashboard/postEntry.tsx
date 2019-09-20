@@ -43,7 +43,7 @@ export default observer((props: any) => {
         store.files.setFiles([...store.files.files]);
         handleMenuClose();
       } catch (err) {
-        store.files.updateFile({ ...file, delete: false }, idx);
+        store.files.updateFileByIdx({ ...file, delete: false }, idx);
         store.snackbar.open('删除内容失败', 2000, 'error');
       }
       setDeleting(false);

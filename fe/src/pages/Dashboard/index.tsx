@@ -48,8 +48,10 @@ export default observer((props: any) => {
   React.useEffect(() => {
     (async () => {
       try {
-        const files = await Api.getFiles();
-        store.files.setFiles(files);
+        if (!store.files.isFetched) {
+          const files = await Api.getFiles();
+          store.files.setFiles(files);
+        }
         const hints: any = [
           {
             element: '.intercom-launcher-frame',
@@ -58,7 +60,7 @@ export default observer((props: any) => {
             hintPosition: 'top-left',
           },
         ];
-        if (files.length === 0) {
+        if (store.files.files.length === 0) {
           hints.push({
             element: '.create-btn',
             hint: '点击创建你的第一篇文章，发布到区块链上吧～',
