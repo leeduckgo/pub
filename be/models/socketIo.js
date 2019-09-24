@@ -67,7 +67,7 @@ exports.sendToUser = async (userId, event, data) => {
   const userSocket = await Cache.pGet(sessionKey, userKey);
   assert(userSocket, Errors.ERR_NOT_FOUND('userSocket'));
   io.to(userSocket).emit(event, data);
-  Log.create(userId, `收到提醒：event ${event}, data ${JSON.stringify(data)}`);
+  Log.create(userId, `收到提醒：event ${event}, file id: ${data.id}`);
 }
 
 exports.getSocketIo = () => io;
