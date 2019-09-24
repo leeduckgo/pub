@@ -87,7 +87,7 @@ export default observer((props: any) => {
           </Tooltip>
         )}
         {isPublished ? (
-          <Tooltip title="查看显示在聚合站上的文章" placement="top">
+          <Tooltip title="查看显示在聚合站上的文章（聚合站抓取文章需要时间，如果文章还没有被抓取到，请耐心等待几分钟）" placement="top">
             <a href={`${postsEndpoint}/${file.rId}`} target="_blank" rel="noopener noreferrer">
               <IconButton className="push-right-xs">
                 <OpenInNewIcon />
