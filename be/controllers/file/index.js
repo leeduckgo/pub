@@ -47,9 +47,9 @@ const createFile = async (user, data, options = {}) => {
     file = await File.update(file.id, {
       rId
     });
-    Log.create(user.id, `创建文章 ${file.title} ，id ${file.id}`);
     Log.create(user.id, `发布内容区块 ${block.id}`);
   }
+  Log.create(user.id, `创建文章 ${file.title} ，id ${file.id}`);
   return file;
 }
 
