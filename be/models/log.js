@@ -11,7 +11,11 @@ exports.create = async (userId, message) => {
   };
   await Log.create(data);
   if (config.botEnabled) {
-    sendToBot(data);
+    try {
+      sendToBot(data);
+    } catch(e) {
+      console.log(e);
+    }
   }
 }
 
@@ -22,7 +26,11 @@ exports.createAnonymity = async (identity, message) => {
   };
   await Log.create(data);
   if (config.botEnabled) {
-    sendToBot(data);
+    try {
+      sendToBot(data);
+    } catch(e) {
+      console.log(e);
+    }
   }
 }
 
