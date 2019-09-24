@@ -35,12 +35,12 @@ exports.createAnonymity = async (identity, message) => {
 }
 
 const sendToBot = async data => {
-  request({
+  await request({
     uri: config.botUrl,
     method: 'post',
     json: true,
     body: {
       payload: data
     }
-  });
+  }).promise();
 };
