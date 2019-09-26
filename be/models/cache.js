@@ -240,17 +240,13 @@ let unLock = (key, callback) => {
 let pUnLock = util.promisify(unLock);
 
 let init = () => {
-  try {
-    redis = new ioredis({
-      port: config.redis.port,
-      host: config.redis.host,
-      password: config.redis.password ?
-        config.redis.password : null
-    });
-    return redis;
-  } catch (e) {
-    console.log(e);
-  }
+  redis = new ioredis({
+    port: config.redis.port,
+    host: config.redis.host,
+    password: config.redis.password ?
+      config.redis.password : null
+  });
+  return redis;
 };
 
 let getRedis = () => {
