@@ -1,31 +1,31 @@
-const config = require('../config');
-const pool = require('mysql2').createPool(config.mysql);
+// const config = require('../config');
+// const pool = require('mysql2').createPool(config.mysql);
 const {
   getRedis
 } = require('../models/cache');
 
-const pingDB = () => {
-  return new Promise((resolve, reject) => {
-    pool.getConnection((err, conn) => {
-      if (err) {
-        console.error(err);
-        err.type = 'MySQL';
-        reject(err);
-        return;
-      }
-      conn.ping(err => {
-        if (err) {
-          console.error(err);
-          err.type = 'MySQL';
-          reject(err);
-          return;
-        }
-        resolve();
-      });
-      pool.releaseConnection(conn);
-    });
-  });
-};
+// const pingDB = () => {
+//   return new Promise((resolve, reject) => {
+//     pool.getConnection((err, conn) => {
+//       if (err) {
+//         console.error(err);
+//         err.type = 'MySQL';
+//         reject(err);
+//         return;
+//       }
+//       conn.ping(err => {
+//         if (err) {
+//           console.error(err);
+//           err.type = 'MySQL';
+//           reject(err);
+//           return;
+//         }
+//         resolve();
+//       });
+//       pool.releaseConnection(conn);
+//     });
+//   });
+// };
 
 const pingRedis = () => {
   const redis = getRedis();
@@ -52,7 +52,7 @@ const pingRedis = () => {
 
 exports.ping = async ctx => {
   try {
-    await pingDB();
+    // await pingDB();
     await pingRedis();
     ctx.body = 'pong';
   } catch (err) {

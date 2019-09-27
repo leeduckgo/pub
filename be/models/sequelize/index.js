@@ -1,14 +1,8 @@
 const config = require('../../config');
 const Sequelize = require('sequelize');
-const mysqlConfig = config.mysql;
+const db = config.db;
 
-module.exports = new Sequelize(mysqlConfig.database, mysqlConfig.user, mysqlConfig.password, {
-  host: mysqlConfig.host,
-  dialect: 'mysql',
-  pool: {
-    max: 10,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
+module.exports = new Sequelize(db.database, db.user, db.password, {
+  host: db.host,
+  dialect: db.dialect
 });
