@@ -291,7 +291,8 @@ export default observer((props: any) => {
         <DialogTitle id="alert-dialog-title">{'文章即将发布...'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            <span className="po-text-16">点击确认发布之后，文章将发布到区块链上</span>
+            <div className="po-text-16">点击确认发布之后，文章将发布到区块链上</div>
+            <div className="push-top po-text-12">（重要：发布之前请先阅读一下<a target="_blank" rel="noopener noreferrer" className="po-bold" href="https://xue-posts.xue.cn/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220">发布规则</a>）</div>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
