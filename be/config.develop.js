@@ -11,17 +11,12 @@ const config = {
 
   port: "8097",
 
-  mysql: {
+  db: {
     host: "127.0.0.1",
-    port: 3306,
     database: "pub",
-    user: "root",
-    password: "632330abc",
-    dialect: "mysql",
-    dialectOptions: {
-      charset: "utf8mb4"
-    },
-    timezone: "utc"
+    user: "postgres",
+    password: "8e01d6f60c7a846c38d5f99cf3f53383",
+    dialect: "postgres",
   },
 
   redis: {
