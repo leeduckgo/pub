@@ -150,7 +150,11 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   xueUserExtraApi: "https://dev.prsdev.club/hub/api/users-extra",
 
-  xueAdminToken: "06d60bd1df9d5bd240b19c37313f822fd996b61912099e4d843fc0a29caf5895b997e93bbdbe1835359acb8a45f67e07c04d953794784f8ff7a2fd1a4b0103cd"
+  xueAdminToken: "06d60bd1df9d5bd240b19c37313f822fd996b61912099e4d843fc0a29caf5895b997e93bbdbe1835359acb8a45f67e07c04d953794784f8ff7a2fd1a4b0103cd",
+
+  botEnabled: false,
+
+  botUrl: 'http://dev.press.one:8091/forward'
 };
 
 module.exports = config;
