@@ -13,10 +13,14 @@ const config = {
 
   db: {
     host: "127.0.0.1",
+    port: 3306,
     database: "pub",
-    user: "postgres",
-    password: "8e01d6f60c7a846c38d5f99cf3f53383",
-    dialect: "postgres",
+    user: "root",
+    password: "632330abc",
+    dialect: "mysql",
+    dialectOptions: {
+      charset: "utf8mb4"
+    }
   },
 
   redis: {
@@ -114,15 +118,15 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
     10
   ],
 
-  encryptionKey: 'daf786d6738c2b44a3f884f23fcf68db99103128241bcbc0345d1660155c8d5b',
+  encryptionKey: "daf786d6738c2b44a3f884f23fcf68db99103128241bcbc0345d1660155c8d5b",
 
-  ivPrefix: '5b52d68fefc1f24d4ee8cd8d23dff9a6d21742ff7cd2fcacbd7e8679f41051a2',
+  ivPrefix: "5b52d68fefc1f24d4ee8cd8d23dff9a6d21742ff7cd2fcacbd7e8679f41051a2",
 
   testPort: 8092,
 
   queuePort: 8093,
 
-  prsEndpoint: "http://127.0.0.1:8090",
+  prsEndpoint: "https://dev.press.one",
 
   sync: false,
 
@@ -154,7 +158,7 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   botEnabled: false,
 
-  botUrl: 'http://dev.press.one:8091/forward'
+  botUrl: "http://dev.press.one:8091/forward"
 };
 
 module.exports = config;
