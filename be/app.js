@@ -26,6 +26,7 @@ const storage = require('./routes/storage');
 const ping = require('./routes/ping');
 const webhook = require('./routes/webhook');
 const settings = require('./routes/settings');
+const importRoute = require('./routes/import');
 
 const models = require('./models');
 
@@ -62,6 +63,7 @@ router.use('/api/storage', storage.routes(), storage.allowedMethods());
 router.use('/api/ping', ping.routes(), ping.allowedMethods());
 router.use('/api/webhook', webhook.routes(), webhook.allowedMethods());
 router.use('/api/settings', settings.routes(), settings.allowedMethods());
+router.use('/api/import', importRoute.routes(), importRoute.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 

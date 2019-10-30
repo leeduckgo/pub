@@ -52,6 +52,7 @@ const createFile = async (user, data, options = {}) => {
   Log.create(user.id, `创建文章 ${file.title} ，id ${file.id}`);
   return file;
 }
+exports.createFile = createFile
 
 exports.create = async ctx => {
   const {
