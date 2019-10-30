@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { RouteChildrenProps } from 'react-router';
 import { Link } from 'react-router-dom';
 import Loading from '../../components/Loading';
 
@@ -28,8 +29,56 @@ import { Endpoint, IntroHints } from '../../utils';
 import PostEntry from './postEntry';
 
 import './index.scss';
+import PostImportDialog from '../../components/PostImportDialog';
+import { pressOneLinkRegexp, wechatLinkRegexp } from '../../utils/import';
 
-export default observer((props: any) => {
+const useImportDialog = (props: RouteChildrenProps) => {
+  const store = useStore();
+  const [importDialogVisible, setImportDialogVisible] = useState(false);
+  const [importDialogLoading, setImportDialogLoading] = useState(false);
+  const handleOpenImportDialog = () => setImportDialogVisible(true);
+  const handleImportDialogClose = () => {
+    if (!importDialogLoading) {
+      setImportDialogVisible(false)
+    }
+  }
+  const handleImportDialogConfirm = (url: string) => {
+    const validUrl = [
+      pressOneLinkRegexp.test(url),
+      wechatLinkRegexp.test(url),
+    ].some(Boolean)
+    if (!validUrl) {
+      store.snackbar.open('请输入正确的文章地址', 2000, 'error');
+      return
+    }
+
+    setImportDialogLoading(true)
+    Api.importArticle(url).then((file) => {
+      store.files.addFile(file)
+      setTimeout(() => {
+        props.history.push(`/editor?id=${file.id}`);
+      })
+    }, (err) => {
+      let message = '导入失败'
+      if (err.message === 'url is invalid') {
+        message = '请输入有效的文章地址'
+      }
+      store.snackbar.open(message, 2000, 'error');
+    }).finally(() => {
+      setImportDialogLoading(false)
+    })
+  }
+
+  return {
+    importDialogVisible,
+    importDialogLoading,
+    handleOpenImportDialog,
+    handleImportDialogClose,
+    handleImportDialogConfirm,
+  }
+}
+
+export default observer((props: RouteChildrenProps) => {
   const store = useStore();
   const { user } = store;
 
@@ -44,6 +93,14 @@ export default observer((props: any) => {
   }
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const {
+    importDialogVisible,
+    importDialogLoading,
+    handleOpenImportDialog,
+    handleImportDialogClose,
+    handleImportDialogConfirm,
+  } = useImportDialog(props);
 
   React.useEffect(() => {
     (async () => {
@@ -177,17 +234,33 @@ export default observer((props: any) => {
         <section className="p-dashboard-main-head flex v-center sb po-mw-1200 po-center">
           <div className="p-dashboard-main-head-title">文章</div>
 
-          <Link to="/editor">
-            <Button className="primary create-btn" variant="contained">
-              创建文章
+          <div className="p-dashboard-main-right">
+            <Button
+              onClick={handleOpenImportDialog}
+              className="primary import-btn"
+              variant="contained">
+              一键导入文章
             </Button>
-          </Link>
+
+            <Link to="/editor">
+              <Button className="primary create-btn" variant="contained">
+                创建文章
+              </Button>
+            </Link>
+          </div>
         </section>
 
         {!isFetched && <Loading isPage={true} />}
         {isFetched && files.length === 0 && renderNoPosts()}
         {isFetched && files.length > 0 && renderPosts(files)}
       </main>
+
+      <PostImportDialog
+        loading={importDialogLoading}
+        open={importDialogVisible}
+        cancel={handleImportDialogClose}
+        ok={handleImportDialogConfirm}
+      />
     </div>
   );
 });

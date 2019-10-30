@@ -42,6 +42,11 @@ export default {
       method: 'DELETE',
     });
   },
+  importArticle(url: string) {
+    return request(`/api/import/?url=${encodeURIComponent(url)}`, {
+      method: 'POST',
+    });
+  },
   fetchSettings() {
     return request(`/api/settings`);
   }
