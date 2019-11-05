@@ -7629,6 +7629,11 @@ osenv@0, osenv@^0.1.4:
     os-homedir "^1.0.0"
     os-tmpdir "^1.0.0"
 
+otp-input-react@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.npmjs.org/otp-input-react/-/otp-input-react-0.2.0.tgz#722966d800ca60ddd32d5613a202d0cad7cb3cd6"
+  integrity sha512-YzqsIEJ3/YSAMehjABFv4LPqvpwDZL7lyDyA4vFtt0CPtdXrJu2i+hWT96UHAjBEq2e4zDpw3osgRT/6FQ6JKw==
+
 p-defer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/p-defer/download/p-defer-1.0.0.tgz#9f6eb182f6c9aa8cd743004a7d4f96b196b0fb0c"
@@ -8999,6 +9004,13 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is
   version "16.9.0"
   resolved "https://registry.npm.taobao.org/react-is/download/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha1-IcqVYTmarQ/xp3AcAWg+jKmB7cs=
+
+react-number-format@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.npmjs.org/react-number-format/-/react-number-format-4.3.1.tgz#eccfc851d88d74c894ba463620ccb467defbdefb"
+  integrity sha512-ze6Lp7SGM71Jr0uZhUaN6grthv08NKTfJezS26zAWZq63ubmJ++FOX7ueGSK27EvpT7/e3ce9L3jlqr1YMFS7Q==
+  dependencies:
+    prop-types "^15.7.2"
 
 react-router-dom@^5.0.1:
   version "5.0.1"

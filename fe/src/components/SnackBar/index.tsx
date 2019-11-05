@@ -41,37 +41,36 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-export default observer((props: any) => {
-  const { snackbar, settings } = useStore();
+export default observer(() => {
+  const { snackbarStore, settingStore } = useStore();
   const classes = useStyles();
-  // const TransitionUp = (props: any) => {
-  //   return <Slide {...props} direction="up" />;
-  // };
-  const Icon = variantIcon[snackbar.type === 'error' ? 'error' : 'success'];
-  const { postsEndpoint } = settings.settings;
+  const Icon = variantIcon[snackbarStore.type === 'error' ? 'error' : 'success'];
+  const { postsEndpoint } = settingStore.settings;
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-      // TransitionComponent={TransitionUp}
-      open={snackbar.isOpenning}
-      autoHideDuration={snackbar.autoHideDuration}
-      onClose={() => snackbar.close()}
+      open={snackbarStore.open}
+      autoHideDuration={snackbarStore.autoHideDuration}
+      onClose={() => snackbarStore.close()}
     >
       <SnackbarContent
-        className={clsx(classes[snackbar.type === 'error' ? 'error' : 'success'], classes.margin)}
+        className={clsx(
+          classes[snackbarStore.type === 'error' ? 'error' : 'success'],
+          classes.margin,
+        )}
         message={
-          <span id="client-snackbar" className={classes.message}>
+          <span id="client-snackbarStore" className={classes.message}>
             <Icon className={clsx(classes.icon, classes.iconVariant)} />
-            {snackbar.msg}
+            {snackbarStore.message}
           </span>
         }
         action={[
-          snackbar.type === 'socket' ? (
+          snackbarStore.type === 'socket' ? (
             <span
               className="po-cp"
               key="redirect"
               onClick={() => {
-                window.open(`${postsEndpoint}/${snackbar.meta.rId}`);
+                window.open(`${postsEndpoint}/${snackbarStore.meta.rId}`);
               }}
             >
               去看看
@@ -82,7 +81,7 @@ export default observer((props: any) => {
             aria-label="close"
             color="inherit"
             onClick={() => {
-              snackbar.close();
+              snackbarStore.close();
             }}
           >
             <CloseIcon className={classes.icon} />

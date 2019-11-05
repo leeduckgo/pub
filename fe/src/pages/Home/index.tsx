@@ -3,11 +3,11 @@ import { observer } from 'mobx-react-lite';
 import { useStore } from '../../store';
 
 export default observer((props: any) => {
-  const store = useStore();
+  const { userStore } = useStore();
 
-  if (store.user.isFetched) {
+  if (userStore.isFetched) {
     setTimeout(() => {
-      props.history.push(store.user.isLogin ? '/dashboard' : '/login');
+      props.history.push(userStore.isLogin ? '/dashboard' : '/login');
     }, 0);
   }
 

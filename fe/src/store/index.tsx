@@ -5,6 +5,7 @@ import { createUserStore } from './user';
 import { createFilesStore } from './files';
 import { createSnackbarStore } from './snackbar';
 import { createSettingsStore } from './settings';
+import { createWalletStore } from './wallet';
 
 const storeContext = React.createContext<any>(null);
 
@@ -14,10 +15,11 @@ interface IProps {
 
 export const StoreProvider = ({ children }: IProps) => {
   const store = {
-    user: useLocalStore(createUserStore),
-    files: useLocalStore(createFilesStore),
-    snackbar: useLocalStore(createSnackbarStore),
-    settings: useLocalStore(createSettingsStore),
+    userStore: useLocalStore(createUserStore),
+    fileStore: useLocalStore(createFilesStore),
+    snackbarStore: useLocalStore(createSnackbarStore),
+    settingStore: useLocalStore(createSettingsStore),
+    walletStore: useLocalStore(createWalletStore),
   };
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;
 };

@@ -19,7 +19,7 @@ const providers = ['pressone', 'github', 'mixin'];
 
 const DEFAULT_AVATAR = 'https://static.press.one/pub/avatar.png';
 
-exports.oauthLogin = async ctx => {
+const oauth = (ctx, oauthType) => {
   const {
     authenticate
   } = auth;
@@ -29,11 +29,20 @@ exports.oauthLogin = async ctx => {
   assert(providers.includes(provider), Errors.ERR_IS_INVALID(`provider: ${provider}`))
   assert(authenticate[provider], Errors.ERR_IS_INVALID(`provider: ${provider}`));
   assert(ctx.query.redirect, Errors.ERR_IS_REQUIRED('redirect'));
+  ctx.session.oauthType = oauthType;
   ctx.session.auth = {
     provider: ctx.params.provider,
     redirect: ctx.query.redirect
   };
   return authenticate[provider](ctx);
+}
+
+exports.oauthLogin = async ctx => {
+  return oauth(ctx, 'login');
+};
+
+exports.oauthBind = async ctx => {
+  return oauth(ctx, 'bind');
 };
 
 const checkPermission = async (provider, profile) => {
@@ -100,25 +109,40 @@ exports.oauthCallback = async (ctx, next) => {
   } else {
     user = await handleOauthCallback(ctx, next, provider);
   }
-
   assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
 
   const profile = providerGetter[provider](user);
-  Log.createAnonymity(profile.id, `登陆 oauth 成功`);
-  const hasPermission = await checkPermission(provider, profile);
-  const noPermission = !hasPermission;
-  if (noPermission) {
-    Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
-    ctx.redirect(config.permissionDenyUrl);
-    return false;
-  }
 
-  await tryCreateUser(ctx, user, provider);
+  const {
+    oauthType
+  } = ctx.session;
+  assert(oauthType, Errors.ERR_IS_REQUIRED('oauthType'));
+
+  if (oauthType === 'login') {
+    Log.createAnonymity(profile.id, `登陆 oauth 成功`);
+    const hasPermission = await checkPermission(provider, profile);
+    const noPermission = !hasPermission;
+    if (noPermission) {
+      Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
+      ctx.redirect(config.permissionDenyUrl);
+      return false;
+    }
+    await login(ctx, user, provider);
+  } else if (oauthType === 'bind') {
+    assert(provider === 'mixin', Errors.ERR_IS_INVALID('provider'))
+    const {
+      user
+    } = ctx.verification;
+    assert(user, Errors.ERR_NOT_FOUND(`user`));
+    await User.update(user.id, {
+      mixinAccountRaw: profile.raw
+    });
+  }
 
   ctx.redirect(ctx.session.auth.redirect);
 }
 
-const handlePressOneCallback = async (ctx, provider) => {
+const handlePressOneCallback = async (ctx) => {
   const {
     userAddress
   } = ctx.query;
@@ -139,6 +163,7 @@ const handleOauthCallback = async (ctx, next, provider) => {
   } = auth;
   assert(authenticate[provider], Errors.ERR_IS_INVALID(`provider: ${provider}`))
   assert(ctx.session, Errors.ERR_IS_REQUIRED('session'));
+  assert(ctx.session.oauthType, Errors.ERR_IS_REQUIRED('session.oauthType'));
   assert(ctx.session.auth, Errors.ERR_IS_REQUIRED('session.auth'));
   assert(ctx.session.auth.redirect, Errors.ERR_IS_REQUIRED('session.auth.redirect'));
   assert(ctx.session.auth.provider === provider, Errors.ERR_IS_INVALID(`provider mismatch: ${provider}`));
@@ -157,7 +182,7 @@ const handleOauthCallback = async (ctx, next, provider) => {
   return user;
 }
 
-const tryCreateUser = async (ctx, user, provider) => {
+const login = async (ctx, user, provider) => {
   const profile = providerGetter[provider](user);
   const isNewUser = !await Profile.isExist(profile.id, {
     provider,

@@ -1,9 +1,10 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
-import Loading from '../../components/Loading';
+import Loading from 'components/Loading';
 import AccountBalanceWallet from '@material-ui/icons/AccountBalanceWallet';
 import ExitToApp from '@material-ui/icons/ExitToApp';
+import WalletModal from 'components/WalletModal';
 
 import {
   Button,
@@ -25,21 +26,40 @@ import Api from '../../api';
 
 import { useStore } from '../../store';
 
-import { Endpoint, IntroHints } from '../../utils';
+import { Endpoint, IntroHints, getQuery, removeQuery, sleep } from '../../utils';
 
 import PostEntry from './postEntry';
 
 import './index.scss';
 
 export default observer((props: any) => {
-  const store = useStore();
-  const { user } = store;
+  const { userStore, fileStore, snackbarStore } = useStore();
+  const [walletOpen, setWalletOpen] = React.useState(false);
+  const [walletTab, setWalletTab] = React.useState('assets');
+  const action = getQuery('action');
+
+  React.useEffect(() => {
+    (async () => {
+      if (action === 'OPEN_WALLET_BINDING') {
+        await sleep(1500);
+        setWalletTab('mixinAccount');
+        setWalletOpen(true);
+        if (userStore.user.mixinAccount) {
+          await sleep(800);
+          snackbarStore.show({
+            message: 'Mixin 账号绑定成功啦！',
+          });
+        }
+        removeQuery('action');
+      }
+    })();
+  }, [action]);
 
   const logout = () => {
     window.location.href = `${Endpoint.getApi()}/api/logout?from=${window.location.origin}/login`;
   };
 
-  if (user.isFetched && !user.isLogin) {
+  if (userStore.isFetched && !userStore.isLogin) {
     setTimeout(() => {
       props.history.push('/login');
     }, 0);
@@ -50,9 +70,9 @@ export default observer((props: any) => {
   React.useEffect(() => {
     (async () => {
       try {
-        if (!store.files.isFetched) {
+        if (!fileStore.isFetched) {
           const files = await Api.getFiles();
-          store.files.setFiles(files);
+          fileStore.setFiles(files);
         }
         const hints: any = [
           {
@@ -62,7 +82,7 @@ export default observer((props: any) => {
             hintPosition: 'top-left',
           },
         ];
-        if (store.files.files.length === 0) {
+        if (fileStore.files.length === 0) {
           hints.push({
             element: '.create-btn',
             hint: '点击创建你的第一篇文章，发布到区块链上吧～',
@@ -76,7 +96,7 @@ export default observer((props: any) => {
     return () => {
       IntroHints.remove();
     };
-  }, [store]);
+  }, [fileStore]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -115,7 +135,7 @@ export default observer((props: any) => {
     return <div className="po-push-page-middle text-center gray-color po-text-16">暂无文章</div>;
   };
 
-  const { isFetched, files } = store.files;
+  const { isFetched, files } = fileStore;
 
   return (
     <div className="p-dashboard flex po-fade-in">
@@ -132,16 +152,21 @@ export default observer((props: any) => {
           </ul>
         </section>
 
-        {user.isLogin && (
+        {userStore.isLogin && (
           <Button
             className="p-dashboard-nav-button flex"
             aria-controls="dashboard-menu"
             aria-haspopup="true"
             onClick={handleClick}
           >
-            <img className="p-dashboard-nav-img" src={user.avatar} width="34" alt="头像" />
+            <img
+              className="p-dashboard-nav-img"
+              src={userStore.user.avatar}
+              width="34"
+              alt="头像"
+            />
             <div className="p-dashboard-nav-info flex v-center po-text-14">
-              <span className="p-dashboard-nav-info-name dark-color">{user.name}</span>
+              <span className="p-dashboard-nav-info-name dark-color">{userStore.user.name}</span>
             </div>
             <div className="flex v-center">
               <ExpandLess className="p-dashboard-nav-info-icon dark-color" />
@@ -149,7 +174,7 @@ export default observer((props: any) => {
           </Button>
         )}
 
-        {user.isLogin && (
+        {userStore.isLogin && (
           <Popover
             id="dashboard-menu"
             className="p-dashboard-popover"
@@ -167,7 +192,7 @@ export default observer((props: any) => {
             }}
           >
             <MenuList>
-              <MenuItem onClick={logout}>
+              <MenuItem onClick={() => setWalletOpen(true)}>
                 <div className="py-2 flex items-center text-lg text-gray-700">
                   <AccountBalanceWallet />
                   <span className="text-sm ml-1">钱包</span>
@@ -199,6 +224,8 @@ export default observer((props: any) => {
         {isFetched && files.length === 0 && renderNoPosts()}
         {isFetched && files.length > 0 && renderPosts(files)}
       </main>
+
+      <WalletModal open={walletOpen} onClose={() => setWalletOpen(false)} tab={walletTab} />
     </div>
   );
 });

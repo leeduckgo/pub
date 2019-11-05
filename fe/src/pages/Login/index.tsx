@@ -8,8 +8,7 @@ import { useStore } from '../../store';
 import './index.scss';
 
 export default observer((props: any) => {
-  const store = useStore();
-  const { user, settings } = store;
+  const { userStore, settingStore } = useStore();
   const [provider, setProvider] = React.useState('');
 
   const selectProvider = (provider: string) => {
@@ -22,17 +21,17 @@ export default observer((props: any) => {
     }/dashboard`;
   };
 
-  if (user.isFetched && user.isLogin) {
+  if (userStore.isFetched && userStore.isLogin) {
     setTimeout(() => {
       props.history.push('/dashboard');
     }, 0);
   }
 
-  if (!settings.isFetched) {
+  if (!settingStore.isFetched) {
     return null;
   }
 
-  const { authProviders = [] } = settings.settings;
+  const { authProviders = [] } = settingStore.settings;
   const allowMixin = authProviders.includes('mixin');
   const allowGithub = authProviders.includes('github');
   const allowPressone = authProviders.includes('pressone');
@@ -49,7 +48,7 @@ export default observer((props: any) => {
           />
         </div>
         <div className="dark-color text-center push-top-xs po-text-16">
-          {settings.settings.slogan}
+          {settingStore.settings.slogan}
         </div>
         <div className="hr po-width-90 po-center push-top-md po-b-bb po-b-black-10"></div>
         <div className="dark-color text-center push-top-md">第三方账号登录</div>

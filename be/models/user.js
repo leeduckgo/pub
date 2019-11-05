@@ -9,6 +9,8 @@ const {
   Errors
 } = require('./validator')
 
+const DEFAULT_AVATAR = 'https://static.press.one/pub/avatar.png';
+
 const packUser = async (user, options = {}) => {
   assert(user, Errors.ERR_IS_REQUIRED('user'));
 
@@ -16,6 +18,18 @@ const packUser = async (user, options = {}) => {
     id: user.id,
     address: user.address,
   };
+
+  if (user.mixinAccountRaw) {
+    const json = JSON.parse(user.mixinAccountRaw);
+    derivedUser.mixinAccount = {
+      user_id: json.user_id,
+      full_name: json.full_name,
+      avatar_url: json.avatar_url || DEFAULT_AVATAR,
+      identity_number: json.identity_number
+    };
+  } else {
+    derivedUser.mixinAccount = null;
+  }
 
   const {
     withProfile,
@@ -26,16 +40,10 @@ const packUser = async (user, options = {}) => {
   if (withProfile) {
     const profile = await Profile.getByUserId(user.id);
     assert(profile, Errors.ERR_NOT_FOUND('profile'));
-    const mixinAccount = JSON.parse(profile.raw);
     derivedUser = {
       ...derivedUser,
       name: profile.name,
-      avatar: profile.avatar,
-      mixinAccount: {
-        user_id: mixinAccount.user_id,
-        full_name: mixinAccount.full_name,
-        identity_number: mixinAccount.identity_number
-      }
+      avatar: profile.avatar
     }
   }
   if (withWallet) {
