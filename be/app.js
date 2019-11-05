@@ -7,14 +7,7 @@ const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 const cors = require('@koa/cors');
 const config = require('./config');
-const Sentry = require('@sentry/node');
 const session = require('koa-session');
-
-if (config.env === 'production') {
-  Sentry.init({
-    dsn: config.sentryDsn
-  });
-}
 
 const index = require('./routes/index');
 const user = require('./routes/user');
@@ -23,6 +16,7 @@ const logout = require('./routes/logout');
 const file = require('./routes/file');
 const topic = require('./routes/topic');
 const storage = require('./routes/storage');
+const finance = require('./routes/finance');
 const ping = require('./routes/ping');
 const webhook = require('./routes/webhook');
 const settings = require('./routes/settings');
@@ -59,6 +53,7 @@ router.use('/api/logout', ensureAuthorization(), logout.routes(), logout.allowed
 router.use('/api/files', file.routes(), file.allowedMethods());
 router.use('/api/topics', topic.routes(), topic.allowedMethods());
 router.use('/api/storage', storage.routes(), storage.allowedMethods());
+router.use('/api/finance', finance.routes(), finance.allowedMethods());
 router.use('/api/ping', ping.routes(), ping.allowedMethods());
 router.use('/api/webhook', webhook.routes(), webhook.allowedMethods());
 router.use('/api/settings', settings.routes(), settings.allowedMethods());

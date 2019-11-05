@@ -2,6 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import Loading from '../../components/Loading';
+import AccountBalanceWallet from '@material-ui/icons/AccountBalanceWallet';
+import ExitToApp from '@material-ui/icons/ExitToApp';
 
 import {
   Button,
@@ -165,8 +167,17 @@ export default observer((props: any) => {
             }}
           >
             <MenuList>
-              <MenuItem dense onClick={logout}>
-                登出
+              <MenuItem onClick={logout}>
+                <div className="py-2 flex items-center text-lg text-gray-700">
+                  <AccountBalanceWallet />
+                  <span className="text-sm ml-1">钱包</span>
+                </div>
+              </MenuItem>
+              <MenuItem onClick={logout}>
+                <div className="py-2 flex items-center text-lg text-gray-700">
+                  <ExitToApp />
+                  <span className="text-sm ml-1">登出</span>
+                </div>
               </MenuItem>
             </MenuList>
           </Popover>

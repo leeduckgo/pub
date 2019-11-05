@@ -1,10 +1,10 @@
-const File = require('../../models/file');
+const File = require('../models/file');
 const {
   assert,
   Errors
-} = require('../../models/validator')
-const Log = require('../../models/log');
-const Chain = require('../chain');
+} = require('../models/validator')
+const Log = require('../models/log');
+const Chain = require('./chain');
 
 exports.list = async ctx => {
   const userId = ctx.verification.user.id;

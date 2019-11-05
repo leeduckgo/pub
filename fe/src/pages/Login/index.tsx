@@ -39,7 +39,7 @@ export default observer((props: any) => {
 
   return (
     <div className="login bg flex v-center h-center po-fade-in">
-      <div className="container flex column v-center h-center po-center bg-white-color pad-xl po-width-300 po-radius-5">
+      <div className="login-container flex column v-center h-center po-center bg-white-color pad-xl po-width-300 po-radius-5">
         <div className="text-center po-text-56">
           <img
             src="https://static.press.one/pub/logo_cn.png"

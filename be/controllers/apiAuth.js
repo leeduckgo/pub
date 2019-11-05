@@ -7,9 +7,10 @@ const {
   assert,
   Errors
 } = require('../models/validator');
+const User = require('../models/User');
 const Profile = require('../models/profile');
+const Wallet = require('../models/wallet');
 const Token = require('../models/token');
-const User = require('../models/user');
 const Block = require('../models/block');
 const Log = require('../models/log');
 const Chain = require('./chain');
@@ -163,13 +164,33 @@ const tryCreateUser = async (ctx, user, provider) => {
   });
   let insertedProfile = {};
   if (isNewUser) {
-    insertedProfile = await Profile.createProfile(profile, {
+    const userData = {
+      providerId: profile.id,
+      provider
+    };
+    if (provider === 'mixin') {
+      userData.mixinAccountRaw = provider.raw;
+    }
+    const user = await User.create(userData);
+    insertedProfile = await Profile.createProfile({
+      userId: user.id,
+      profile,
       provider
     });
+    await Wallet.tryCreateWallet(user.id);
     Log.create(insertedProfile.userId, `我被创建了`);
   } else {
     insertedProfile = await Profile.get(profile.id);
     Log.create(insertedProfile.userId, `登陆成功`);
+    const {
+      userId
+    } = insertedProfile;
+    const wallet = await Wallet.getByUserId(userId);
+    if (!wallet) {
+      Wallet.tryCreateWallet(userId);
+    } else {
+      console.log(`${userId}： 钱包已存在，无需初始化`);
+    }
   }
 
   // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况

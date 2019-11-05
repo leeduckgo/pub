@@ -3,31 +3,57 @@ const Profile = require('./profile');
 const PrsUtil = require('prs-utility');
 const util = require('../utils');
 const config = require('../config');
+const Wallet = require('./wallet');
 const {
   assert,
   Errors
 } = require('./validator')
 
-const packUser = (user, options = {}) => {
+const packUser = async (user, options = {}) => {
   assert(user, Errors.ERR_IS_REQUIRED('user'));
+
+  let derivedUser = {
+    id: user.id,
+    address: user.address,
+  };
+
   const {
+    withProfile,
+    withWallet,
     withKeys
   } = options;
-  if (withKeys) {
-    user.privateKey = util.crypto.aesDecrypt(user.aesEncryptedHexOfPrivateKey, config.aesKey256);
-    delete user.aesEncryptedHexOfPrivateKey;
-  } else {
-    delete user.publicKey;
-    delete user.aesEncryptedHexOfPrivateKey;
-  }
-  return user;
-}
 
-const packProfile = profile => ({
-  name: profile.name,
-  avatar: profile.avatar,
-  bio: profile.bio,
-})
+  if (withProfile) {
+    const profile = await Profile.getByUserId(user.id);
+    assert(profile, Errors.ERR_NOT_FOUND('profile'));
+    const mixinAccount = JSON.parse(profile.raw);
+    derivedUser = {
+      ...derivedUser,
+      name: profile.name,
+      avatar: profile.avatar,
+      mixinAccount: {
+        user_id: mixinAccount.user_id,
+        full_name: mixinAccount.full_name,
+        identity_number: mixinAccount.identity_number
+      }
+    }
+  }
+  if (withWallet) {
+    const wallet = await Wallet.getByUserId(user.id);
+    assert(wallet, Errors.ERR_NOT_FOUND('wallet'));
+    derivedUser = {
+      ...derivedUser,
+      ...wallet
+    }
+  }
+  if (withKeys) {
+    derivedUser.privateKey = util.crypto.aesDecrypt(user.aesEncryptedHexOfPrivateKey, config.aesKey256);
+  } else {
+    delete derivedUser.publicKey;
+  }
+  delete derivedUser.aesEncryptedHexOfPrivateKey;
+  return derivedUser;
+}
 
 const generateKey = () => {
   const {
@@ -74,20 +100,54 @@ exports.create = async (data) => {
   return packUser(user.toJSON());
 }
 
-exports.get = async (id, options = {}) => {
-  const [user, profile] = await Promise.all([
-    User.findOne({
-      where: {
-        id
-      }
-    }),
-    Profile.getByUserId(id),
-  ]);
-  if (!user || !profile) {
+exports.update = async (userId, data) => {
+  assert(userId, Errors.ERR_IS_REQUIRED('userId'));
+  assert(data, Errors.ERR_IS_REQUIRED('data'));
+
+  await User.update(data, {
+    where: {
+      id: userId
+    }
+  });
+
+  return true;
+}
+
+exports.hasWallet = async (userId) => {
+  const user = await exports.get(userId, {
+    withWallet: true
+  });
+  return !!user.mixinClientId;
+};
+
+exports.get = async (id, options) => {
+  return await get({
+    id
+  }, options);
+}
+
+exports.getByAddress = async (address, options) => {
+  return await get({
+    address
+  }, options);
+}
+
+const get = async (query = {}, options = {}) => {
+  const {
+    withWallet,
+    withKeys,
+    withProfile,
+  } = options;
+  const user = await User.findOne({
+    where: query
+  });
+  if (!user) {
     return null;
   }
-  return {
-    ...packUser(user.toJSON(), options),
-    ...packProfile(profile)
-  }
+  const derivedUser = await packUser(user.toJSON(), {
+    withWallet,
+    withKeys,
+    withProfile,
+  });
+  return derivedUser;
 }

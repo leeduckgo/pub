@@ -130,8 +130,6 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   sync: false,
 
-  sentryDsn: "https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9",
-
   permissionDenyUrl: "http://localhost:4201/permissionDeny",
 
   whitelist: {
