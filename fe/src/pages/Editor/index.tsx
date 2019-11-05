@@ -102,7 +102,10 @@ export default observer((props: any) => {
     try {
       if (file.title && file.content) {
         if (file.content.length > MAX_CONTENT_LENGTH) {
-          snackbarStore.open('内容最多 2 万字', 2000, 'error');
+          snackbarStore.show({
+            message: '内容最多 2 万字',
+            type: 'error',
+          });
           return;
         }
         setIsSaving(true);
@@ -121,17 +124,25 @@ export default observer((props: any) => {
           fileStore.addFile(res);
         }
       } else {
-        if (file.title) snackbarStore.open('内容不能为空', 2000, 'error');
-        else snackbarStore.open('标题不能为空', 2000, 'error');
+        if (file.title)
+          snackbarStore.show({
+            message: '内容不能为空',
+            type: 'error',
+          });
+        else
+          snackbarStore.show({
+            message: '标题不能为空',
+            type: 'error',
+          });
       }
     } catch (err) {
-      snackbarStore.open(
-        err.status === 409
-          ? '已经存在相同内容的草稿，请再修改一下内容'
-          : '保存草稿失败，请稍后重试',
-        2000,
-        'error',
-      );
+      snackbarStore.show({
+        message:
+          err.status === 409
+            ? '已经存在相同内容的草稿，请再修改一下内容'
+            : '保存草稿失败，请稍后重试',
+        type: 'error',
+      });
     } finally {
       setIsSaving(false);
     }
@@ -155,25 +166,34 @@ export default observer((props: any) => {
           const res = await Api.createFile(param);
           fileStore.addFile(res);
         }
-        snackbarStore.open(
-          '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
-          8000,
-        );
+        snackbarStore.show({
+          message:
+            '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
+          duration: 8000,
+        });
         setIsPublishing(false);
         props.history.push('/dashboard');
       } else {
-        if (file.title) snackbarStore.open('内容不能为空', 2000, 'error');
-        else snackbarStore.open('标题不能为空', 2000, 'error');
+        if (file.title)
+          snackbarStore.show({
+            message: '内容不能为空',
+            type: 'error',
+          });
+        else
+          snackbarStore.show({
+            message: '标题不能为空',
+            type: 'error',
+          });
       }
     } catch (err) {
       setIsPublishing(false);
-      snackbarStore.open(
-        err.status === 409
-          ? '已经存在相同内容的文章，请再修改一下内容'
-          : '文章发布失败，请稍后重试',
-        2000,
-        'error',
-      );
+      snackbarStore.show({
+        message:
+          err.status === 409
+            ? '已经存在相同内容的文章，请再修改一下内容'
+            : '文章发布失败，请稍后重试',
+        type: 'error',
+      });
     }
   };
 

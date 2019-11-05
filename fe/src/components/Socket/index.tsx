@@ -29,7 +29,7 @@ export default observer(() => {
     log('file_published', data);
     setTimeout(() => {
       fileStore.updateFile(data);
-      snackbarStore.open(
+      snackbarStore.show(
         `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
         8000,
         'socket',

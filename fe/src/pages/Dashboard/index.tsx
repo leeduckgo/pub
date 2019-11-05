@@ -53,7 +53,7 @@ export default observer((props: any) => {
         removeQuery('action');
       }
     })();
-  }, [action]);
+  }, [action, snackbarStore, userStore]);
 
   const logout = () => {
     window.location.href = `${Endpoint.getApi()}/api/logout?from=${window.location.origin}/login`;

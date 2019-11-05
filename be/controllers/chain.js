@@ -72,13 +72,16 @@ const getFilePayload = ({
     data.updated_file_id = `${blockTransactionId}@${blockNum}`;
   }
 
+  assert(user.mixinClientId, Errors.ERR_NOT_FOUND('user.mixinClientId'));
+
   const payload = {
     user_address: user.address,
     type: 'PIP:2001',
     meta: {
       uris: [getFileUrl(file)],
       mime: `${file.mimeType};charset=UTF-8`,
-      encryption: "aes-256-cbc"
+      encryption: "aes-256-cbc",
+      mixinClientId: user.mixinClientId
     },
     data,
     hash: PrsUtil.hashBlockData(data),
@@ -120,7 +123,8 @@ const packBlock = block => {
 
 exports.pushFile = async (file, options = {}) => {
   const user = await User.get(file.userId, {
-    withKeys: true
+    withKeys: true,
+    withWallet: true,
   });
   const {
     updatedFile
