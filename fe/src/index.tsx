@@ -1,9 +1,12 @@
+import './index.css';
+import './style/base.scss';
+
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import Sentry from './sentry';
+
 
 if (process.env.NODE_ENV === 'production') {
   Sentry.init();

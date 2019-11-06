@@ -2,35 +2,27 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { RouteChildrenProps } from 'react-router';
 import { Link } from 'react-router-dom';
-import Loading from '../../components/Loading';
-
 import {
   Button,
-  MenuItem,
   Paper,
-  Popover,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
-  MenuList,
 } from '@material-ui/core';
 
-import CreateIcon from '@material-ui/icons/Create';
-import ExpandLess from '@material-ui/icons/ExpandLess';
+import { pressOneLinkRegexp, wechatLinkRegexp } from '../../utils/import';
+import Loading from '../../components/Loading';
+import PostImportDialog from '../../components/PostImportDialog';
 
 import Api from '../../api';
-
 import { useStore } from '../../store';
-
-import { Endpoint, IntroHints } from '../../utils';
+import { IntroHints } from '../../utils';
 
 import PostEntry from './postEntry';
 
 import './index.scss';
-import PostImportDialog from '../../components/PostImportDialog';
-import { pressOneLinkRegexp, wechatLinkRegexp } from '../../utils/import';
 
 const useImportDialog = (props: RouteChildrenProps) => {
   const store = useStore();
@@ -80,19 +72,6 @@ const useImportDialog = (props: RouteChildrenProps) => {
 
 export default observer((props: RouteChildrenProps) => {
   const store = useStore();
-  const { user } = store;
-
-  const logout = () => {
-    window.location.href = `${Endpoint.getApi()}/api/logout?from=${window.location.origin}/login`;
-  };
-
-  if (user.isFetched && !user.isLogin) {
-    setTimeout(() => {
-      props.history.push('/login');
-    }, 0);
-  }
-
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const {
     importDialogVisible,
@@ -133,17 +112,9 @@ export default observer((props: RouteChildrenProps) => {
     };
   }, [store]);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const renderPosts = (files: any) => {
     return (
-      <section className="p-dashboard-main-table po-mw-1200 po-center">
+      <section className="p-dashboard-main-table po-mw-1200">
         <Paper>
           <Table>
             <TableHead>
@@ -173,87 +144,29 @@ export default observer((props: RouteChildrenProps) => {
   const { isFetched, files } = store.files;
 
   return (
-    <div className="p-dashboard flex po-fade-in">
-      <nav className="p-dashboard-nav flex normal column sb po-b-br po-b-black-10">
-        <section>
-          <ul className="p-dashboard-nav-ul">
-            <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">管理</li>
-            <li className="p-dashboard-nav-li">
-              <div className="p-dashboard-nav-link flex v-center po-bold po-radius-5">
-                <CreateIcon className="p-dashboard-nav-li-icon" />
-                文章
-              </div>
-            </li>
-          </ul>
-        </section>
+    <div className="p-dashboard-main po-mw-1200">
+      <section className="p-dashboard-main-head flex v-center sb">
+        <div className="p-dashboard-main-head-title">文章</div>
 
-        {user.isLogin && (
+        <div className="p-dashboard-main-right">
           <Button
-            className="p-dashboard-nav-button flex"
-            aria-controls="dashboard-menu"
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <img className="p-dashboard-nav-img" src={user.avatar} width="34" alt="头像" />
-            <div className="p-dashboard-nav-info flex v-center po-text-14">
-              <span className="p-dashboard-nav-info-name dark-color">{user.name}</span>
-            </div>
-            <div className="flex v-center">
-              <ExpandLess className="p-dashboard-nav-info-icon dark-color" />
-            </div>
+            onClick={handleOpenImportDialog}
+            className="primary import-btn"
+            variant="contained">
+            一键导入文章
           </Button>
-        )}
 
-        {user.isLogin && (
-          <Popover
-            id="dashboard-menu"
-            className="p-dashboard-popover"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-          >
-            <MenuList>
-              <MenuItem dense onClick={logout}>
-                登出
-              </MenuItem>
-            </MenuList>
-          </Popover>
-        )}
-      </nav>
-
-      <main className="p-dashboard-main">
-        <section className="p-dashboard-main-head flex v-center sb po-mw-1200 po-center">
-          <div className="p-dashboard-main-head-title">文章</div>
-
-          <div className="p-dashboard-main-right">
-            <Button
-              onClick={handleOpenImportDialog}
-              className="primary import-btn"
-              variant="contained">
-              一键导入文章
+          <Link to="/editor">
+            <Button className="primary create-btn" variant="contained">
+              创建文章
             </Button>
+          </Link>
+        </div>
+      </section>
 
-            <Link to="/editor">
-              <Button className="primary create-btn" variant="contained">
-                创建文章
-              </Button>
-            </Link>
-          </div>
-        </section>
-
-        {!isFetched && <Loading isPage={true} />}
-        {isFetched && files.length === 0 && renderNoPosts()}
-        {isFetched && files.length > 0 && renderPosts(files)}
-      </main>
+      {!isFetched && <Loading isPage={true} />}
+      {isFetched && files.length === 0 && renderNoPosts()}
+      {isFetched && files.length > 0 && renderPosts(files)}
 
       <PostImportDialog
         loading={importDialogLoading}
