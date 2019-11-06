@@ -12,6 +12,7 @@ const Token = require('../models/token');
 const User = require('../models/user');
 const Block = require('../models/block');
 const Log = require('../models/log');
+const Permission = require('../models/permission');
 const Chain = require('./chain');
 
 const providers = ['pressone', 'github', 'mixin'];
@@ -172,18 +173,25 @@ const tryCreateUser = async (ctx, user, provider) => {
     Log.create(insertedProfile.userId, `登陆成功`);
   }
 
-  // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况
-  const isProduction = config.env === 'production';
-  const {
-    topicAddress
-  } = config.settings;
-  if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
-    const insertedUser = await User.get(insertedProfile.userId);
-    const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
-    if (!allowBlock) {
+  const { topicAddress } = config.settings;
+
+  const insertedUser = await User.get(insertedProfile.userId);
+  const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
+
+  if (!allowBlock) {
+    Permission.setPermission({
+      userId: insertedUser.id,
+      topicAddress,
+      type: 'allow',
+    })
+
+    // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况
+    const isProduction = config.env === 'production';
+    if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
       const block = await Chain.pushTopic({
         userAddress: insertedUser.address,
-        topicAddress
+        topicAddress,
+        type: 'allow',
       });
       Log.create(insertedProfile.userId, `提交 allow 区块, blockId ${block.id}`);
     }

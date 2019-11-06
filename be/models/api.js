@@ -7,6 +7,7 @@ const {
   throws,
 } = require('../models/validator');
 const User = require('../models/user');
+const Topic = require('../models/topic');
 
 exports.ensureAuthorization = () => {
   return async (ctx, next) => {
@@ -32,6 +33,21 @@ exports.ensureAuthorization = () => {
     ctx.verification.user = user;
     assert(user, Errors.ERR_NOT_FOUND('user'));
     await next();
+  }
+}
+
+exports.ensureTopicOnwer = () => {
+  return async (ctx, next) => {
+    let isTopicOwner = false
+
+    const topic = await Topic.getByAddress(config.settings.topicAddress)
+
+    if (topic && topic.userId === ctx.verification.user.id) {
+      isTopicOwner = true
+    }
+
+    assert(isTopicOwner, Errors.ERR_NO_PERMISSION, 401);
+    await next()
   }
 }
 
