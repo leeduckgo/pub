@@ -11,6 +11,11 @@
     "test": "node ./test",
     "test-watch": "./node_modules/.bin/nodemon ./test"
   },
+  "nodemonConfig": {
+    "ignore": [
+      "session.json"
+    ]
+  },
   "dependencies": {
     "@koa/cors": "2",
     "aes-js": "^3.1.2",

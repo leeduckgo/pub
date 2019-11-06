@@ -16,7 +16,8 @@ export default function Preload() {
         settingStore.setSettings(settings);
         document.title = settings.title;
       } catch (err) {}
-      userStore.setIsFetched();
+      userStore.setIsFetched(true);
+      settingStore.setIsFetched(true);
     })();
   }, [userStore, settingStore]);
 

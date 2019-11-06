@@ -46,14 +46,19 @@ const packUser = async (user, options = {}) => {
       avatar: profile.avatar
     }
   }
+
+  const wallet = await Wallet.getByUserId(user.id);
   if (withWallet) {
-    const wallet = await Wallet.getByUserId(user.id);
     assert(wallet, Errors.ERR_NOT_FOUND('wallet'));
     derivedUser = {
       ...derivedUser,
       ...wallet
     }
   }
+  if (wallet) {
+    derivedUser.mixinWalletClientId = wallet.mixinClientId;
+  }
+
   if (withKeys) {
     derivedUser.privateKey = util.crypto.aesDecrypt(user.aesEncryptedHexOfPrivateKey, config.aesKey256);
   } else {

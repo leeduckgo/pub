@@ -81,7 +81,7 @@ const getFilePayload = ({
       uris: [getFileUrl(file)],
       mime: `${file.mimeType};charset=UTF-8`,
       encryption: "aes-256-cbc",
-      mixinClientId: user.mixinClientId
+      payment_url: `mixin://transfer/${user.mixinClientId}`
     },
     data,
     hash: PrsUtil.hashBlockData(data),

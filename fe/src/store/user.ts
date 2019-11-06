@@ -7,8 +7,8 @@ export function createUserStore() {
       this.user = user;
       this.isLogin = true;
     },
-    setIsFetched() {
-      this.isFetched = true;
+    setIsFetched(status: boolean) {
+      this.isFetched = status;
     },
   };
 }

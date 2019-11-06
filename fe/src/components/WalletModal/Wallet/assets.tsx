@@ -11,12 +11,19 @@ import Api from './api';
 
 const Asset = (props: any) => {
   const { snackbarStore } = useStore();
-  const { asset, amount, mixinAccount } = props;
+  const { asset, amount, isCustomPinExist, mixinAccount } = props;
 
   const onTryWithdraw = (currency: string) => {
+    if (!isCustomPinExist) {
+      snackbarStore.show({
+        message: '请先设置支付密码哦',
+        type: 'error',
+      });
+      return;
+    }
     if (!mixinAccount) {
       snackbarStore.show({
-        message: '请先绑定 Mixin 账号',
+        message: '请先绑定 Mixin 账号哦',
         type: 'error',
       });
       return;
@@ -53,10 +60,11 @@ const Asset = (props: any) => {
 };
 
 export default observer((props: any) => {
-  const { userStore, walletStore } = useStore();
+  const { userStore, walletStore, snackbarStore } = useStore();
   const { mixinAccount } = userStore.user;
   const [currency, setCurrency] = React.useState('');
   const [openWithdrawModal, setOpenWithdrawModal] = React.useState(false);
+  const { balance, hasBalance, isCustomPinExist } = walletStore;
 
   React.useEffect(() => {
     (async () => {
@@ -81,10 +89,15 @@ export default observer((props: any) => {
     } catch (err) {}
   };
 
-  const onCloseWithdrawModal = async (isSuccess: boolean) => {
+  const onCloseWithdrawModal = async (isSuccess: boolean, message?: string) => {
     setOpenWithdrawModal(false);
     if (isSuccess) {
-      fetchBalance();
+      await fetchBalance();
+      await sleep(500);
+      snackbarStore.show({
+        message: message || '转出成功',
+        duration: 8000,
+      });
     }
   };
 
@@ -95,8 +108,6 @@ export default observer((props: any) => {
       </div>
     );
   }
-
-  const { balance, hasBalance, isCustomPinExist } = walletStore;
 
   return (
     <Fade in={true} timeout={500}>
@@ -139,12 +150,14 @@ export default observer((props: any) => {
               <Asset
                 asset={asset}
                 amount={balance[asset] || 0}
+                isCustomPinExist={isCustomPinExist}
+                mixinAccount={mixinAccount}
                 onWithdraw={(currency: string) => onWithdraw(currency)}
               />
             </div>
           );
         })}
-        {mixinAccount && (
+        {isCustomPinExist && mixinAccount && (
           <WithdrawModal
             currency={currency}
             mixinAccount={mixinAccount}

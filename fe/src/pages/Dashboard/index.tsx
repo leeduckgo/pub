@@ -72,6 +72,7 @@ export default observer((props: any) => {
       try {
         if (!fileStore.isFetched) {
           const files = await Api.getFiles();
+          await sleep(1000);
           fileStore.setFiles(files);
         }
         const hints: any = [
@@ -220,7 +221,13 @@ export default observer((props: any) => {
           </Link>
         </section>
 
-        {!isFetched && <Loading isPage={true} />}
+        {!isFetched && (
+          <div className="h-screen flex justify-center items-center">
+            <div className="-mt-64">
+              <Loading size={40} />
+            </div>
+          </div>
+        )}
         {isFetched && files.length === 0 && renderNoPosts()}
         {isFetched && files.length > 0 && renderPosts(files)}
       </main>

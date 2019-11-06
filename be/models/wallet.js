@@ -91,6 +91,7 @@ const generateWallet = async userId => {
 };
 
 const getByUserId = async userId => {
+  assert(userId, Errors.ERR_IS_REQUIRED('userId'))
   const wallet = await Wallet.findOne({
     where: {
       userId
@@ -100,7 +101,18 @@ const getByUserId = async userId => {
 }
 exports.getByUserId = getByUserId;
 
+exports.getByMixinClientId = async mixinClientId => {
+  assert(mixinClientId, Errors.ERR_IS_REQUIRED('mixinClientId'))
+  const wallet = await Wallet.findOne({
+    where: {
+      mixinClientId
+    }
+  });
+  return wallet ? aesDecryptWallet(wallet.toJSON()) : null;
+}
+
 exports.tryCreateWallet = async (userId) => {
+  assert(userId, Errors.ERR_IS_REQUIRED('userId'))
   const existedWallet = await getByUserId(userId);
 
   if (existedWallet) {

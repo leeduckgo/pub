@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import SimpleMDE from 'react-simplemde-editor';
-import ButtonProgress from '../../components/ButtonProgress';
-import Loading from '../../components/Loading';
-import ConfirmDialog from '../../components/ConfirmDialog';
+import ButtonProgress from 'components/ButtonProgress';
+import Loading from 'components/Loading';
+import ConfirmDialog from 'components/ConfirmDialog';
 import Help from '@material-ui/icons/Help';
 import { getMarkdownCheatSheet } from './MarkdownCheatSheet';
 
@@ -17,9 +17,9 @@ import {
 } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
-import { useStore } from '../../store';
-import { getQueryObject, IntroHints, sleep } from '../../utils';
-import Api from '../../api';
+import { useStore } from 'store';
+import { getQueryObject, IntroHints, sleep } from 'utils';
+import Api from 'api';
 import config from './config';
 
 import 'easymde/dist/easymde.min.css';
@@ -296,7 +296,11 @@ export default observer((props: any) => {
         </div>
       </div>
 
-      {isFetching && <Loading isPage={true} />}
+      {isFetching && (
+        <div className="h-screen flex justify-center items-center">
+          <Loading size={40} />
+        </div>
+      )}
 
       {!isFetching && renderEditor()}
 
