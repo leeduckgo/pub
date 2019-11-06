@@ -17,17 +17,13 @@ exports.postImport = async ctx => {
   assert(url, Errors.ERR_IS_INVALID('url'));
   let data
 
-  try {
-    if (pressOneLinkRegexp.test(url)) {
-      const match = url.match(pressOneLinkRegexp)
-      const id = match[1]
-      data = await fetchPressOnePost(id)
-    } else if (wechatLinkRegexp.test(url)) {
-      data = await fetchWechatPost(url)
-    } else {
-      throws(Errors.ERR_IS_INVALID('url'))
-    }
-  } catch (e) {
+  if (pressOneLinkRegexp.test(url)) {
+    const match = url.match(pressOneLinkRegexp)
+    const id = match[1]
+    data = await fetchPressOnePost(id)
+  } else if (wechatLinkRegexp.test(url)) {
+    data = await fetchWechatPost(url)
+  } else {
     throws(Errors.ERR_IS_INVALID('url'))
   }
 
