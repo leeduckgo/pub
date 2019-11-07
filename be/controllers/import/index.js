@@ -3,7 +3,9 @@ const {
   throws,
   Errors,
 } = require('../../models/validator')
-const { createFile } = require('../file')
+const {
+  createFile
+} = require('../apiFile')
 
 const fetchPressOnePost = require('./prs')
 const fetchWechatPost = require('./wechat')
@@ -31,7 +33,9 @@ exports.postImport = async ctx => {
     throws(Errors.ERR_IS_INVALID('url'))
   }
 
-  const { user } = ctx.verification;
+  const {
+    user
+  } = ctx.verification;
 
   const file = await createFile(user, data, {
     isDraft: true,

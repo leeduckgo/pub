@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import {
-  Input,
   Dialog,
   DialogTitle,
   DialogContent,
@@ -9,7 +8,7 @@ import {
   DialogActions,
   Button,
   CircularProgress,
-  TextField
+  TextField,
 } from '@material-ui/core';
 import './index.scss';
 import { pressOneLinkRegexp, wechatLinkRegexp } from '../../utils/import';
@@ -27,13 +26,12 @@ const PostImportDialog = (props: IProps) => {
   const [inputDirty, setInputDirty] = useState(false);
 
   const handleOk = () => {
-    ok(inputValue)
-  }
+    ok(inputValue);
+  };
 
-  const validUrl = [
-    pressOneLinkRegexp.test(inputValue),
-    wechatLinkRegexp.test(inputValue),
-  ].some(Boolean)
+  const validUrl = [pressOneLinkRegexp.test(inputValue), wechatLinkRegexp.test(inputValue)].some(
+    Boolean,
+  );
 
   return (
     <Dialog
@@ -43,9 +41,7 @@ const PostImportDialog = (props: IProps) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">
-        导入文章
-      </DialogTitle>
+      <DialogTitle id="alert-dialog-title">导入文章</DialogTitle>
       <DialogContent className="flex column v-center">
         <DialogContentText id="alert-dialog-description">
           粘贴文章链接，支持 press.one 和微信链接
@@ -53,13 +49,13 @@ const PostImportDialog = (props: IProps) => {
 
         <TextField
           error={!validUrl && inputDirty}
-          helperText={((!validUrl && inputDirty) && '请输入正确的文章地址') || ' '}
+          helperText={(!validUrl && inputDirty && '请输入正确的文章地址') || ' '}
           style={{ width: '100%' }}
           autoFocus
           value={inputValue}
-          onChange={(event) => {
-            setInputValue(event.target.value)
-            setInputDirty(true)
+          onChange={event => {
+            setInputValue(event.target.value);
+            setInputDirty(true);
           }}
         />
       </DialogContent>
@@ -72,25 +68,28 @@ const PostImportDialog = (props: IProps) => {
           variant="contained"
           onClick={handleOk}
           disabled={loading}
-          color="primary">
+          color="primary"
+        >
           <span
             className={classNames({
               'import-dialog-confirm-content': true,
               hide: loading,
-            })}>
+            })}
+          >
             保存到草稿
           </span>
           <div
             className={classNames({
               'import-dialog-loading flex v-center h-center': true,
               hide: !loading,
-            })}>
+            })}
+          >
             <CircularProgress thickness={5} color="inherit" size={18} />
           </div>
         </Button>
       </DialogActions>
     </Dialog>
   );
-}
+};
 
-export default PostImportDialog
+export default PostImportDialog;

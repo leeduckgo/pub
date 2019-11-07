@@ -121,7 +121,7 @@ export default observer((props: any) => {
   const {
     importDialogVisible,
     importDialogLoading,
-    handleOpenImportDialog,
+    // handleOpenImportDialog,
     handleImportDialogClose,
     handleImportDialogConfirm,
   } = useImportDialog(props);
@@ -274,13 +274,13 @@ export default observer((props: any) => {
           <div className="p-dashboard-main-head-title">文章</div>
 
           <div className="p-dashboard-main-right">
-            <Button
+            {/* <Button
               onClick={handleOpenImportDialog}
               className="primary import-btn"
               variant="contained"
             >
               一键导入文章
-            </Button>
+            </Button> */}
 
             <Link to="/editor">
               <Button className="primary create-btn" variant="contained">
