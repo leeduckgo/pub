@@ -203,18 +203,30 @@ const login = async (ctx, user, provider) => {
       provider
     });
     await Wallet.tryCreateWallet(user.id);
-    Log.create(insertedProfile.userId, `我被创建了`);
+    const wallet = await Wallet.getByUserId(user.id, {
+      isRaw: true
+    });
+    Log.create(user.id, `我被创建了`);
+    const walletStr = JSON.stringify(wallet);
+    Log.create(userId, `钱包 ${walletStr.slice(0, 3500)}`);
+    Log.create(userId, `钱包 ${walletStr.slice(3500)}`);
   } else {
     insertedProfile = await Profile.get(profile.id);
     Log.create(insertedProfile.userId, `登陆成功`);
     const {
       userId
     } = insertedProfile;
-    const wallet = await Wallet.getByUserId(userId);
+    const wallet = await Wallet.getByUserId(userId, {
+      isRaw: true
+    });
     if (!wallet) {
-      Wallet.tryCreateWallet(userId);
+      await Wallet.tryCreateWallet(userId);
     } else {
       console.log(`${userId}： 钱包已存在，无需初始化`);
+      const walletStr = JSON.stringify(wallet);
+      Log.create(userId, `钱包已存在，无需初始化`);
+      Log.create(userId, `钱包 ${walletStr.slice(0, 3500)}`);
+      Log.create(userId, `钱包 ${walletStr.slice(3500)}`);
     }
   }
 
