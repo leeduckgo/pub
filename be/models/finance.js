@@ -446,7 +446,7 @@ const saveSnapshot = async (snapshot, options) => {
 };
 
 exports.syncMixinSnapshots = () => {
-  const syncKey = `${config.serviceName.toUpperCase()}_SYNC_MIXIN_SNAPSHOTS`;
+  const syncKey = `${config.serviceName}_SYNC_MIXIN_SNAPSHOTS`;
   return new Promise((resolve) => {
     (async () => {
       const isLock = await Cache.pTryLock(syncKey, 15) // 15s
