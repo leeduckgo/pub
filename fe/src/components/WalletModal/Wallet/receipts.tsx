@@ -42,7 +42,7 @@ const Receipt = (receipt: any, mixinWalletClientId: string) => {
         >
           {mixinWalletClientId === receipt.toProviderUserId && '+'}
           {mixinWalletClientId === receipt.fromProviderUserId && '-'}
-          {receipt.amount}
+          {parseFloat(receipt.amount)}
         </span>
         <span className="text-xs font-bold">{receipt.currency}</span>
       </div>

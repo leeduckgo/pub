@@ -449,14 +449,13 @@ exports.syncMixinSnapshots = () => {
   const syncKey = `${config.serviceName.toUpperCase()}_SYNC_MIXIN_SNAPSHOTS`;
   return new Promise((resolve) => {
     (async () => {
-      console.log(` ------------- syncKey ---------------`, syncKey);
       const isLock = await Cache.pTryLock(syncKey, 15) // 15s
       if (isLock) {
         console.log(` ------------- 锁住了，请返回 ---------------`);
         resolve();
         return;
       }
-      console.log(` ------------- syncMixinSnapshots ---------------`, new Date().toString());
+      console.log(new Date().toString());
       const timerId = setTimeout(() => {
         try {
           Cache.pUnLock(syncKey);
@@ -507,10 +506,6 @@ exports.syncMixinSnapshots = () => {
         })
         console.log(` ------ step1: 开始发请求 --------`);
         await Promise.all(tasks);
-        clearTimeout(timerId);
-        if (stop) {
-          return;
-        }
         console.log(` ------ step2: 请求结束 --------`);
         await saveSnapshots(snapshots);
         console.log(` ------ step3: 更新数据库 --------`);
@@ -520,6 +515,10 @@ exports.syncMixinSnapshots = () => {
         console.log(` ------------- ERROR: 失败，准备开始下一次 ---------------`);
       }
       console.log(` ------ step4: 完成，准备开始下一次 --------`);
+      clearTimeout(timerId);
+      if (stop) {
+        return;
+      }
       try {
         Cache.pUnLock(syncKey);
       } catch (err) {

@@ -7,9 +7,9 @@ const config = require('../../config');
 exports.create = () => {
   const queue = createQueue(`${config.serviceName.toUpperCase()}_SYNC_MIXIN_SNAPSHOTS`, {
     limiter: {
-      max: 1,
-      duration: 1 * 1000 * 1,
-      bounceBack: true
+      max: 2,
+      duration: 10 * 1000 * 1,
+      // bounceBack: true
     }
   });
 
@@ -18,6 +18,8 @@ exports.create = () => {
     repeat: {
       every: 1 * 1000 * 1
     },
+    removeOnComplete: true,
+    removeOnFail: true
   });
 
   queue.process(`${config.serviceName.toUpperCase()}_SYNC`, Finance.syncMixinSnapshots);
