@@ -16,6 +16,7 @@ import { StoreProvider } from './store';
 import { isMobile } from './utils';
 
 import './style/base.scss';
+import './styles/tailwind.css';
 
 const AppRouter = () => {
   return isMobile() ? (

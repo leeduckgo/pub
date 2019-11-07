@@ -13,14 +13,14 @@ const log = (event: string, data: any) => {
 };
 
 export default observer(() => {
-  const { user, files, snackbar } = useStore();
-  if (!user.isFetched || !user.isLogin) {
+  const { userStore, fileStore, snackbarStore } = useStore();
+  if (!userStore.isFetched || !userStore.isLogin) {
     return null;
   }
   const socket = io(String(Endpoint.getApi()));
   socket.on('connect', () => {
     log('connect', '连接成功');
-    socket.emit('authenticate', user.id);
+    socket.emit('authenticate', userStore.user.id);
   });
   socket.on('authenticate', (data: any) => {
     log('authenticate', data);
@@ -28,8 +28,8 @@ export default observer(() => {
   socket.on('file_published', (data: any) => {
     log('file_published', data);
     setTimeout(() => {
-      files.updateFile(data);
-      snackbar.open(
+      fileStore.updateFile(data);
+      snackbarStore.show(
         `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
         8000,
         'socket',

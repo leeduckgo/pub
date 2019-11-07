@@ -1,6 +1,6 @@
 "use strict";
 
-const serviceRoot = "http://localhost:8097";
+const serviceRoot = "http://localhost:8060";
 
 const config = {
   env: "development",
@@ -9,7 +9,7 @@ const config = {
 
   host: "127.0.0.1",
 
-  port: "8097",
+  port: "8060",
 
   db: {
     host: "127.0.0.1",
@@ -129,8 +129,6 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
   prsEndpoint: "https://dev.press.one",
 
   sync: false,
-
-  sentryDsn: "https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9",
 
   permissionDenyUrl: "http://localhost:4201/permissionDeny",
 

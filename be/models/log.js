@@ -4,16 +4,18 @@ const Log = require('./sequelize/log');
 const config = require('../config');
 
 exports.create = async (userId, message) => {
-  const user = await User.get(userId);
+  const user = await User.get(userId, {
+    withProfile: true
+  });
   const data = {
     userId,
-    message: `${user.name}：${message}`,
+    message: `【${config.serviceName}】${user.name}：${message}`,
   };
   await Log.create(data);
   if (config.botEnabled) {
     try {
       sendToBot(data);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
@@ -22,13 +24,13 @@ exports.create = async (userId, message) => {
 exports.createAnonymity = async (identity, message) => {
   const data = {
     userId: 0,
-    message: `${identity}：${message}`,
+    message: `【${config.serviceName}】 ${identity}：${message}`,
   };
   await Log.create(data);
   if (config.botEnabled) {
     try {
       sendToBot(data);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }

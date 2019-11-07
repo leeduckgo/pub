@@ -3,10 +3,10 @@ interface Settings {
   postsEndpoint: string;
   slogan: string;
   authProviders: string[];
-  topicAddress: string,
-  denyText: string,
-  denyActionText: string,
-  denyActionLink: string,
+  topicAddress: string;
+  denyText: string;
+  denyActionText: string;
+  denyActionLink: string;
 }
 
 interface SettingsStore {
@@ -30,7 +30,9 @@ export function createSettingsStore() {
     isFetched: false,
     setSettings(settings: Settings) {
       this.settings = settings;
-      this.isFetched = true;
+    },
+    setIsFetched(status: boolean) {
+      this.isFetched = status;
     },
   } as SettingsStore;
 }

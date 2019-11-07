@@ -8,9 +8,16 @@ const {
 } = require('../models/validator');
 const User = require('../models/user');
 
-exports.ensureAuthorization = () => {
+exports.ensureAuthorization = (options = {}) => {
+  const {
+    strict = true
+  } = options;
   return async (ctx, next) => {
     const token = ctx.cookies.get(config.authTokenKey);
+    if (!token && !strict) {
+      await next();
+      return;
+    }
     assert(token, Errors.ERR_IS_REQUIRED('token'), 401);
     let decodedToken;
     try {
@@ -21,6 +28,10 @@ exports.ensureAuthorization = () => {
       ctx.verification.token = token;
       ctx.verification.decodedToken = decodedToken;
     } catch (err) {
+      if (!strict) {
+        await next();
+        return;
+      }
       throws(Errors.ERR_AUTH_TOKEN_EXPIRED, 401);
     }
     const {
@@ -28,7 +39,9 @@ exports.ensureAuthorization = () => {
         userId
       }
     } = decodedToken;
-    const user = await User.get(userId);
+    const user = await User.get(userId, {
+      withProfile: true
+    });
     ctx.verification.user = user;
     assert(user, Errors.ERR_NOT_FOUND('user'));
     await next();

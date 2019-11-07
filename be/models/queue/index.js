@@ -1,10 +1,17 @@
+const config = require('../../config');
 const BlockQueue = require('./block');
-
+const MixinQueue = require('./mixin');
 const queues = [];
 
 exports.up = () => {
-  console.log(` ------------- 队列开始启动 ---------------`);
-  queues.push(BlockQueue.create());
+  if (config.syncBlock) {
+    console.log(` ------------- 队列开始同步区块 ---------------`);
+    queues.push(BlockQueue.create());
+  }
+  if (config.mixin.sync) {
+    console.log(` ------------- 队列开始同步 Mixin 交易 ---------------`);
+    queues.push(MixinQueue.create());
+  }
 }
 
 exports.down = () => {

@@ -1,7 +1,7 @@
 var router = require('koa-router')();
 const {
   get
-} = require('../controllers/settings');
+} = require('../controllers/apiSettings');
 
 router.get('/', get);
 
