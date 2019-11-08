@@ -201,7 +201,7 @@ export default observer((props: any) => {
     <div className="p-dashboard flex po-fade-in">
       <nav className="p-dashboard-nav flex normal column sb po-b-br po-b-black-10">
         <section>
-          <ul className="p-dashboard-nav-ul">
+          <ul className="p-dashboard-nav-ul mt-3">
             <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">管理</li>
             <li className="p-dashboard-nav-li">
               <div className="p-dashboard-nav-link flex v-center po-bold po-radius-5">

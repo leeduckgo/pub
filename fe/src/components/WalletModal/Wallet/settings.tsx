@@ -201,7 +201,7 @@ export default observer(() => {
           />
           <div className="flex items-center text-gray-500 mt-1">
             <Info />
-            <span className="text-xs ml-1">支付密码将用于支付和提现，请牢牢记住哦</span>
+            <span className="text-xs ml-1">支付密码将用于提现，请牢牢记住哦</span>
           </div>
           <div className="mt-4">
             <Button onClick={() => submit(pin, pin2, { oldPin, isCustomPinExist })}>
