@@ -98,7 +98,17 @@
       }
 
       .import-btn {
-        margin-right: 10px;
+        margin-right: 15px;
+        background: none !important;
+        border: 1px solid #88AE18 !important;
+
+        span {
+          color: #88AE18;
+        }
+      }
+
+      .create-btn {
+        border: 1px solid #88AE18 !important;
       }
     }
 

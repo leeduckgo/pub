@@ -7,9 +7,9 @@ import {
   DialogContentText,
   DialogActions,
   Button,
-  CircularProgress,
   TextField,
 } from '@material-ui/core';
+import ButtonProgress from 'components/ButtonProgress';
 import './index.scss';
 import { pressOneLinkRegexp, wechatLinkRegexp } from '../../utils/import';
 
@@ -41,52 +41,45 @@ const PostImportDialog = (props: IProps) => {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">导入文章</DialogTitle>
+      <DialogTitle id="alert-dialog-title">
+        <div className="pt-1 text-center">导入文章</div>
+      </DialogTitle>
       <DialogContent className="flex column v-center">
-        <DialogContentText id="alert-dialog-description">
-          粘贴文章链接，支持 press.one 和微信链接
-        </DialogContentText>
+        <div className="px-5">
+          <DialogContentText id="alert-dialog-description">
+            <div className="text-sm text-gray-600">支持微信公众号文章、PRESSone文章</div>
+          </DialogContentText>
 
-        <TextField
-          error={!validUrl && inputDirty}
-          helperText={(!validUrl && inputDirty && '请输入正确的文章地址') || ' '}
-          style={{ width: '100%' }}
-          autoFocus
-          value={inputValue}
-          onChange={event => {
-            setInputValue(event.target.value);
-            setInputDirty(true);
-          }}
-        />
+          <TextField
+            error={!validUrl && inputDirty}
+            helperText={(!validUrl && inputDirty && '请输入正确的文章地址') || ' '}
+            style={{ width: '100%' }}
+            autoFocus
+            placeholder="粘贴文章链接"
+            variant="outlined"
+            value={inputValue}
+            onChange={event => {
+              setInputValue(event.target.value);
+              setInputDirty(true);
+            }}
+          />
+        </div>
       </DialogContent>
-      <DialogActions style={{ marginBottom: '12px' }} className="flex h-center">
-        <Button
-          className={classNames({
-            'primary import-dialog-confirm-button': true,
-            loading: loading,
-          })}
-          variant="contained"
-          onClick={handleOk}
-          disabled={loading}
-          color="primary"
-        >
-          <span
+      <DialogActions style={{ marginBottom: '12px' }}>
+        <div className="flex justify-center items-center -mt-2 pb-2 w-full">
+          <Button
             className={classNames({
-              'import-dialog-confirm-content': true,
-              hide: loading,
+              'primary import-dialog-confirm-button': true,
+              loading: loading,
             })}
+            variant="contained"
+            onClick={handleOk}
+            disabled={loading}
+            color="primary"
           >
-            保存到草稿
-          </span>
-          <div
-            className={classNames({
-              'import-dialog-loading flex v-center h-center': true,
-              hide: !loading,
-            })}
-          >
-            <CircularProgress thickness={5} color="inherit" size={18} />
-          </div>
-        </Button>
+            导入 <ButtonProgress isDoing={loading} />
+          </Button>
+        </div>
       </DialogActions>
     </Dialog>
   );

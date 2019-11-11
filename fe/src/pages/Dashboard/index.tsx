@@ -37,6 +37,7 @@ import { pressOneLinkRegexp, wechatLinkRegexp } from '../../utils/import';
 
 const useImportDialog = (props: RouteChildrenProps) => {
   const store = useStore();
+  const { snackbarStore, fileStore } = store;
   const [importDialogVisible, setImportDialogVisible] = useState(false);
   const [importDialogLoading, setImportDialogLoading] = useState(false);
   const handleOpenImportDialog = () => setImportDialogVisible(true);
@@ -48,7 +49,10 @@ const useImportDialog = (props: RouteChildrenProps) => {
   const handleImportDialogConfirm = (url: string) => {
     const validUrl = [pressOneLinkRegexp.test(url), wechatLinkRegexp.test(url)].some(Boolean);
     if (!validUrl) {
-      store.snackbar.open('请输入正确的文章地址', 2000, 'error');
+      snackbarStore.show({
+        message: '请输入正确的文章地址',
+        type: 'error',
+      });
       return;
     }
 
@@ -56,7 +60,7 @@ const useImportDialog = (props: RouteChildrenProps) => {
     Api.importArticle(url)
       .then(
         file => {
-          store.fileStore.addFile(file);
+          fileStore.addFile(file);
           setTimeout(() => {
             props.history.push(`/editor?id=${file.id}`);
           });
@@ -66,7 +70,10 @@ const useImportDialog = (props: RouteChildrenProps) => {
           if (err.message === 'url is invalid') {
             message = '请输入有效的文章地址';
           }
-          store.snackbar.open(message, 2000, 'error');
+          snackbarStore.show({
+            message,
+            type: 'error',
+          });
         },
       )
       .finally(() => {
@@ -121,7 +128,7 @@ export default observer((props: any) => {
   const {
     importDialogVisible,
     importDialogLoading,
-    // handleOpenImportDialog,
+    handleOpenImportDialog,
     handleImportDialogClose,
     handleImportDialogConfirm,
   } = useImportDialog(props);
@@ -274,13 +281,9 @@ export default observer((props: any) => {
           <div className="p-dashboard-main-head-title">文章</div>
 
           <div className="p-dashboard-main-right">
-            {/* <Button
-              onClick={handleOpenImportDialog}
-              className="primary import-btn"
-              variant="contained"
-            >
-              一键导入文章
-            </Button> */}
+            <Button onClick={handleOpenImportDialog} className="import-btn" variant="contained">
+              <span>一键导入文章</span>
+            </Button>
 
             <Link to="/editor">
               <Button className="primary create-btn" variant="contained">

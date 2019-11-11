@@ -311,23 +311,27 @@ export default observer((props: any) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{'文章即将发布...'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <div className="pt-1 text-center">发布上链</div>
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <div className="po-text-16">点击确认发布之后，文章将发布到区块链上</div>
-            <div className="push-top po-text-12">
-              （重要：发布之前请先阅读一下
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className="po-bold"
-                href="https://xue-posts.xue.cn/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220"
-              >
-                发布规则
-              </a>
-              ）
-            </div>
-          </DialogContentText>
+          <div className="px-4 text-center">
+            <DialogContentText id="alert-dialog-description">
+              <div className="text-sm text-gray-600">点击确认发布之后，文章将发布到区块链上</div>
+              <div className="text-gray-500 mt-2 po-text-12">
+                （重要：发布之前请先阅读一下
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="po-bold"
+                  href="https://xue-posts.xue.cn/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220"
+                >
+                  发布规则
+                </a>
+                ）
+              </div>
+            </DialogContentText>
+          </div>
         </DialogContent>
         <DialogActions>
           <div className="cancel-publish link-color push-right po-cp" onClick={handleClose}>
@@ -338,6 +342,7 @@ export default observer((props: any) => {
             <ButtonProgress isDoing={isPublishing} color="white-color" />
           </div>
         </DialogActions>
+        <div className="pb-2"></div>
       </Dialog>
     </div>
   );
