@@ -167,8 +167,7 @@ export default observer((props: any) => {
           fileStore.addFile(res);
         }
         snackbarStore.show({
-          message:
-            '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
+          message: '文章保存成功。上链需要几分钟，完成之后您将收到提醒',
           duration: 8000,
         });
         setIsPublishing(false);
@@ -323,7 +322,7 @@ export default observer((props: any) => {
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="po-bold"
+                  className="po-bold text-blue-400"
                   href="https://xue-posts.xue.cn/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220"
                 >
                   发布规则
