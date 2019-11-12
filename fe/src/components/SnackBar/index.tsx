@@ -61,7 +61,7 @@ export default observer(() => {
                 className="po-cp"
                 key="redirect"
                 onClick={() => {
-                  window.open(`${postsEndpoint}/${snackbarStore.meta.rId}`);
+                  window.open(`${postsEndpoint}/posts/${snackbarStore.meta.rId}`);
                 }}
               >
                 去看看
