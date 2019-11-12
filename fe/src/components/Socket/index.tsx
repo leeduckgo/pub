@@ -29,12 +29,12 @@ export default observer(() => {
     log('file_published', data);
     setTimeout(() => {
       fileStore.updateFile(data);
-      snackbarStore.show(
-        `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
-        8000,
-        'socket',
-        { rId: data.rId },
-      );
+      snackbarStore.show({
+        message: `【${data.title}】已成功发布上链啦，您现在可以在聚合站查看这篇文章`,
+        duration: 8000,
+        type: 'socket',
+        meta: { rId: data.rId },
+      });
     }, 1000 * 90);
   });
   socket.on('connect_error', () => {

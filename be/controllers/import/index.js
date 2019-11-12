@@ -30,6 +30,7 @@ exports.postImport = async ctx => {
       throws(Errors.ERR_IS_INVALID('url'))
     }
   } catch (e) {
+    console.log(` ------------- e ---------------`, e);
     ctx.er(e)
     return
   }
