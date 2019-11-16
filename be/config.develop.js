@@ -138,7 +138,7 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
   },
 
   settings: {
-    title: "BOX 定投践行社群写作工具 | 飞贴",
+    title: "BOX 定投践行社群写作工具 | 飞帖",
     postsEndpoint: "http://localhost:4008",
     slogan: "分享你的定投笔记",
     authProviders: ["github"],
