@@ -34,16 +34,24 @@ export default () => {
         </div>
       )}
       {mixinAccount && (
-        <div className="flex">
-          <img
-            className="w-10 h-10 rounded-full"
-            src={mixinAccount.avatar_url}
-            alt="mixin avatar"
-          />
-          <div className="ml-3">
-            <div className="font-bold">{mixinAccount.full_name}</div>
-            <div className="text-gray-500 text-xs">{mixinAccount.identity_number}</div>
+        <div className="flex items-center">
+          <div className="flex">
+            <img
+              className="w-10 h-10 rounded-full"
+              src={mixinAccount.avatar_url}
+              alt="mixin avatar"
+            />
+            <div className="ml-3">
+              <div className="font-bold">{mixinAccount.full_name}</div>
+              <div className="text-gray-500 text-xs">{mixinAccount.identity_number}</div>
+            </div>
           </div>
+          <a
+            href={getBindUrl('mixin')}
+            className="text-blue-400 cursor-pointer font-bold ml-5 text-xs"
+          >
+            重新绑定
+          </a>
         </div>
       )}
       <div className="flex items-center text-gray-500 mt-5">

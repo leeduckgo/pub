@@ -148,12 +148,12 @@ div[role="tooltip"] div {
 
 /************************************** INTRO JS STYLES **************************************/
 .introjs-tooltip {
-  background: $dark-bg-color;
+  background: $dark-bg-color !important;
   border: 1px solid rgba(0, 0, 0, .4);
   border-radius: 3px;
   color: #fff;
-  padding: 15px;
-  padding-bottom: 60px;
+  padding: 15px !important;
+  padding-bottom: 60px !important;
 
   p {
     line-height: 1.25;

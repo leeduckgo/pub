@@ -32,37 +32,6 @@ export default observer((props: RouteChildrenProps) => {
 
   React.useEffect(() => {
     (async () => {
-      try {
-        if (!fileStore.isFetched) {
-          const files = await Api.getFiles();
-          fileStore.setFiles(files);
-        }
-        const hints: any = [
-          {
-            element: '.intercom-launcher-frame',
-            hint:
-              '如果遇到了问题，随时可以发送消息给我们，我们将尽快协助您解决问题。我们非常也欢迎你反馈一些改进产品的意见（吐槽也可以😜）',
-            hintPosition: 'top-left',
-          },
-        ];
-        if (fileStore.files.length === 0) {
-          hints.push({
-            element: '.create-btn',
-            hint: '点击创建你的第一篇文章，发布到区块链上吧～',
-            hintPosition: 'top-left',
-          });
-        }
-        IntroHints.init(hints);
-      } catch (err) {}
-    })();
-
-    return () => {
-      IntroHints.remove();
-    };
-  }, [fileStore]);
-
-  React.useEffect(() => {
-    (async () => {
       if (action === 'OPEN_WALLET_BINDING') {
         await sleep(1500);
         setWalletTab('mixinAccount');

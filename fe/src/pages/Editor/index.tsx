@@ -137,10 +137,7 @@ export default observer((props: any) => {
       }
     } catch (err) {
       snackbarStore.show({
-        message:
-          err.status === 409
-            ? '已经存在相同内容的草稿，请再修改一下内容'
-            : '保存草稿失败，请稍后重试',
+        message: err.message || '保存草稿失败，请稍后重试',
         type: 'error',
       });
     } finally {
@@ -187,10 +184,7 @@ export default observer((props: any) => {
     } catch (err) {
       setIsPublishing(false);
       snackbarStore.show({
-        message:
-          err.status === 409
-            ? '已经存在相同内容的文章，请再修改一下内容'
-            : '文章发布失败，请稍后重试',
+        message: err.message || '保存草稿失败，请稍后重试',
         type: 'error',
       });
     }

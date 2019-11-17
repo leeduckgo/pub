@@ -99,6 +99,11 @@ export default observer((props: RouteChildrenProps) => {
               '如果遇到了问题，随时可以发送消息给我们，我们将尽快协助您解决问题。我们非常也欢迎你反馈一些改进产品的意见（吐槽也可以😜）',
             hintPosition: 'top-left',
           },
+          {
+            element: '.import-btn',
+            hint: '一键导入微信、PRESSone文章',
+            hintPosition: 'top-left',
+          },
         ];
         if (fileStore.files.length === 0) {
           hints.push({
