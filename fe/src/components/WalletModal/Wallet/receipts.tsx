@@ -21,13 +21,13 @@ const Receipt = (receipt: any, mixinWalletClientId: string) => {
   return (
     <div className="flex justify-between items-center py-3 px-2 leading-none border-b border-gray-300">
       <div className="flex items-center text-gray-700 text-sm">
-        <img
-          className="mr-4"
-          src={assetIconMap[receipt.currency]}
-          alt={receipt.currency}
-          width="40"
-          height="40"
-        />
+        <div className="mr-4 w-10 h-10">
+          <img
+            className="w-10 h-10"
+            src={assetIconMap[receipt.currency]}
+            alt={receipt.currency}
+          />
+        </div>
         {getTypeName(receipt.type)}
       </div>
       <div className="flex items-center">
