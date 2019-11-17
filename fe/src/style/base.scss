@@ -33,7 +33,7 @@ button {
   text-transform: none !important;
 
   .MuiButton-label {
-    color: $white-color !important;
+    color: $white-color;
   }
 
   &.primary {

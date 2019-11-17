@@ -93,11 +93,12 @@ const getFilePayload = ({
 const getTopicPayload = (options = {}) => {
   const {
     userAddress,
-    topic
+    topic,
+    type,
   } = options;
   const data = {
-    allow: userAddress,
-    topic: topic.address
+    [type]: userAddress,
+    topic: topic.address,
   }
   const payload = {
     user_address: topic.address,
@@ -143,18 +144,27 @@ exports.pushFile = async (file, options = {}) => {
   return dbBlock;
 }
 
+/**
+ * @param {object} options
+ * @param {number} options.userAddress
+ * @param {string} options.topicAddress
+ * @param {'allow' | 'deny'} [options.type]
+ */
 exports.pushTopic = async (options = {}) => {
   const {
     userAddress,
-    topicAddress
+    topicAddress,
+    type = 'allow',
   } = options;
   assert(userAddress, Errors.ERR_IS_REQUIRED('userAddress'));
   assert(topicAddress, Errors.ERR_IS_REQUIRED('topicAddress'));
+  assert(['allow', 'deny'].includes(type), Errors.ERR_IS_INVALID('type'));
   const topic = await Topic.getByAddress(topicAddress, {
     withKeys: true
   });
   const payload = getTopicPayload({
     userAddress,
+    type,
     topic
   });
   const block = await signBlock(payload);

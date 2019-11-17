@@ -2,7 +2,8 @@ const crypto = require('crypto')
 const { JSDOM } = require('jsdom');
 const request = require('request-promise');
 const TurndownService = require('turndown')
-const { Config, QingStor } = require('qingstor-sdk');
+// const { Config, QingStor } = require('qingstor-sdk');
+const { Config, QingStor } = require('qingstor-sdk/dist/node/qingstor-sdk.js');
 const {
   throws,
   Errors,
@@ -39,10 +40,15 @@ turndownService.addRule('img', {
 })
 
 const fetchWechatPost = async url => {
-  const html = await request({
-    timeout: 10000,
-    url,
-  })
+  let html
+  try {
+    html = await request({
+      timeout: 10000,
+      url,
+    })
+  } catch (e) {
+    throws(Errors.ERR_IS_INVALID('url'))
+  }
 
   const dom = new JSDOM(html)
   const titleElement = dom.window.document.querySelector('#activity-name')
@@ -56,9 +62,9 @@ const fetchWechatPost = async url => {
 
   let markdown = turndownService.turndown(contentElement)
     .split('\n')
-    .map(v => v.trim()) // 删除空行
+    .map(v => v.trim()) // trim trailing space
     .join('\n')
-    .replace(/\n{3,}/g, '\n\n') // 删除多余空行
+    .replace(/\n{3,}/g, '\n\n') // 删除连续空行
     .replace(/\*{4}/g, '** **') // 防止两个粗体连起来
 
   const allImagesMatch = markdown.match(/!\[\]\((.+?)\)/g)
@@ -82,10 +88,14 @@ const fetchWechatPost = async url => {
         sha1.update(imageBuffer)
         const imageHash = sha1.digest('hex')
 
-        await bucket.putObject(imageHash, {
+        const response = await bucket.putObject(imageHash, {
           'Content-Type': mimetype,
           'body': imageBuffer,
         })
+
+        if (response.status !== 200) {
+          throw new Error('upload wechat post image put object failed')
+        }
 
         const newImageUrl = `https://${config.qingCloudZone}.qingstor.com/${config.qingCloudBucketName}/${imageHash}`
         markdown = markdown.replace(

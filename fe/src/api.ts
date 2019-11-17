@@ -1,5 +1,14 @@
 import request from './request';
 
+export interface TopicPermissionResult {
+  count: number
+  users: Array<{
+    id: string
+    name: string
+    avatar: string
+  }>
+}
+
 export default {
   fetchUser() {
     return request('/api/user');
@@ -49,5 +58,17 @@ export default {
   },
   fetchSettings() {
     return request(`/api/settings`);
-  }
+  },
+  fetchTopicAllowedUsers(p: { offset: number, limit: number }) {
+    return request(`/api/topics/allow?offset=${p.offset}&limit=${p.limit}`) as Promise<TopicPermissionResult>;
+  },
+  fetchTopicDeniedUsers(p: { offset: number, limit: number }) {
+    return request(`/api/topics/deny?offset=${p.offset}&limit=${p.limit}`) as Promise<TopicPermissionResult>;
+  },
+  allowTopicUser(userId: string) {
+    return request(`/api/topics/allow/${userId}`, { method: 'POST' });
+  },
+  denyTopicUser(userId: string) {
+    return request(`/api/topics/deny/${userId}`, { method: 'POST' });
+  },
 };
