@@ -170,7 +170,11 @@ export default observer((props: RouteChildrenProps) => {
         </div>
       </section>
 
-      {!isFetched && <Loading isPage={true} />}
+      {!isFetched && (
+        <div className="mt-64">
+          <Loading />
+        </div>
+      )}
       {isFetched && files.length === 0 && renderNoPosts()}
       {isFetched && files.length > 0 && renderPosts(files)}
 
