@@ -3,7 +3,7 @@ be/node_modules
 be/npm-debug.log*
 be/yarn-debug.log*
 be/yarn-error.log*
-
+be/yarn.lock
 be/config.js
 
 # dependencies
