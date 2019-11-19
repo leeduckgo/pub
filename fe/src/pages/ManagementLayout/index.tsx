@@ -81,9 +81,11 @@ export default observer((props: RouteChildrenProps) => {
   return (
     <div className="p-manage-layout flex po-fade-in">
       <nav className="p-manage-layout-nav flex normal column sb po-b-br po-b-black-10">
-        <section>
+        <section className="pt-5">
           <ul className="p-manage-layout-nav-ul">
-            <li className="p-manage-layout-nav-ul-title p-manage-layout-nav-li">管理</li>
+            <li className="p-manage-layout-nav-ul-title p-manage-layout-nav-li text-xl font-bold">
+              管理
+            </li>
             {navList
               .filter(v => v.show)
               .map(item => (
