@@ -317,7 +317,7 @@ export default observer((props: any) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="po-bold text-blue-400"
-                  href="https://xue-posts.xue.cn/posts/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220"
+                  href="https://xue-posts.press.one/posts/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220"
                 >
                   发布规则
                 </a>
