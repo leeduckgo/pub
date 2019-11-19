@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import ManagementLayout from './pages/ManagementLayout';
 import Editor from './pages/Editor';
 import PermissionDeny from './pages/PermissionDeny';
 
@@ -16,6 +16,7 @@ import { StoreProvider } from './store';
 import { isMobile } from './utils';
 
 import './style/base.scss';
+import './styles/tailwind.css';
 
 const AppRouter = () => {
   return isMobile() ? (
@@ -29,7 +30,9 @@ const AppRouter = () => {
           <SnackBar />
           <Route path="/" exact component={Home} />
           <Route path="/login" component={Login} />
-          <Route path="/dashboard" exact component={Dashboard} />
+
+          <Route path={['/dashboard', '/topic']} exact component={ManagementLayout} />
+
           <Route path="/editor" exact component={Editor} />
           <Route path="/permissionDeny" exact component={PermissionDeny} />
         </div>

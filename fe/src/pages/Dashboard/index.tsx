@@ -1,56 +1,96 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { observer } from 'mobx-react-lite';
+import { RouteChildrenProps } from 'react-router';
 import { Link } from 'react-router-dom';
-import Loading from '../../components/Loading';
+import Loading from 'components/Loading';
 
-import {
-  Button,
-  MenuItem,
-  Paper,
-  Popover,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  MenuList,
-} from '@material-ui/core';
+import { Button, Paper, Table, TableHead, TableBody, TableRow, TableCell } from '@material-ui/core';
 
-import CreateIcon from '@material-ui/icons/Create';
-import ExpandLess from '@material-ui/icons/ExpandLess';
+import { pressOneLinkRegexp, wechatLinkRegexp } from '../../utils/import';
+import PostImportDialog from '../../components/PostImportDialog';
 
 import Api from '../../api';
-
 import { useStore } from '../../store';
 
-import { Endpoint, IntroHints } from '../../utils';
+import { IntroHints, sleep } from '../../utils';
 
 import PostEntry from './postEntry';
 
 import './index.scss';
 
-export default observer((props: any) => {
+const useImportDialog = (props: any) => {
   const store = useStore();
-  const { user } = store;
+  const { snackbarStore, fileStore } = store;
+  const [importDialogVisible, setImportDialogVisible] = useState(false);
+  const [importDialogLoading, setImportDialogLoading] = useState(false);
+  const handleOpenImportDialog = () => setImportDialogVisible(true);
+  const handleImportDialogClose = () => {
+    if (!importDialogLoading) {
+      setImportDialogVisible(false);
+    }
+  };
+  const handleImportDialogConfirm = (url: string) => {
+    const validUrl = [pressOneLinkRegexp.test(url), wechatLinkRegexp.test(url)].some(Boolean);
+    if (!validUrl) {
+      snackbarStore.show({
+        message: '请输入正确的文章地址',
+        type: 'error',
+      });
+      return;
+    }
 
-  const logout = () => {
-    window.location.href = `${Endpoint.getApi()}/api/logout?from=${window.location.origin}/login`;
+    setImportDialogLoading(true);
+    Api.importArticle(url)
+      .then(
+        file => {
+          fileStore.addFile(file);
+          setTimeout(() => {
+            props.history.push(`/editor?id=${file.id}`);
+          });
+        },
+        err => {
+          let message = '导入失败';
+          if (err.message === 'url is invalid') {
+            message = '请输入有效的文章地址';
+          }
+          snackbarStore.show({
+            message,
+            type: 'error',
+          });
+        },
+      )
+      .finally(() => {
+        setImportDialogLoading(false);
+      });
   };
 
-  if (user.isFetched && !user.isLogin) {
-    setTimeout(() => {
-      props.history.push('/login');
-    }, 0);
-  }
+  return {
+    importDialogVisible,
+    importDialogLoading,
+    handleOpenImportDialog,
+    handleImportDialogClose,
+    handleImportDialogConfirm,
+  };
+};
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+export default observer((props: RouteChildrenProps) => {
+  const { fileStore } = useStore();
+
+  const {
+    importDialogVisible,
+    importDialogLoading,
+    handleOpenImportDialog,
+    handleImportDialogClose,
+    handleImportDialogConfirm,
+  } = useImportDialog(props);
 
   React.useEffect(() => {
     (async () => {
       try {
-        if (!store.files.isFetched) {
+        if (!fileStore.isFetched) {
           const files = await Api.getFiles();
-          store.files.setFiles(files);
+          await sleep(1000);
+          fileStore.setFiles(files);
         }
         const hints: any = [
           {
@@ -59,8 +99,13 @@ export default observer((props: any) => {
               '如果遇到了问题，随时可以发送消息给我们，我们将尽快协助您解决问题。我们非常也欢迎你反馈一些改进产品的意见（吐槽也可以😜）',
             hintPosition: 'top-left',
           },
+          {
+            element: '.import-btn',
+            hint: '一键导入微信、PRESSone文章',
+            hintPosition: 'top-left',
+          },
         ];
-        if (store.files.files.length === 0) {
+        if (fileStore.files.length === 0) {
           hints.push({
             element: '.create-btn',
             hint: '点击创建你的第一篇文章，发布到区块链上吧～',
@@ -74,19 +119,11 @@ export default observer((props: any) => {
     return () => {
       IntroHints.remove();
     };
-  }, [store]);
-
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  }, [fileStore]);
 
   const renderPosts = (files: any) => {
     return (
-      <section className="p-dashboard-main-table po-mw-1200 po-center">
+      <section className="p-dashboard-main-table po-mw-1200">
         <Paper>
           <Table>
             <TableHead>
@@ -113,81 +150,40 @@ export default observer((props: any) => {
     return <div className="po-push-page-middle text-center gray-color po-text-16">暂无文章</div>;
   };
 
-  const { isFetched, files } = store.files;
+  const { isFetched, files } = fileStore;
 
   return (
-    <div className="p-dashboard flex po-fade-in">
-      <nav className="p-dashboard-nav flex normal column sb po-b-br po-b-black-10">
-        <section>
-          <ul className="p-dashboard-nav-ul">
-            <li className="p-dashboard-nav-ul-title p-dashboard-nav-li">管理</li>
-            <li className="p-dashboard-nav-li">
-              <div className="p-dashboard-nav-link flex v-center po-bold po-radius-5">
-                <CreateIcon className="p-dashboard-nav-li-icon" />
-                文章
-              </div>
-            </li>
-          </ul>
-        </section>
+    <div className="p-dashboard-main po-mw-1200">
+      <section className="p-dashboard-main-head flex v-center sb">
+        <div className="p-dashboard-main-head-title">文章</div>
 
-        {user.isLogin && (
-          <Button
-            className="p-dashboard-nav-button flex"
-            aria-controls="dashboard-menu"
-            aria-haspopup="true"
-            onClick={handleClick}
-          >
-            <img className="p-dashboard-nav-img" src={user.avatar} width="34" alt="头像" />
-            <div className="p-dashboard-nav-info flex v-center po-text-14">
-              <span className="p-dashboard-nav-info-name dark-color">{user.name}</span>
-            </div>
-            <div className="flex v-center">
-              <ExpandLess className="p-dashboard-nav-info-icon dark-color" />
-            </div>
+        <div className="p-dashboard-main-right">
+          <Button onClick={handleOpenImportDialog} className="import-btn" variant="contained">
+            一键导入文章
           </Button>
-        )}
-
-        {user.isLogin && (
-          <Popover
-            id="dashboard-menu"
-            className="p-dashboard-popover"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            transformOrigin={{
-              vertical: 'bottom',
-              horizontal: 'center',
-            }}
-          >
-            <MenuList>
-              <MenuItem dense onClick={logout}>
-                登出
-              </MenuItem>
-            </MenuList>
-          </Popover>
-        )}
-      </nav>
-
-      <main className="p-dashboard-main">
-        <section className="p-dashboard-main-head flex v-center sb po-mw-1200 po-center">
-          <div className="p-dashboard-main-head-title">文章</div>
 
           <Link to="/editor">
             <Button className="primary create-btn" variant="contained">
               创建文章
             </Button>
           </Link>
-        </section>
+        </div>
+      </section>
 
-        {!isFetched && <Loading isPage={true} />}
-        {isFetched && files.length === 0 && renderNoPosts()}
-        {isFetched && files.length > 0 && renderPosts(files)}
-      </main>
+      {!isFetched && (
+        <div className="mt-64">
+          <Loading />
+        </div>
+      )}
+      {isFetched && files.length === 0 && renderNoPosts()}
+      {isFetched && files.length > 0 && renderPosts(files)}
+
+      <PostImportDialog
+        loading={importDialogLoading}
+        open={importDialogVisible}
+        cancel={handleImportDialogClose}
+        ok={handleImportDialogConfirm}
+      />
     </div>
   );
 });

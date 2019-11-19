@@ -2,6 +2,7 @@ const socketIo = require('socket.io');
 const redisAdapter = require('socket.io-redis');
 const User = require('./user');
 const Cache = require('./cache');
+const config = require('../config');
 const Log = require('./log');
 const {
   assert,
@@ -9,7 +10,7 @@ const {
 } = require('./validator');
 
 let io;
-const sessionKey = 'SOCKET_SESSION';
+const sessionKey = `${config.serviceName}_SOCKET_SESSION`;
 
 exports.EVENTS = {
   FILE_PUBLISHED: 'file_published'

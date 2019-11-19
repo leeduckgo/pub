@@ -1,9 +1,9 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import SimpleMDE from 'react-simplemde-editor';
-import ButtonProgress from '../../components/ButtonProgress';
-import Loading from '../../components/Loading';
-import ConfirmDialog from '../../components/ConfirmDialog';
+import ButtonProgress from 'components/ButtonProgress';
+import Loading from 'components/Loading';
+import ConfirmDialog from 'components/ConfirmDialog';
 import Help from '@material-ui/icons/Help';
 import { getMarkdownCheatSheet } from './MarkdownCheatSheet';
 
@@ -17,9 +17,9 @@ import {
 } from '@material-ui/core';
 import NavigateBefore from '@material-ui/icons/NavigateBefore';
 
-import { useStore } from '../../store';
-import { getQueryObject, IntroHints, sleep } from '../../utils';
-import Api from '../../api';
+import { useStore } from 'store';
+import { getQueryObject, IntroHints, sleep } from 'utils';
+import Api from 'api';
 import config from './config';
 
 import 'easymde/dist/easymde.min.css';
@@ -35,10 +35,9 @@ interface File {
 }
 
 export default observer((props: any) => {
-  const store = useStore();
-  const { user } = store;
+  const { userStore, fileStore, snackbarStore } = useStore();
 
-  if (user.isFetched && !user.isLogin) {
+  if (userStore.isFetched && !userStore.isLogin) {
     setTimeout(() => {
       props.history.push('/login');
     }, 0);
@@ -61,7 +60,7 @@ export default observer((props: any) => {
       await sleep(1000);
       setIsFetching(false);
     })();
-  }, [id, store.snackbar]);
+  }, [id, snackbarStore]);
 
   React.useEffect(() => {
     const hints = [
@@ -103,7 +102,10 @@ export default observer((props: any) => {
     try {
       if (file.title && file.content) {
         if (file.content.length > MAX_CONTENT_LENGTH) {
-          store.snackbar.open('内容最多 2 万字', 2000, 'error');
+          snackbarStore.show({
+            message: '内容最多 2 万字',
+            type: 'error',
+          });
           return;
         }
         setIsSaving(true);
@@ -115,24 +117,29 @@ export default observer((props: any) => {
         if (isUpdating) {
           const res = await Api.updateFile(file.id, param);
           setFile(res.updatedFile);
-          store.files.updateFile(res.updatedFile);
+          fileStore.updateFile(res.updatedFile);
         } else {
           const res = await Api.createDraft(param);
           setFile(res);
-          store.files.addFile(res);
+          fileStore.addFile(res);
         }
       } else {
-        if (file.title) store.snackbar.open('内容不能为空', 2000, 'error');
-        else store.snackbar.open('标题不能为空', 2000, 'error');
+        if (file.title)
+          snackbarStore.show({
+            message: '内容不能为空',
+            type: 'error',
+          });
+        else
+          snackbarStore.show({
+            message: '标题不能为空',
+            type: 'error',
+          });
       }
     } catch (err) {
-      store.snackbar.open(
-        err.status === 409
-          ? '已经存在相同内容的草稿，请再修改一下内容'
-          : '保存草稿失败，请稍后重试',
-        2000,
-        'error',
-      );
+      snackbarStore.show({
+        message: err.message || '保存草稿失败，请稍后重试',
+        type: 'error',
+      });
     } finally {
       setIsSaving(false);
     }
@@ -151,30 +158,35 @@ export default observer((props: any) => {
         const isUpdating = file.hasOwnProperty('id');
         if (isUpdating) {
           const res = await Api.updateFile(file.id, param, file.status === 'draft');
-          store.files.updateFile(res.updatedFile);
+          fileStore.updateFile(res.updatedFile);
         } else {
           const res = await Api.createFile(param);
-          store.files.addFile(res);
+          fileStore.addFile(res);
         }
-        store.snackbar.open(
-          '文章保存成功。上链需要几分钟，完成之后您将收到提醒。文章上链成功之后你可以在聚合站查看文章',
-          8000,
-        );
+        snackbarStore.show({
+          message: '文章保存成功。上链需要几分钟，完成之后您将收到提醒',
+          duration: 8000,
+        });
         setIsPublishing(false);
         props.history.push('/dashboard');
       } else {
-        if (file.title) store.snackbar.open('内容不能为空', 2000, 'error');
-        else store.snackbar.open('标题不能为空', 2000, 'error');
+        if (file.title)
+          snackbarStore.show({
+            message: '内容不能为空',
+            type: 'error',
+          });
+        else
+          snackbarStore.show({
+            message: '标题不能为空',
+            type: 'error',
+          });
       }
     } catch (err) {
       setIsPublishing(false);
-      store.snackbar.open(
-        err.status === 409
-          ? '已经存在相同内容的文章，请再修改一下内容'
-          : '文章发布失败，请稍后重试',
-        2000,
-        'error',
-      );
+      snackbarStore.show({
+        message: err.message || '保存草稿失败，请稍后重试',
+        type: 'error',
+      });
     }
   };
 
@@ -277,7 +289,11 @@ export default observer((props: any) => {
         </div>
       </div>
 
-      {isFetching && <Loading isPage={true} />}
+      {isFetching && (
+        <div className="h-screen flex justify-center items-center">
+          <Loading size={40} />
+        </div>
+      )}
 
       {!isFetching && renderEditor()}
 
@@ -288,12 +304,27 @@ export default observer((props: any) => {
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{'文章即将发布...'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          <div className="pt-1 text-center">发布上链</div>
+        </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            <div className="po-text-16">点击确认发布之后，文章将发布到区块链上</div>
-            <div className="push-top po-text-12">（重要：发布之前请先阅读一下<a target="_blank" rel="noopener noreferrer" className="po-bold" href="https://xue-posts.xue.cn/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220">发布规则</a>）</div>
-          </DialogContentText>
+          <div className="px-4 text-center">
+            <DialogContentText id="alert-dialog-description">
+              <div className="text-sm text-gray-600">点击确认发布之后，文章将发布到区块链上</div>
+              <div className="text-gray-500 mt-2 po-text-12">
+                （重要：发布之前请先阅读一下
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="po-bold text-blue-400"
+                  href="https://xue-posts.xue.cn/posts/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220"
+                >
+                  发布规则
+                </a>
+                ）
+              </div>
+            </DialogContentText>
+          </div>
         </DialogContent>
         <DialogActions>
           <div className="cancel-publish link-color push-right po-cp" onClick={handleClose}>
@@ -304,6 +335,7 @@ export default observer((props: any) => {
             <ButtonProgress isDoing={isPublishing} color="white-color" />
           </div>
         </DialogActions>
+        <div className="pb-2"></div>
       </Dialog>
     </div>
   );

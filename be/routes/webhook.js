@@ -1,7 +1,7 @@
 const router = require('koa-router')();
 const {
   mediumCallback,
-} = require('../controllers/webhook');
+} = require('../controllers/apiWebhook');
 
 router.post('/medium', mediumCallback);
 

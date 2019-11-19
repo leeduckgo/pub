@@ -1,7 +1,7 @@
 var router = require('koa-router')();
 const {
   get
-} = require('../controllers/storage');
+} = require('../controllers/apiStorage');
 
 router.get('/:filename', get);
 

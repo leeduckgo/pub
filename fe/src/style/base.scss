@@ -10,10 +10,13 @@ html {
 
 /************************************** BODY STYLES **************************************/
 body {
-  font-family: "open_sans,Open Sans,PingFang SC,Microsoft YaHei,微软雅黑,STXihei,华文细黑,Roboto,PingFang SC" !important;
+  font-family: "open_sans, Open Sans, PingFang SC, Microsoft YaHei, 微软雅黑, STXihei, 华文细黑, sans-serif";
   font-size: 14px;
   margin: 0;
   padding: 0;
+  line-height: 1.5;
+  overflow-y: auto;
+  -webkit-font-smoothing: auto;
   overflow-y: auto;
 }
 
@@ -30,7 +33,7 @@ button {
   text-transform: none !important;
 
   .MuiButton-label {
-    color: $white-color !important;
+    color: $white-color;
   }
 
   &.primary {
@@ -60,11 +63,6 @@ a {
   }
 }
 
-/************************************** BORDER STYLES **************************************/
-.border {
-  height: 1px;
-}
-
 /************************************** MODAL STYLES **************************************/
 .modal-content {
   border-radius: 5px;
@@ -81,29 +79,6 @@ a {
 
   svg {
     color: $link-color !important;
-  }
-}
-
-/************************************** GITTER STYLES **************************************/
-.gitter-chat-embed {
-  width: 435px;
-  z-index: 99;
-  top: 78px;
-  left: 65px;
-  box-shadow: none;
-  border: none;
-  border-right: 1px solid #ddd;
-
-  &.is-collapsed {
-    display: none;
-  }
-
-  .gitter-chat-embed-action-bar {
-    display: none;
-  }
-
-  &:after {
-    display: none;
   }
 }
 
@@ -173,12 +148,12 @@ div[role="tooltip"] div {
 
 /************************************** INTRO JS STYLES **************************************/
 .introjs-tooltip {
-  background: $dark-bg-color;
+  background: $dark-bg-color !important;
   border: 1px solid rgba(0, 0, 0, .4);
   border-radius: 3px;
   color: #fff;
-  padding: 15px;
-  padding-bottom: 60px;
+  padding: 15px !important;
+  padding-bottom: 60px !important;
 
   p {
     line-height: 1.25;
@@ -231,4 +206,62 @@ div[role="tooltip"] div {
   transform: scale(0.7) !important;
   bottom: 2px !important;
   right: 2px !important;
+}
+
+
+/************************************** BUTTON STYLES **************************************/
+div,
+button {
+  outline: none !important;
+}
+
+/************************************** ANCHOR STYLES **************************************/
+a {
+  outline: none !important;
+}
+
+/************************************** SVG STYLES **************************************/
+.MuiSvgIcon-root {
+  font-size: inherit !important;
+}
+
+/************************************** TAB STYLES **************************************/
+.MuiTab-textColorPrimary {
+  &.Mui-selected {
+    color: #96c02d !important;
+  }
+}
+
+.MuiTabs-indicator {
+  background: #96c02d !important;
+}
+
+/************************************** INPUT STYLES **************************************/
+.MuiTextField-root {
+
+  label,
+  input,
+  textarea {
+    font-size: 14px !important;
+  }
+
+  div::after {
+    border-bottom: #888;
+
+    &:hover {
+      border-bottom: #888;
+    }
+  }
+
+  fieldset {
+    border-color: rgba(0, 0, 0, 0.23) !important;
+  }
+
+  .MuiOutlinedInput-input {
+    padding: 12px;
+  }
+
+  .Mui-focused fieldset {
+    border-color: #1bb0e6 !important;
+  }
 }

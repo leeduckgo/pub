@@ -1,6 +1,6 @@
 "use strict";
 
-const serviceRoot = "http://localhost:8097";
+const serviceRoot = "http://localhost:8060";
 
 const config = {
   env: "development",
@@ -9,14 +9,18 @@ const config = {
 
   host: "127.0.0.1",
 
-  port: "8097",
+  port: "8060",
 
   db: {
     host: "127.0.0.1",
+    port: 3306,
     database: "pub",
-    user: "postgres",
-    password: "8e01d6f60c7a846c38d5f99cf3f53383",
-    dialect: "postgres",
+    user: "root",
+    password: "632330abc",
+    dialect: "mysql",
+    dialectOptions: {
+      charset: "utf8mb4"
+    }
   },
 
   redis: {
@@ -114,19 +118,17 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
     10
   ],
 
-  encryptionKey: 'daf786d6738c2b44a3f884f23fcf68db99103128241bcbc0345d1660155c8d5b',
+  encryptionKey: "daf786d6738c2b44a3f884f23fcf68db99103128241bcbc0345d1660155c8d5b",
 
-  ivPrefix: '5b52d68fefc1f24d4ee8cd8d23dff9a6d21742ff7cd2fcacbd7e8679f41051a2',
+  ivPrefix: "5b52d68fefc1f24d4ee8cd8d23dff9a6d21742ff7cd2fcacbd7e8679f41051a2",
 
   testPort: 8092,
 
   queuePort: 8093,
 
-  prsEndpoint: "http://127.0.0.1:8090",
+  prsEndpoint: "https://dev.press.one",
 
   sync: false,
-
-  sentryDsn: "https://d2fcc4193e3548b28f191e97c97c4ff8@sentry.xue.cn/9",
 
   permissionDenyUrl: "http://localhost:4201/permissionDeny",
 
@@ -136,7 +138,7 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
   },
 
   settings: {
-    title: "BOX 定投践行社群写作工具 | 飞贴",
+    title: "BOX 定投践行社群写作工具 | 飞帖",
     postsEndpoint: "http://localhost:4008",
     slogan: "分享你的定投笔记",
     authProviders: ["github"],
@@ -150,7 +152,11 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   xueUserExtraApi: "https://dev.prsdev.club/hub/api/users-extra",
 
-  xueAdminToken: "06d60bd1df9d5bd240b19c37313f822fd996b61912099e4d843fc0a29caf5895b997e93bbdbe1835359acb8a45f67e07c04d953794784f8ff7a2fd1a4b0103cd"
+  xueAdminToken: "06d60bd1df9d5bd240b19c37313f822fd996b61912099e4d843fc0a29caf5895b997e93bbdbe1835359acb8a45f67e07c04d953794784f8ff7a2fd1a4b0103cd",
+
+  botEnabled: false,
+
+  botUrl: "http://dev.press.one:8091/forward"
 };
 
 module.exports = config;

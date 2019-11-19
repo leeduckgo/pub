@@ -1,11 +1,47 @@
-import { parse } from 'query-string';
+import qs from 'query-string';
 
 export { default as Endpoint } from './endpoint';
 export { default as IntroHints } from './introHints';
-export {FileStatus, FileStatusTip} from './enum';
+export { FileStatus, FileStatusTip } from './enum';
 
 export const getQueryObject = () => {
-  return parse(window.location.search);
+  return qs.parse(window.location.search);
+};
+
+export const getQuery = (name: string) => {
+  return qs.parse(window.location.search)[name];
+};
+
+export const setQuery = (param: any = {}) => {
+  let parsed = qs.parse(window.location.search);
+  parsed = {
+    ...parsed,
+    ...param,
+  };
+  if (window.history.pushState) {
+    const newUrl =
+      window.location.protocol +
+      '//' +
+      window.location.host +
+      window.location.pathname +
+      `?${decodeURIComponent(qs.stringify(parsed))}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+  }
+};
+
+export const removeQuery = (name: string) => {
+  let parsed = qs.parse(window.location.search);
+  delete parsed[name];
+  const isEmpty = Object.keys(parsed).length === 0;
+  if (window.history.pushState) {
+    const newUrl =
+      window.location.protocol +
+      '//' +
+      window.location.host +
+      window.location.pathname +
+      `${isEmpty ? '' : '?' + decodeURIComponent(qs.stringify(parsed))}`;
+    window.history.pushState({ path: newUrl }, '', newUrl);
+  }
 };
 
 export const ago = (timestamp: string) => {

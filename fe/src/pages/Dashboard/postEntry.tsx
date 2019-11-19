@@ -17,7 +17,7 @@ import { useStore } from '../../store';
 import { ago, FileStatus, FileStatusTip } from '../../utils';
 
 export default observer((props: any) => {
-  const store = useStore();
+  const { fileStore, settingStore, snackbarStore } = useStore();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [deleting, setDeleting] = React.useState(false);
@@ -39,19 +39,22 @@ export default observer((props: any) => {
       try {
         setDeleting(true);
         await Api.deleteFile(file.id);
-        store.files.files.splice(idx, 1);
-        store.files.setFiles([...store.files.files]);
+        fileStore.files.splice(idx, 1);
+        fileStore.setFiles([...fileStore.files]);
         handleMenuClose();
       } catch (err) {
-        store.files.updateFileByIdx({ ...file, delete: false }, idx);
-        store.snackbar.open('删除内容失败', 2000, 'error');
+        fileStore.updateFileByIdx({ ...file, delete: false }, idx);
+        snackbarStore.show({
+          message: '删除内容失败',
+          type: 'error',
+        });
       }
       setDeleting(false);
     })();
   };
 
   const { file, idx } = props;
-  const { postsEndpoint } = store.settings.settings;
+  const { postsEndpoint } = settingStore.settings;
   const isPending = file.status === 'pending';
   const isPublished = file.status === 'published';
   const isDraft = file.status === 'draft';
@@ -87,8 +90,15 @@ export default observer((props: any) => {
           </Tooltip>
         )}
         {isPublished ? (
-          <Tooltip title="查看显示在聚合站上的文章（聚合站抓取文章需要时间，如果文章还没有被抓取到，请耐心等待几分钟）" placement="top">
-            <a href={`${postsEndpoint}/${file.rId}`} target="_blank" rel="noopener noreferrer">
+          <Tooltip
+            title="查看显示在聚合站上的文章（聚合站抓取文章需要时间，如果文章还没有被抓取到，请耐心等待几分钟）"
+            placement="top"
+          >
+            <a
+              href={`${postsEndpoint}/posts/${file.rId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <IconButton className="push-right-xs">
                 <OpenInNewIcon />
               </IconButton>

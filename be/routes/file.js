@@ -5,7 +5,7 @@ const {
   remove,
   update,
   get
-} = require('../controllers/file');
+} = require('../controllers/apiFile');
 const {
   ensureAuthorization
 } = require('../models/api');

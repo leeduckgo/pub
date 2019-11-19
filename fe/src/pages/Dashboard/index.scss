@@ -1,213 +1,104 @@
-@import '../../style/base.scss';
+@import '../../style/variables.scss';
 
-.p-dashboard {
-  min-width: 850px;
+.p-dashboard-main {
+  align-self: center;
+  width: 100%;
 
-  &-nav {
-    width: 267px;
-    min-height: 100vh;
+  &-head {
+    padding: 0 24px;
+    height: 84px;
 
-    &-ul {
-      padding: 0;
+    &-title {
+      font-size: 24px;
+      font-weight: 600;
+    }
 
-      &-title {
-        padding: 10px 20px;
-        font-size: 12px;
+    .import-btn {
+      margin-right: 15px;
+      background: none !important;
+      border: 1px solid #88AE18 !important;
+
+      .MuiButton-label {
+        color: #88AE18;
       }
     }
 
-    &-li {
-      list-style: none;
+    .create-btn {
+      border: 1px solid #88AE18 !important;
+    }
+  }
 
-      &-icon {
-        width: 16px;
-        height: 16px;
-        margin-right: 8px;
+  &-table {
+    box-sizing: border-box;
+    max-height: calc(100vh - 84px);
+    padding: 0 24px 24px;
+    overflow: scroll;
+
+    .title {
+      max-width: 360px;
+      word-break: break-word;
+    }
+
+    span.draft {
+      display: inline-block;
+      padding: 2px 5px;
+      color: #ad26b4;
+      background: rgba(173, 38, 180, .2);
+      border-radius: 3px;
+      min-width: 10px;
+      font-size: 13px;
+    }
+
+    span.pending {
+      display: inline-block;
+      padding: 2px 5px;
+      background: #e5eff5;
+      color: #738a94;
+      border-radius: 3px;
+      min-width: 10px;
+      font-size: 13px;
+    }
+
+    span.published {
+      display: inline-block;
+      padding: 2px 5px;
+      background-color: $green-light-color;
+      color: $white-color;
+      border-radius: 3px;
+      min-width: 10px;
+      font-size: 13px;
+    }
+
+    .edit-button {
+      background-color: $blue-color;
+      margin-right: 20px;
+      color: $white-color;
+
+      &:hover {
+        background-color: $blue-color;
       }
     }
 
-    &-link {
-      padding: 6px 32px;
-      color: $title-color;
-      transition: none;
-      margin: 2px 5px;
-      background-color: $gray-lighter-color;
+    .redirect-button {
+      background-color: $green-color;
+      margin-right: 20px;
+      color: $white-color;
+    }
 
-      .MuiSvgIcon-root {
-        width: 14px;
-        height: 14px;
+    .delete-button {
+      background-color: $red-color;
+      margin-right: 20px;
+      color: $white-color;
 
-        .MuiPaper-elevation1 {
-          border-radius: 5px;
-          box-shadow: 0 0 1px rgba(0, 0, 0, .12), 0 1px 6px rgba(0, 0, 0, .03), 0 6px 10px -8px rgba(0, 0, 0, .1);
-          overflow: hidden;
-        }
+      &:hover {
+        background-color: $red-color;
       }
     }
 
     &-button {
-      box-sizing: content-box !important;
-      height: 36px !important;
-      padding: 10px 15px 10px 20px !important;
-      margin: 12px 5px 24px !important;
-      text-transform: none !important;
-    }
-
-    &-img {
-      height: 34px;
-      border-radius: 100%;
-      margin-right: 8px;
-      border: 1px solid $gray-lighter-color2;
-    }
-
-    &-info {
-      width: 160px;
-      font-weight: 600;
-
-      &-name {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      &-icon {
-        width: 20px !important;
-        height: 20px !important;
-      }
-
-      .MuiSvgIcon-root {
-        width: 14px;
-        height: 14px;
-      }
-    }
-  }
-
-  &-main {
-    background-color: #F2F4F7;
-    width: 150px;
-    height: 100vh;
-    flex-grow: 1;
-
-    &-head {
-      padding: 0 24px;
-      height: 84px;
-
-      &-title {
-        font-size: 24px;
-        font-weight: 600;
-      }
-    }
-
-    &-table {
-      box-sizing: border-box;
-      max-height: calc(100vh - 84px);
-      padding: 0 24px 24px;
-      overflow: scroll;
-
-      .title {
-        max-width: 360px;
-        word-break: break-word;
-      }
-
-      span.draft {
-        display: inline-block;
-        padding: 2px 5px;
-        color: #ad26b4;
-        background: rgba(173, 38, 180, .2);
-        border-radius: 3px;
-        min-width: 10px;
-        font-size: 13px;
-      }
-
-      span.pending {
-        display: inline-block;
-        padding: 2px 5px;
-        background: #e5eff5;
-        color: #738a94;
-        border-radius: 3px;
-        min-width: 10px;
-        font-size: 13px;
-      }
-
-      span.published {
-        display: inline-block;
-        padding: 2px 5px;
-        background-color: $green-light-color;
-        color: $white-color;
-        border-radius: 3px;
-        min-width: 10px;
-        font-size: 13px;
-      }
-
-      .edit-button {
-        background-color: $blue-color;
-        margin-right: 20px;
-        color: $white-color;
-
-        &:hover {
-          background-color: $blue-color;
-        }
-      }
-
-      .redirect-button {
-        background-color: $green-color;
-        margin-right: 20px;
-        color: $white-color;
-
-        &:hover {
-          background-color: $green-color;
-        }
-      }
-
-      .delete-button {
-        background-color: $red-color;
-        margin-right: 20px;
-        color: $white-color;
-
-        &:hover {
-          background-color: $red-color;
-        }
-      }
-
-      &-button {
-        background: linear-gradient($green-light-color, $green-color);
-        font-weight: 500;
-        color: white !important;
-      }
-    }
-  }
-
-  &-popover {
-    .MuiPaper-root {
-      width: 235px;
-    }
-  }
-
-  .MuiPaper-elevation1 {
-    border-radius: 5px;
-    box-shadow: 0 0 1px rgba(0, 0, 0, .12), 0 1px 6px rgba(0, 0, 0, .03), 0 6px 10px -8px rgba(0, 0, 0, .1);
-  }
-
-  .MuiTableRow-head {
-    background-color: #F8FAFC;
-  }
-
-  .MuiTableCell-root {
-    border-bottom-color: #e5eff5;
-    padding: 12px 40px 12px 25px;
-
-    &:last-child {
-      padding-right: 25px;
-    }
-  }
-
-  .MuiTableCell-head {
-    padding: 12px 40px 12px 25px;
-  }
-
-  .MuiTableRow-root {
-    &.MuiTableRow-hover:hover {
-      background: #f8fafc;
+      background: linear-gradient($green-light-color, $green-color);
+      font-weight: 500;
+      color: white !important;
     }
   }
 }

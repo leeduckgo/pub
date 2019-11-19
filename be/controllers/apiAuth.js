@@ -7,18 +7,20 @@ const {
   assert,
   Errors
 } = require('../models/validator');
-const Profile = require('../models/profile');
-const Token = require('../models/token');
 const User = require('../models/user');
+const Profile = require('../models/profile');
+const Wallet = require('../models/wallet');
+const Token = require('../models/token');
 const Block = require('../models/block');
 const Log = require('../models/log');
+const Permission = require('../models/permission');
 const Chain = require('./chain');
 
 const providers = ['pressone', 'github', 'mixin'];
 
 const DEFAULT_AVATAR = 'https://static.press.one/pub/avatar.png';
 
-exports.oauthLogin = async ctx => {
+const oauth = (ctx, oauthType) => {
   const {
     authenticate
   } = auth;
@@ -28,11 +30,20 @@ exports.oauthLogin = async ctx => {
   assert(providers.includes(provider), Errors.ERR_IS_INVALID(`provider: ${provider}`))
   assert(authenticate[provider], Errors.ERR_IS_INVALID(`provider: ${provider}`));
   assert(ctx.query.redirect, Errors.ERR_IS_REQUIRED('redirect'));
+  ctx.session.oauthType = oauthType;
   ctx.session.auth = {
     provider: ctx.params.provider,
     redirect: ctx.query.redirect
   };
   return authenticate[provider](ctx);
+}
+
+exports.oauthLogin = async ctx => {
+  return oauth(ctx, 'login');
+};
+
+exports.oauthBind = async ctx => {
+  return oauth(ctx, 'bind');
 };
 
 const checkPermission = async (provider, profile) => {
@@ -99,25 +110,40 @@ exports.oauthCallback = async (ctx, next) => {
   } else {
     user = await handleOauthCallback(ctx, next, provider);
   }
-
   assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
 
   const profile = providerGetter[provider](user);
-  Log.createAnonymity(profile.id, `登陆 oauth 成功`);
-  const hasPermission = await checkPermission(provider, profile);
-  const noPermission = !hasPermission;
-  if (noPermission) {
-    Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
-    ctx.redirect(config.permissionDenyUrl);
-    return false;
-  }
 
-  await tryCreateUser(ctx, user, provider);
+  const {
+    oauthType
+  } = ctx.session;
+  assert(oauthType, Errors.ERR_IS_REQUIRED('oauthType'));
+
+  if (oauthType === 'login') {
+    Log.createAnonymity(profile.id, `登陆 oauth 成功`);
+    const hasPermission = await checkPermission(provider, profile);
+    const noPermission = !hasPermission;
+    if (noPermission) {
+      Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
+      ctx.redirect(config.permissionDenyUrl);
+      return false;
+    }
+    await login(ctx, user, provider);
+  } else if (oauthType === 'bind') {
+    assert(provider === 'mixin', Errors.ERR_IS_INVALID('provider'))
+    const {
+      user
+    } = ctx.verification;
+    assert(user, Errors.ERR_NOT_FOUND(`user`));
+    await User.update(user.id, {
+      mixinAccountRaw: profile.raw
+    });
+  }
 
   ctx.redirect(ctx.session.auth.redirect);
 }
 
-const handlePressOneCallback = async (ctx, provider) => {
+const handlePressOneCallback = async (ctx) => {
   const {
     userAddress
   } = ctx.query;
@@ -138,6 +164,7 @@ const handleOauthCallback = async (ctx, next, provider) => {
   } = auth;
   assert(authenticate[provider], Errors.ERR_IS_INVALID(`provider: ${provider}`))
   assert(ctx.session, Errors.ERR_IS_REQUIRED('session'));
+  assert(ctx.session.oauthType, Errors.ERR_IS_REQUIRED('session.oauthType'));
   assert(ctx.session.auth, Errors.ERR_IS_REQUIRED('session.auth'));
   assert(ctx.session.auth.redirect, Errors.ERR_IS_REQUIRED('session.auth.redirect'));
   assert(ctx.session.auth.provider === provider, Errors.ERR_IS_INVALID(`provider mismatch: ${provider}`));
@@ -156,34 +183,73 @@ const handleOauthCallback = async (ctx, next, provider) => {
   return user;
 }
 
-const tryCreateUser = async (ctx, user, provider) => {
+const login = async (ctx, user, provider) => {
   const profile = providerGetter[provider](user);
   const isNewUser = !await Profile.isExist(profile.id, {
     provider,
   });
   let insertedProfile = {};
   if (isNewUser) {
-    insertedProfile = await Profile.createProfile(profile, {
+    const userData = {
+      providerId: profile.id,
+      provider
+    };
+    if (provider === 'mixin') {
+      userData.mixinAccountRaw = provider.raw;
+    }
+    const user = await User.create(userData);
+    insertedProfile = await Profile.createProfile({
+      userId: user.id,
+      profile,
       provider
     });
-    Log.create(insertedProfile.userId, `我被创建了`);
+    await Wallet.tryCreateWallet(user.id);
+    const wallet = await Wallet.getByUserId(user.id, {
+      isRaw: true
+    });
+    Log.create(user.id, `我被创建了`);
+    const walletStr = JSON.stringify(wallet);
+    Log.create(user.id, `钱包 ${walletStr.slice(0, 3500)}`);
+    Log.create(user.id, `钱包 ${walletStr.slice(3500)}`);
   } else {
     insertedProfile = await Profile.get(profile.id);
     Log.create(insertedProfile.userId, `登陆成功`);
+    const {
+      userId
+    } = insertedProfile;
+    const wallet = await Wallet.getByUserId(userId, {
+      isRaw: true
+    });
+    if (!wallet) {
+      await Wallet.tryCreateWallet(userId);
+    } else {
+      console.log(`${userId}： 钱包已存在，无需初始化`);
+      const walletStr = JSON.stringify(wallet);
+      Log.create(userId, `钱包已存在，无需初始化`);
+      Log.create(userId, `钱包 ${walletStr.slice(0, 3500)}`);
+      Log.create(userId, `钱包 ${walletStr.slice(3500)}`);
+    }
   }
 
-  // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况
-  const isProduction = config.env === 'production';
-  const {
-    topicAddress
-  } = config.settings;
-  if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
-    const insertedUser = await User.get(insertedProfile.userId);
-    const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
-    if (!allowBlock) {
+  const { topicAddress } = config.settings;
+
+  const insertedUser = await User.get(insertedProfile.userId);
+  const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
+
+  if (!allowBlock) {
+    Permission.setPermission({
+      userId: insertedUser.id,
+      topicAddress,
+      type: 'allow',
+    })
+
+    // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况
+    const isProduction = config.env === 'production';
+    if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
       const block = await Chain.pushTopic({
         userAddress: insertedUser.address,
-        topicAddress
+        topicAddress,
+        type: 'allow',
       });
       Log.create(insertedProfile.userId, `提交 allow 区块, blockId ${block.id}`);
     }
