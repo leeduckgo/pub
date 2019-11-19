@@ -6,7 +6,7 @@ import css from 'styled-jsx/css';
 
 const style = css`
   .wallet-modal {
-    width: 840px;
+    width: 860px;
   }
   .wallet-modal-content,
   :global(.wallet-content) {

@@ -56,7 +56,7 @@ export default observer((props: any) => {
     <div className="relative text-gray-700">
       <div className="flex text-base">
         <div className="w-3/12">
-          <div className="p-8">
+          <div className="py-8 px-6">
             <div className="font-bold flex items-center text-xl">
               <span className="text-2xl mr-2 flex items-center">
                 <AccountBalanceWallet />

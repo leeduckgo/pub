@@ -6,7 +6,7 @@ import CheckCircleOutline from '@material-ui/icons/CheckCircleOutline';
 import Help from '@material-ui/icons/Help';
 import Button from 'components/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import OTPInput from 'otp-input-react';
+import PinOTPInput from 'components/PinOTPInput';
 import Loading from 'components/Loading';
 import Fade from '@material-ui/core/Fade';
 import { useStore } from 'store';
@@ -134,50 +134,47 @@ export default (props: any) => {
     return (
       <div>
         <div className="text-lg font-bold text-gray-700">请输入支付密码</div>
-        <div className="mt-5">
+        <div className="hidden md:block mt-5">
           转给 <span className="font-bold">{mixinAccount.full_name}</span>
           <div className="text-gray-500 text-xs">{mixinAccount.identity_number}</div>
         </div>
-        <div className="mt-3 text-xs pb-1">
+        <div className="mt-6 md:mt-3 text-xs pb-1">
           <span className="font-bold text-xl">{amount}</span> {currency}
         </div>
         <div className="mt-5 text-gray-800">
           {!isPaid && !paying && (
             <div>
-              <div>
-                <OTPInput
-                  inputClassName="border border-gray-400 rounded opt-input"
-                  value={pin}
-                  onChange={onOtpChange}
-                  autoFocus
-                  OTPLength={6}
-                  otpType="number"
-                  secure
-                />
-                <style jsx global>{`
-                  .opt-input {
-                    margin: 0 2px !important;
-                  }
-                `}</style>
-              </div>
-              <div className="mt-4 text-xs text-blue-400 cursor-pointer" onClick={() => setStep(1)}>
+              <PinOTPInput value={pin} onChange={onOtpChange} />
+              <div
+                className="mt-4 text-sm md:text-xs text-blue-400 cursor-pointer"
+                onClick={() => {
+                  setPin('');
+                  setStep(1);
+                }}
+              >
                 返回
               </div>
             </div>
           )}
         </div>
         {!isPaid && paying && (
-          <div className="pt-2 mx-2 px-20 pb-2">
+          <div className="fixed-width text-center md:px-6 pt-2 pb-2">
             <Loading size={38} />
           </div>
         )}
         {isPaid && (
-          <div className="-mt-3 px-20 ml-1 mr-1 text-5xl text-blue-400">
+          <div className="fixed-width text-center md:px-6 -mt-3 text-5xl text-blue-400">
             <Fade in={true} timeout={500}>
               <CheckCircleOutline />
             </Fade>
           </div>
         )}
+        <style jsx>{`
+          .fixed-width {
+            width: 168px;
+            box-sizing: content-box;
+          }
+        `}</style>
       </div>
     );
   };
