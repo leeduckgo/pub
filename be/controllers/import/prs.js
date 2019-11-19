@@ -22,10 +22,32 @@ const fetchPressOnePost = async id => {
   const title = file.cache.title
   const cacheUrl = file.cache.cacheUrl
 
-  const fileContent = await request({
+  let fileContent = await request({
     timeout: 10000,
     url: cacheUrl,
   })
+
+  const images = fileContent.match(/\(prs:\/\/file\?rId=(.+?)\)/g)
+
+  if (images) {
+    const imageIds = Array.from(images).map((image) => {
+      const imageId = image.match(/\(prs:\/\/file\?rId=(.+?)\)/)[1]
+      return imageId
+    })
+
+    const imageData = await request({
+      timeout: 10000,
+      url: `https://press.one/api/v2/blocks/${imageIds.join(',')}?withDetail=true`,
+      json: true,
+    })
+
+    Array.from(images).forEach((image, i) => {
+      const dataItem = imageData[i]
+      if (dataItem && dataItem.url) {
+        fileContent = fileContent.replace(image, `(${dataItem.url})`)
+      }
+    })
+  }
 
   return {
     title,
