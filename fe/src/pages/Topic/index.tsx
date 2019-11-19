@@ -148,7 +148,7 @@ export default observer(() => {
       .finally(() => {
         setAllowLoading(false);
       });
-  }, [allowPage, reloadState]);
+  }, [allowData, denyPage, allowPage, reloadState]);
 
   useEffect(() => {
     setDenyLoading(true);
@@ -167,7 +167,7 @@ export default observer(() => {
       .finally(() => {
         setDenyLoading(false);
       });
-  }, [denyPage, reloadState]);
+  }, [denyData, denyPage, reloadState]);
 
   const handleConfirmChangeUserPermission = async () => {
     const typeMap = {

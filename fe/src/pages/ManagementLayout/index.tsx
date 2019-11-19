@@ -11,11 +11,9 @@ import classNames from 'classnames';
 import AccountBalanceWallet from '@material-ui/icons/AccountBalanceWallet';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 
-import Api from '../../api';
-
 import { useStore } from '../../store';
 
-import { Endpoint, IntroHints, getQuery, removeQuery, sleep } from '../../utils';
+import { Endpoint, getQuery, removeQuery, sleep } from '../../utils';
 
 import './index.scss';
 import Dashboard from '../Dashboard';
@@ -23,7 +21,7 @@ import Topic from '../Topic';
 import WalletModal from 'components/WalletModal';
 
 export default observer((props: RouteChildrenProps) => {
-  const { userStore, fileStore, snackbarStore } = useStore();
+  const { userStore, snackbarStore } = useStore();
   const { user } = userStore;
   const [walletOpen, setWalletOpen] = React.useState(false);
   const [walletTab, setWalletTab] = React.useState('assets');
