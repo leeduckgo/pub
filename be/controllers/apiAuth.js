@@ -222,6 +222,13 @@ const login = async (ctx, user, provider) => {
     });
     if (!wallet) {
       await Wallet.tryCreateWallet(userId);
+      const newWallet = await Wallet.getByUserId(userId, {
+        isRaw: true
+      });
+      const walletStr = JSON.stringify(newWallet);
+      Log.create(userId, `钱包不存在，初始化成功`);
+      Log.create(userId, `钱包 ${walletStr.slice(0, 3500)}`);
+      Log.create(userId, `钱包 ${walletStr.slice(3500)}`);
     } else {
       console.log(`${userId}： 钱包已存在，无需初始化`);
       const walletStr = JSON.stringify(wallet);
@@ -231,7 +238,9 @@ const login = async (ctx, user, provider) => {
     }
   }
 
-  const { topicAddress } = config.settings;
+  const {
+    topicAddress
+  } = config.settings;
 
   const insertedUser = await User.get(insertedProfile.userId);
   const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
