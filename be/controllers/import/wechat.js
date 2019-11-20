@@ -1,9 +1,14 @@
 const crypto = require('crypto')
-const { JSDOM } = require('jsdom');
+const {
+  JSDOM
+} = require('jsdom');
 const request = require('request-promise');
 const TurndownService = require('turndown')
 // const { Config, QingStor } = require('qingstor-sdk');
-const { Config, QingStor } = require('qingstor-sdk/dist/node/qingstor-sdk.js');
+const {
+  Config,
+  QingStor
+} = require('qingstor-sdk/dist/node/qingstor-sdk.js');
 const {
   throws,
   Errors,
@@ -93,7 +98,7 @@ const fetchWechatPost = async url => {
           'body': imageBuffer,
         })
 
-        if (response.status !== 200) {
+        if (response.status >= 300) {
           throw new Error('upload wechat post image put object failed')
         }
 
