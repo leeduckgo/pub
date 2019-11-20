@@ -63,6 +63,15 @@ a {
   }
 }
 
+/************************************** OL, UL STYLES **************************************/
+ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: disc;
+}
+
 /************************************** MODAL STYLES **************************************/
 .modal-content {
   border-radius: 5px;
