@@ -1,117 +1,118 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <title>...</title>
-  <style>
-    .index-loading-content {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      overflow: hidden;
-      top: 0;
-      bottom: 0;
-      position: absolute;
-      width: 100%;
-      justify-content: center;
-      left: 0;
-    }
-
-    .index-loading-content.basic-auth {
-      z-index: 1000
-    }
-
-    .index-loading-spinner {
-      position: relative;
-      display: inline-block;
-      box-sizing: border-box;
-      margin: -2px 0;
-      width: 50px;
-      height: 50px;
-      border: 1px solid rgba(0, 0, 0, .1);
-      border-radius: 100px;
-      -webkit-animation: spin 1s linear infinite;
-      animation: spin 1s linear infinite
-    }
-
-    .index-loading-spinner:before {
-      content: "";
-      display: block;
-      margin-top: 7px;
-      width: 7px;
-      height: 7px;
-      background: #4c5156;
-      border-radius: 100px;
-      z-index: 10
-    }
-
-    @keyframes spin {
-      0% {
-        transform: rotate(0deg)
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>...</title>
+    <style>
+      .index-loading-content {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        overflow: hidden;
+        top: 0;
+        bottom: 0;
+        position: absolute;
+        width: 100%;
+        justify-content: center;
+        left: 0;
       }
 
-      to {
-        transform: rotate(1turn)
+      .index-loading-content.basic-auth {
+        z-index: 1000;
       }
-    }
-  </style>
-</head>
 
-<body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
+      .index-loading-spinner {
+        position: relative;
+        display: inline-block;
+        box-sizing: border-box;
+        margin: -2px 0;
+        width: 50px;
+        height: 50px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: 100px;
+        -webkit-animation: spin 1s linear infinite;
+        animation: spin 1s linear infinite;
+      }
 
-  <div id="root">
-    <div class="ember-load-indicator">
-      <div class="index-loading-content">
-        <div class="index-loading-spinner"></div>
+      .index-loading-spinner:before {
+        content: '';
+        display: block;
+        margin-top: 7px;
+        width: 7px;
+        height: 7px;
+        background: #4c5156;
+        border-radius: 100px;
+        z-index: 10;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(1turn);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <div id="root">
+      <div class="ember-load-indicator">
+        <div class="index-loading-content">
+          <div class="index-loading-spinner"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    window.intercomSettings = {
-      app_id: "q3uadlqf"
-    };
-  </script>
-  <script>
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-      (function () {
-        var w = window;
-        var ic = w.Intercom;
-        if (typeof ic === "function") {
-          ic('reattach_activator');
-          ic('update', w.intercomSettings);
-        } else {
-          var d = document;
-          var i = function () {
-            i.c(arguments);
-          };
-          i.q = [];
-          i.c = function (args) {
-            i.q.push(args);
-          };
-          w.Intercom = i;
-          var l = function () {
-            var s = d.createElement('script');
-            s.type = 'text/javascript';
-            s.async = true;
-            s.src = 'https://widget.intercom.io/widget/q3uadlqf';
-            var x = d.getElementsByTagName('script')[0];
-            x.parentNode.insertBefore(s, x);
-          };
-          if (w.attachEvent) {
-            w.attachEvent('onload', l);
+    <script>
+      window.intercomSettings = {
+        app_id: 'q3uadlqf',
+      };
+    </script>
+    <script>
+      if (
+        !/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      ) {
+        (function() {
+          var w = window;
+          var ic = w.Intercom;
+          if (typeof ic === 'function') {
+            ic('reattach_activator');
+            ic('update', w.intercomSettings);
           } else {
-            w.addEventListener('load', l, false);
+            var d = document;
+            var i = function() {
+              i.c(arguments);
+            };
+            i.q = [];
+            i.c = function(args) {
+              i.q.push(args);
+            };
+            w.Intercom = i;
+            var l = function() {
+              var s = d.createElement('script');
+              s.type = 'text/javascript';
+              s.async = true;
+              s.src = 'https://widget.intercom.io/widget/q3uadlqf';
+              var x = d.getElementsByTagName('script')[0];
+              x.parentNode.insertBefore(s, x);
+            };
+            if (w.attachEvent) {
+              w.attachEvent('onload', l);
+            } else {
+              w.addEventListener('load', l, false);
+            }
           }
-        }
-      })();
-    }
-  </script>
-</body>
-
+        })();
+      }
+    </script>
+    <!-- 2019-11-20 19:45 -->
+  </body>
 </html>
