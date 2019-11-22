@@ -57,7 +57,7 @@ const getMixinPaymentUrl = (options = {}) => {
 
 exports.recharge = async (data = {}) => {
   data.amount = parseAmount(data.amount);
-  data.memo = data.memo || `飞帖充值（${config.serviceKey}）`;
+  data.memo = data.memo || `飞帖充值（${config.serviceName}）`;
   const {
     userId,
     currency,
@@ -97,7 +97,7 @@ exports.recharge = async (data = {}) => {
 
 exports.withdraw = async (data = {}) => {
   data.amount = parseAmount(data.amount);
-  data.memo = data.memo || `飞帖提现（${config.serviceKey}）`;
+  data.memo = data.memo || `飞帖提现（${config.serviceName}）`;
   const {
     userId,
     currency,
