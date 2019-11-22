@@ -10,7 +10,7 @@ const {
 } = require('./validator');
 
 let io;
-const sessionKey = `${config.serviceName}_SOCKET_SESSION`;
+const sessionKey = `${config.serviceKey}_SOCKET_SESSION`;
 
 exports.EVENTS = {
   FILE_PUBLISHED: 'file_published'
@@ -68,7 +68,7 @@ exports.sendToUser = async (userId, event, data) => {
   const userSocket = await Cache.pGet(sessionKey, userKey);
   assert(userSocket, Errors.ERR_NOT_FOUND('userSocket'));
   io.to(userSocket).emit(event, data);
-  Log.create(userId, `收到提醒：event ${event}, file id: ${data.id}`);
+  Log.create(userId, `收到通知：${event}, file id: ${data.id}`);
 }
 
 exports.getSocketIo = () => io;

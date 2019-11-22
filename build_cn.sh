@@ -1,7 +1,5 @@
 cd /pressone/pub
-git reset --hard HEAD
-git pull
-git checkout release
+git checkout .
 git clean -f -d
 git pull
 

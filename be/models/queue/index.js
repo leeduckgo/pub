@@ -1,6 +1,9 @@
 const config = require('../../config');
 const BlockQueue = require('./block');
-const MixinQueue = require('./mixin');
+const {
+  createSyncMixinSnapshotsQueue,
+  createSyncInitializedQueue
+} = require('./mixin');
 const queues = [];
 
 exports.up = () => {
@@ -10,7 +13,8 @@ exports.up = () => {
   }
   if (config.mixin.sync) {
     console.log(` ------------- 队列开始同步 Mixin 交易 ---------------`);
-    queues.push(MixinQueue.create());
+    queues.push(createSyncMixinSnapshotsQueue());
+    queues.push(createSyncInitializedQueue());
   }
 }
 
