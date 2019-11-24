@@ -11,7 +11,6 @@
       padding: 0;
 
       &-title {
-        padding: 10px 20px;
         font-size: 12px;
       }
     }
@@ -95,7 +94,7 @@
     flex-grow: 1;
     align-items: stretch;
 
-    & > * {
+    &>* {
       flex: 0 0 auto;
     }
   }

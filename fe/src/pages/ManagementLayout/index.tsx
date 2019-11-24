@@ -10,6 +10,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import classNames from 'classnames';
 import AccountBalanceWallet from '@material-ui/icons/AccountBalanceWallet';
 import ExitToApp from '@material-ui/icons/ExitToApp';
+import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
 
 import { useStore } from '../../store';
 
@@ -82,8 +83,24 @@ export default observer((props: RouteChildrenProps) => {
     <div className="p-manage-layout flex po-fade-in">
       <nav className="p-manage-layout-nav flex normal column sb po-b-br po-b-black-10">
         <section className="pt-5">
+          <div className="px-5 flex items-center">
+            <div className="w-10 h-10">
+              <img
+                className="w-10 h-10"
+                src="https://xue-images.pek3b.qingstor.com/1124-logo.png"
+                alt="logo"
+              />
+            </div>
+            <span className="text-base font-bold ml-4 text-gray-700">XUE.cn 写作工具</span>
+          </div>
+          <a href="https://xue.press.one" target="_blank">
+            <div className="mt-8 mx-2 pl-8 flex items-center text-lg text-gray-600 py-2 cursor-pointer leading-none">
+              <ChromeReaderMode />
+              <span className="text-sm ml-2">阅读站点</span>
+            </div>
+          </a>
           <ul className="p-manage-layout-nav-ul">
-            <li className="p-manage-layout-nav-ul-title p-manage-layout-nav-li text-xl font-bold">
+            <li className="px-5 mt-8 p-manage-layout-nav-ul-title p-manage-layout-nav-li text-sm text-gray-700 font-bold">
               管理
             </li>
             {navList
@@ -92,13 +109,15 @@ export default observer((props: RouteChildrenProps) => {
                 <li key={item.text} className="p-manage-layout-nav-li">
                   <div
                     onClick={() => props.history.push(item.path)}
-                    className={classNames({
-                      'p-manage-layout-nav-link flex v-center po-bold po-radius-5': true,
-                      active: props.location.pathname === item.path,
-                    })}
+                    className={classNames(
+                      {
+                        'bg-gray-200': props.location.pathname === item.path,
+                      },
+                      'mx-2 pl-8 flex items-center text-lg text-gray-600 py-2 mt-1 rounded cursor-pointer leading-none',
+                    )}
                   >
-                    <item.icon className="p-manage-layout-nav-li-icon" />
-                    {item.text}
+                    <item.icon />
+                    <span className="text-sm ml-2">{item.text}</span>
                   </div>
                 </li>
               ))}
