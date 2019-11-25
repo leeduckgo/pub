@@ -51,7 +51,7 @@ const Asset = (props: any) => {
       </div>
       <div className="flex items-center">
         <span
-          className="text-blue-400 text-sm cursor-pointer p-1"
+          className="green-color text-sm cursor-pointer p-1"
           onClick={() => onTryWithdraw(asset)}
         >
           转出
@@ -86,8 +86,10 @@ export default observer((props: any) => {
 
   const fetchBalance = async () => {
     try {
+      walletStore.setIsFetchedBalance(false);
       const balance = await Api.getBalance();
       walletStore.setBalance(balance);
+      walletStore.setIsFetchedBalance(true);
     } catch (err) {}
   };
 
@@ -115,7 +117,7 @@ export default observer((props: any) => {
     <Fade in={true} timeout={500}>
       <div>
         {hasBalance && !isCustomPinExist && (
-          <div className="flex justify-between p-3 border border-blue-400 text-blue-400 bg-blue-100 flex items-center rounded mb-2 text-sm">
+          <div className="flex justify-between p-3 border border-blue-400 green-color bg-blue-100 flex items-center rounded mb-2 text-sm">
             <div className="flex items-center">
               <span className="flex items-center mr-1 text-lg">
                 <Info />
@@ -123,7 +125,7 @@ export default observer((props: any) => {
               提现之前，你需要设置支付密码哦
             </div>
             <span
-              className="text-blue-400 cursor-pointer font-bold pr-2"
+              className="green-color cursor-pointer font-bold pr-2"
               onClick={() => props.setTab('settings')}
             >
               去设置
@@ -131,7 +133,7 @@ export default observer((props: any) => {
           </div>
         )}
         {hasBalance && !mixinAccount && (
-          <div className="mt-3 flex justify-between p-3 border border-blue-400 text-blue-400 bg-blue-100 flex items-center rounded mb-2 text-sm">
+          <div className="mt-3 flex justify-between p-3 border border-blue-400 green-color bg-blue-100 flex items-center rounded mb-2 text-sm">
             <div className="flex items-center">
               <span className="flex items-center mr-1 text-lg">
                 <Info />
@@ -139,7 +141,7 @@ export default observer((props: any) => {
               提现之前，你需要绑定 Mixin 账号哦
             </div>
             <span
-              className="text-blue-400 cursor-pointer font-bold pr-2"
+              className="green-color cursor-pointer font-bold pr-2"
               onClick={() => props.setTab('mixinAccount')}
             >
               去绑定

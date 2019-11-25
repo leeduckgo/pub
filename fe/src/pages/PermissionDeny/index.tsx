@@ -22,7 +22,7 @@ export default observer(() => {
         <span className="push-top-sm po-text-18 primary-color po-bold">
           {settingStore.settings.denyText}
         </span>
-        <a className="push-top po-bold text-blue-400" href={settingStore.settings.denyActionLink}>
+        <a className="push-top po-bold green-color" href={settingStore.settings.denyActionLink}>
           {settingStore.settings.denyActionText}
         </a>
       </div>

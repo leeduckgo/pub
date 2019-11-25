@@ -146,7 +146,7 @@ export default (props: any) => {
             <div>
               <PinOTPInput value={pin} onChange={onOtpChange} />
               <div
-                className="mt-4 text-sm md:text-xs text-blue-400 cursor-pointer"
+                className="mt-4 text-sm md:text-xs green-color cursor-pointer"
                 onClick={() => {
                   setPin('');
                   setStep(1);
@@ -163,7 +163,7 @@ export default (props: any) => {
           </div>
         )}
         {isPaid && (
-          <div className="fixed-width text-center md:px-6 -mt-3 text-5xl text-blue-400">
+          <div className="fixed-width text-center md:px-6 -mt-3 text-5xl green-color">
             <Fade in={true} timeout={500}>
               <CheckCircleOutline />
             </Fade>

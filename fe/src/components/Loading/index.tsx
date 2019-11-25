@@ -8,7 +8,7 @@ export default function(props: any) {
       <CircularProgress size={size || 30} className="MuiCircularProgress" />
       <style jsx global>{`
         .MuiCircularProgress {
-          color: #63b3ed;
+          color: #93b719;
         }
       `}</style>
     </div>

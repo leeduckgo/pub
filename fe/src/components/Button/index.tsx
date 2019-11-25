@@ -5,7 +5,7 @@ export default (props: any) => {
 
   return (
     <button
-      className="text-white py-2 px-4 rounded font-bold text-sm outline-none bg-blue-400"
+      className="text-white py-2 px-4 rounded font-bold text-sm outline-none bg-green-color"
       onClick={() => {
         onClick && onClick();
       }}

@@ -181,7 +181,7 @@ export default observer(() => {
             </div>
           )}
           {isVerified && (
-            <div className="fixed-width flex items-center justify-center md:px-6 text-5xl text-blue-400">
+            <div className="fixed-width flex items-center justify-center md:px-6 text-5xl green-color">
               <Fade in={true} timeout={500}>
                 <CheckCircleOutline className="-mt-2" />
               </Fade>
@@ -211,7 +211,7 @@ export default observer(() => {
             </div>
           )}
           {!isCustomPinExist && (
-            <div className="p-3 border border-blue-400 text-blue-400 bg-blue-100 flex items-center rounded mb-5">
+            <div className="p-3 border border-blue-400 green-color bg-blue-100 flex items-center rounded mb-5">
               <span className="flex items-center mr-1 text-lg">
                 <Info />
               </span>

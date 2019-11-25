@@ -22,7 +22,7 @@ const Tab = (props: any) => {
       onClick={onClick}
       className={classNames(
         {
-          'bg-blue-400': isActive,
+          'bg-green-color': isActive,
           'text-white': isActive,
           'text-gray-700': !isActive,
         },
@@ -68,7 +68,7 @@ export default observer((props: any) => {
                 <span className="text-lg mr-2 flex items-center">
                   <AccountBalanceWalletRounded />
                 </span>
-                资产
+                写作收入资产
               </Tab>
               <Tab tab={tab} thisTab="settings" onClick={() => setTab('settings')}>
                 <Badge
@@ -118,7 +118,7 @@ export default observer((props: any) => {
                 <span className="text-2xl mr-2 flex items-center">
                   <AccountBalanceWalletRounded />
                 </span>
-                资产
+                写作收入资产
               </div>
               <div className="mt-4">
                 <Assets setTab={setTab} />

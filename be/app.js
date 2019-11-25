@@ -8,6 +8,7 @@ const logger = require('koa-logger');
 const cors = require('@koa/cors');
 const config = require('./config');
 const session = require('koa-session');
+const fs = require('fs');
 
 const index = require('./routes/index');
 const user = require('./routes/user');
@@ -59,6 +60,11 @@ router.use('/api/ping', ping.routes(), ping.allowedMethods());
 router.use('/api/webhook', webhook.routes(), webhook.allowedMethods());
 router.use('/api/settings', settings.routes(), settings.allowedMethods());
 router.use('/api/import', importRoute.routes(), importRoute.allowedMethods());
+
+router.get('/api/session.json', async ctx => {
+  const session = fs.readFileSync('session.json', 'utf8')
+  ctx.ok(session);
+});
 
 app.use(router.routes(), router.allowedMethods());
 
