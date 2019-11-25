@@ -11,6 +11,8 @@ import classNames from 'classnames';
 import AccountBalanceWallet from '@material-ui/icons/AccountBalanceWallet';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import ChromeReaderMode from '@material-ui/icons/ChromeReaderMode';
+import Tooltip from '@material-ui/core/Tooltip';
+import Help from '@material-ui/icons/Help';
 
 import { useStore } from '../../store';
 
@@ -91,14 +93,29 @@ export default observer((props: RouteChildrenProps) => {
                 alt="logo"
               />
             </div>
-            <span className="text-base font-bold ml-4 text-gray-700">XUE.cn 写作工具</span>
+            <span className="text-base font-bold ml-4 text-gray-700 flex items-center">
+              XUE.cn 写作站
+              <Tooltip
+                placement="right"
+                title="我们帮你把文章发布到区块链，之后会有不同的阅读站点把你的文章呈现给读者，这是去中心化的模式，一键发布，多端阅读"
+              >
+                <Help className="ml-1 text-gray-600" />
+              </Tooltip>
+            </span>
           </div>
-          <a href="https://xue.press.one" target="_blank">
-            <div className="mt-8 mx-2 pl-8 flex items-center text-lg text-gray-600 py-2 cursor-pointer leading-none">
-              <ChromeReaderMode />
-              <span className="text-sm ml-2">阅读站点</span>
-            </div>
-          </a>
+          <div className="mt-8 mx-2 pl-8 flex items-center leading-none">
+            <a href="https://xue.press.one" target="_blank">
+              <Tooltip
+                placement="right"
+                title="阅读站可以有很多个，是去中心化的，这只是其中一个。你的文章将会被不同的阅读站聚合，给千千万万的读者阅读并打赏"
+              >
+                <div className="flex items-center text-lg text-gray-600 py-2">
+                  <ChromeReaderMode />
+                  <span className="text-sm ml-2">阅读站</span>
+                </div>
+              </Tooltip>
+            </a>
+          </div>
           <ul className="p-manage-layout-nav-ul">
             <li className="px-5 mt-8 p-manage-layout-nav-ul-title p-manage-layout-nav-li text-sm text-gray-700 font-bold">
               管理

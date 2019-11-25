@@ -91,7 +91,7 @@ export default observer((props: any) => {
         )}
         {isPublished ? (
           <Tooltip
-            title="查看显示在聚合站上的文章（聚合站抓取文章需要时间，如果文章还没有被抓取到，请耐心等待几分钟）"
+            title="查看显示在阅读站上的文章（阅读站抓取文章需要时间，如果文章还没有被抓取到，请耐心等待几分钟）"
             placement="top"
           >
             <a
@@ -156,7 +156,7 @@ export default observer((props: any) => {
             >
               <MenuItem>
                 <Tooltip
-                  title="删除的文章大概 5 分钟之后会从聚合站消失"
+                  title="删除的文章大概 5 分钟之后会从阅读站消失"
                   placement="left"
                   disableHoverListener={!isPublished}
                 >
