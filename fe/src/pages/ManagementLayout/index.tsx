@@ -24,7 +24,7 @@ import Topic from '../Topic';
 import WalletModal from 'components/WalletModal';
 
 export default observer((props: RouteChildrenProps) => {
-  const { userStore, snackbarStore } = useStore();
+  const { userStore, snackbarStore, settingStore } = useStore();
   const { user } = userStore;
   const [walletOpen, setWalletOpen] = React.useState(false);
   const [walletTab, setWalletTab] = React.useState('assets');
@@ -104,7 +104,7 @@ export default observer((props: RouteChildrenProps) => {
             </span>
           </div>
           <div className="mt-8 mx-2 pl-8 flex items-center leading-none">
-            <a href="https://xue.press.one" target="_blank">
+            <a href={settingStore.settings.postsEndpoint} target="_blank">
               <Tooltip
                 placement="right"
                 title="阅读站可以有很多个，是去中心化的，这只是其中一个。你的文章将会被不同的阅读站聚合，给千千万万的读者阅读并打赏"

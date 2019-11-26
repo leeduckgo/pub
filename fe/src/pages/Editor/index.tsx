@@ -35,7 +35,7 @@ interface File {
 }
 
 export default observer((props: any) => {
-  const { userStore, fileStore, snackbarStore } = useStore();
+  const { userStore, fileStore, snackbarStore, settingStore } = useStore();
 
   if (userStore.isFetched && !userStore.isLogin) {
     setTimeout(() => {
@@ -317,7 +317,7 @@ export default observer((props: any) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="po-bold green-color"
-                  href="https://xue.press.one/posts/2517ef4198d224d4396e98df12c86a5af117a84275f1d69e4ab471fb8384f220"
+                  href={settingStore.settings.rulePostUrl}
                 >
                   发布规则
                 </a>

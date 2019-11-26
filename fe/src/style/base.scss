@@ -202,7 +202,7 @@ div[role="tooltip"] div {
 
 .introjs-hint,
 .introjs-fixedTooltip {
-  z-index: 9999999999;
+  z-index: 9;
 }
 
 /************************************** LIST ITEM STYLES **************************************/
@@ -215,6 +215,7 @@ div[role="tooltip"] div {
   transform: scale(0.7) !important;
   bottom: 2px !important;
   right: 2px !important;
+  z-index: 1 !important;
 }
 
 

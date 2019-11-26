@@ -237,19 +237,21 @@ export default observer(() => {
           <Info />
           <span className="text-xs ml-1">支付密码将用于支付和提现，请牢牢记住哦</span>
         </div>
-        <Modal open={openModal} onClose={() => onCloseModal()}>
-          <div className="flex justify-center items-center h-screen">
-            <div className="p-8 bg-white rounded text-center mx-5">
-              <div className="text-lg font-bold text-gray-700 pb-5">
-                {isCustomPinExist ? '重置' : '设置'}支付密码
-              </div>
-              {step === 1 && step1()}
-              {step === 2 && step2()}
-              {step === 3 && step3()}
-              {isMobile && errMessage && (
-                <div className="text-xs text-center text-red-400 mt-2">{errMessage}</div>
-              )}
+        <Modal
+          open={openModal}
+          onClose={() => onCloseModal()}
+          className="flex justify-center items-center"
+        >
+          <div className="p-8 bg-white rounded text-center mx-5">
+            <div className="text-lg font-bold text-gray-700 pb-5">
+              {isCustomPinExist ? '重置' : '设置'}支付密码
             </div>
+            {step === 1 && step1()}
+            {step === 2 && step2()}
+            {step === 3 && step3()}
+            {isMobile && errMessage && (
+              <div className="text-xs text-center text-red-400 mt-2">{errMessage}</div>
+            )}
           </div>
         </Modal>
         <style jsx>{`

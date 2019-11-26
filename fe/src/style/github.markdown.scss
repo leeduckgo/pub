@@ -1,5 +1,6 @@
 .editor-preview {
-  padding: 20px;
+  padding: 20px !important;
+  background: #fff !important;
 }
 
 .markdown-body,
@@ -8,8 +9,16 @@
   letter-spacing: .034em;
   word-break: break-word;
 
+  & p:last-child {
+    margin-bottom: 0;
+  }
+
+  img {
+    display: none;
+  }
+
   p {
-    margin-bottom: 20px !important;
+    margin-bottom: 20px;
 
     img {
       max-width: 100%;
@@ -258,12 +267,17 @@
   }
 
   h1,
+  h2 {
+    border-bottom: 1px solid lightgrey;
+    padding-bottom: 10px;
+  }
+
+  h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    margin-top: 0;
     margin-bottom: 0;
   }
 
@@ -303,7 +317,12 @@
   }
 
   blockquote {
+    font-size: 16px;
     margin: 0;
+
+    & p:last-child {
+      margin-bottom: 0;
+    }
   }
 
   ul,
@@ -428,9 +447,10 @@
   }
 
   blockquote {
-    padding: 0 1em;
+    padding: 1em;
     color: #6a737d;
     border-left: 0.25em solid #dfe2e5;
+    background: #f7f7f7;
   }
 
   blockquote>:first-child {
@@ -461,7 +481,7 @@
   h4,
   h5,
   h6 {
-    margin-top: 24px;
+    margin-top: 30px;
     margin-bottom: 16px;
     font-weight: 600;
     line-height: 1.25;
