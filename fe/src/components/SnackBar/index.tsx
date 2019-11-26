@@ -58,7 +58,7 @@ export default observer(() => {
           action={[
             snackbarStore.type === 'socket' ? (
               <span
-                className="po-cp"
+                className="po-cp pr-2"
                 key="redirect"
                 onClick={() => {
                   window.open(`${postsEndpoint}/posts/${snackbarStore.meta.rId}`);
@@ -66,17 +66,18 @@ export default observer(() => {
               >
                 去看看
               </span>
-            ) : null,
-            <IconButton
-              key="close"
-              aria-label="close"
-              color="inherit"
-              onClick={() => {
-                snackbarStore.close();
-              }}
-            >
-              <CloseIcon className={classes.icon} />
-            </IconButton>,
+            ) : (
+              <IconButton
+                key="close"
+                aria-label="close"
+                color="inherit"
+                onClick={() => {
+                  snackbarStore.close();
+                }}
+              >
+                <CloseIcon className={classes.icon} />
+              </IconButton>
+            ),
           ]}
         />
       </Snackbar>
