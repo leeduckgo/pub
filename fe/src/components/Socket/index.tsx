@@ -30,7 +30,7 @@ export default observer(() => {
     setTimeout(() => {
       fileStore.updateFile(data);
       snackbarStore.show({
-        message: `【${data.title}】已成功发布上链啦，您现在可以在阅读站查看这篇文章`,
+        message: `【${data.title}】已成功发布上链啦`,
         duration: 8000,
         type: 'socket',
         meta: { rId: data.rId },
