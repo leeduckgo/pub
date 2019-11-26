@@ -35,7 +35,7 @@ export default observer(() => {
         type: 'socket',
         meta: { rId: data.rId },
       });
-    }, 1000 * 90);
+    }, 1000 * 20);
   });
   socket.on('connect_error', () => {
     console.error('Socket 连接失败, 请检查队列服务是否启动？');
