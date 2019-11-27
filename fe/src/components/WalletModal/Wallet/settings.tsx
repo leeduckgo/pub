@@ -235,7 +235,7 @@ export default observer(() => {
         </div>
         <div className="hidden md:flex items-center text-gray-500 mt-2">
           <Info />
-          <span className="text-xs ml-1">支付密码将用于支付和提现，请牢牢记住哦</span>
+          <span className="text-xs ml-1">支付密码将用于提现，请牢牢记住哦</span>
         </div>
         <Modal
           open={openModal}

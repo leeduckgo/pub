@@ -104,6 +104,12 @@ export default observer((props: RouteChildrenProps) => {
             hint: '一键导入微信、PRESSone文章',
             hintPosition: 'top-left',
           },
+          {
+            element: '.p-manage-layout-nav-button',
+            hint:
+              '读者对你文章的打赏，会收集在钱包中。打开菜单，点击钱包，就可以查看你的写作收入哦',
+            hintPosition: 'top-middle',
+          },
         ];
         if (fileStore.files.length === 0) {
           hints.push({
