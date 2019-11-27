@@ -1,7 +1,6 @@
 const File = require("../models/file");
 const {
   assert,
-  throws,
   Errors
 } = require("../models/validator");
 const Log = require("../models/log");
@@ -49,9 +48,9 @@ const createFile = async (user, data, options = {}) => {
     file = await File.update(file.id, {
       rId
     });
-    Log.create(user.id, `发布内容区块 ${block.id}`);
+    Log.create(user.id, `发布文章，正在上链 ${block.id}`);
   }
-  Log.create(user.id, `创建文章 ${file.title} ，id ${file.id}`);
+  Log.create(user.id, `创建文章 ${file.title} ${file.id}`);
   return file;
 };
 exports.createFile = createFile;
@@ -83,7 +82,7 @@ exports.remove = async ctx => {
   const file = await File.get(id);
   assert(file.userId === userId, Errors.ERR_NO_PERMISSION);
   const deletedFile = await File.delete(id);
-  Log.create(file.userId, `删除文章 ${file.title}，id ${file.id}`);
+  Log.create(file.userId, `删除文章 ${file.title} ${file.id}`);
   ctx.body = deletedFile;
 };
 
@@ -123,11 +122,11 @@ exports.update = async ctx => {
         rId
       });
       updatedFile = await File.get(updatedFile.id);
-      Log.create(file.userId, `发布内容区块 ${block.id}`);
+      Log.create(file.userId, `发布草稿，正在上链 ${block.id}`);
     }
     Log.create(
       file.userId,
-      `更新文章 ${updatedFile.title}，id ${updatedFile.id}`
+      `更新草稿 ${updatedFile.title} ${updatedFile.id}`
     );
     ctx.body = {
       updatedFile
