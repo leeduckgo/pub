@@ -11,7 +11,7 @@ const fetchPressOnePost = require('./prs')
 const fetchWechatPost = require('./wechat')
 
 const pressOneLinkRegexp = /^https:\/\/press\.one\/files\/([a-f0-9]+)$/
-const wechatLinkRegexp = /^https:\/\/mp\.weixin\.qq\.com\/s\/([a-zA-Z0-9]+)$/
+const wechatLinkRegexp = /^https:\/\/mp\.weixin\.qq\.com\/s.*$/
 
 /** 从 press.one 和微信导入文章到草稿 */
 exports.postImport = async ctx => {
