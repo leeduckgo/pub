@@ -120,7 +120,6 @@ exports.oauthCallback = async (ctx, next) => {
   assert(oauthType, Errors.ERR_IS_REQUIRED('oauthType'));
 
   if (oauthType === 'login') {
-    Log.createAnonymity(profile.id, `登陆 oauth 成功`);
     const hasPermission = await checkPermission(provider, profile);
     const noPermission = !hasPermission;
     if (noPermission) {
