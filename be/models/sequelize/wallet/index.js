@@ -1,5 +1,11 @@
+const config = require('../../../wallet.config');
 const Sequelize = require('sequelize');
-const sequelize = require('./');
+const db = config.db;
+
+const sequelize = new Sequelize(db.database, db.user, db.password, {
+  host: db.host,
+  dialect: db.dialect
+});
 
 const Wallet = sequelize.define('wallets', {
   id: {
@@ -7,9 +13,11 @@ const Wallet = sequelize.define('wallets', {
     primaryKey: true,
     autoIncrement: true
   },
+  type: {
+    type: Sequelize.STRING(24)
+  },
   userId: {
-    type: Sequelize.BIGINT,
-    unique: true
+    type: Sequelize.BIGINT
   },
   customPin: {
     type: Sequelize.STRING,
@@ -32,11 +40,13 @@ const Wallet = sequelize.define('wallets', {
   },
   mixinAccount: {
     type: Sequelize.TEXT
-  }
+  },
+  version: {
+    type: Sequelize.TINYINT(1),
+  },
 }, {
   timestamps: true,
-  charset: 'utf8',
-  collate: 'utf8_general_ci'
+  charset: 'utf8mb4'
 });
 
 Wallet.sync();

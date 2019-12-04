@@ -125,7 +125,6 @@ const packBlock = block => {
 exports.pushFile = async (file, options = {}) => {
   const user = await User.get(file.userId, {
     withKeys: true,
-    withWallet: true,
   });
   const {
     updatedFile

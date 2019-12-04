@@ -68,9 +68,8 @@ exports.recharge = async (data = {}) => {
   assert(userId, Errors.ERR_IS_REQUIRED("userId"));
   assert(currency, Errors.ERR_IS_REQUIRED("currency"));
   assert(amount, Errors.ERR_IS_REQUIRED("amount"));
-  const wallet = await Wallet.getByUserId(userId);
-  assert(wallet, Errors.ERR_NOT_FOUND("user wallet"));
-  assertFault(wallet.mixinClientId, Errors.ERR_WALLET_STATUS);
+  const mixinClientId = await Wallet.getMixinClientIdByUserId(userId);
+  assertFault(mixinClientId, Errors.ERR_WALLET_STATUS);
   const user = await User.get(userId, {
     withProfile: true
   });
@@ -83,11 +82,11 @@ exports.recharge = async (data = {}) => {
     status: "INITIALIZED",
     provider: "MIXIN",
     memo,
-    toProviderUserId: wallet.mixinClientId
+    toProviderUserId: mixinClientId
   });
   assertFault(receipt, Errors.ERR_RECEIPT_FAIL_TO_INIT);
   const paymentUrl = getMixinPaymentUrl({
-    toMixinClientId: wallet.mixinClientId,
+    toMixinClientId: mixinClientId,
     asset: currencyMapAsset[receipt.currency],
     amount: parseAmount(amount),
     trace: receipt.uuid,
@@ -106,7 +105,7 @@ exports.withdraw = async (data = {}) => {
     memo = "飞帖提现"
   } = data;
   assert(amount, Errors.ERR_IS_INVALID("amount"));
-  const wallet = await Wallet.getByUserId(userId);
+  const wallet = await Wallet.getRawByUserId(userId);
   assert(wallet, Errors.ERR_NOT_FOUND("user wallet"));
   assertFault(wallet.mixinClientId, Errors.ERR_WALLET_STATUS);
   // @todo: 检查最大交易限额
@@ -234,7 +233,7 @@ const transfer = async (data = {}) => {
 
 const getBalanceByUserId = async (userId, currency) => {
   assert(userId, Errors.ERR_IS_REQUIRED('userId'));
-  const wallet = await Wallet.getByUserId(userId);
+  const wallet = await Wallet.getRawByUserId(userId);
   const resp = await getAsset({
     currency,
     clientId: wallet.mixinClientId,
@@ -364,8 +363,8 @@ const tryCreateRewardReceipt = async (uuid, data) => {
     status
   } = data;
   const snapshot = JSON.parse(data.toRaw);
-  const wallet = await Wallet.getByMixinClientId(toProviderUserId);
-  const user = await User.get(wallet.userId);
+  const userId = await Wallet.getUserIdByMixinClientId(toProviderUserId);
+  const user = await User.get(userId);
   const lockKey = `${config.serviceKey}_CREATE_RECEIPT`;
   const locked = await Cache.pTryLock(lockKey, 10); // 10s
   if (locked) {
