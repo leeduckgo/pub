@@ -72,7 +72,7 @@ const getFilePayload = ({
     data.updated_file_id = `${blockTransactionId}@${blockNum}`;
   }
 
-  assert(user.mixinClientId, Errors.ERR_NOT_FOUND('user.mixinClientId'));
+  assert(user.mixinWalletClientId, Errors.ERR_NOT_FOUND('user.mixinWalletClientId'));
 
   const payload = {
     user_address: user.address,
@@ -81,7 +81,7 @@ const getFilePayload = ({
       uris: [getFileUrl(file)],
       mime: `${file.mimeType};charset=UTF-8`,
       encryption: "aes-256-cbc",
-      payment_url: `mixin://transfer/${user.mixinClientId}`
+      payment_url: `mixin://transfer/${user.mixinWalletClientId}`
     },
     data,
     hash: PrsUtil.hashBlockData(data),
