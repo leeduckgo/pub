@@ -75,6 +75,7 @@ exports.create = async (receipt) => {
   });
 
   receipt.amount = parseAmount(receipt.amount);
+
   assert(receipt.amount, Errors.ERR_IS_INVALID("amount"));
   assert(transferTypes.has(receipt.type), Errors.ERR_IS_INVALID("type"));
   assert(
@@ -83,13 +84,10 @@ exports.create = async (receipt) => {
   );
   assert(currencyMapAsset[receipt.currency], Errors.ERR_IS_INVALID("currency"));
 
-  console.log(` ------------- receipt.uuid ---------------`, receipt.uuid);
   receipt.uuid = receipt.uuid || uuidV1();
-  console.log(` ------------- 生成 uuid ---------------`, receipt.uuid);
   receipt.objectType = receipt.objectType || "";
 
   const newReceipt = await Receipt.create(receipt);
-  console.log(` ------------- create receipt ---------------`, packReceipt(newReceipt));
   return packReceipt(newReceipt);
 };
 

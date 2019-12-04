@@ -6,6 +6,7 @@ const {
   assert,
   Errors
 } = require('../models/validator');
+const { log } = require('../utils');
 const request = require('request-promise');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -20,8 +21,8 @@ exports.get = async id => {
   return block ? block.toJSON() : null;
 };
 
-const log = (message) => {
-  console.log(`【同步区块】: ${message}`)
+const _log = (message) => {
+  log(`【同步区块】: ${message}`)
 }
 
 exports.create = async (block) => {
@@ -80,21 +81,21 @@ exports.sync = async () => {
     }
   });
   if (!dbUnSyncBlock) {
-    log('暂时没有需要同步的区块');
+    _log('暂时没有需要同步的区块');
     return;
   }
   const unSyncBlock = dbUnSyncBlock.toJSON();
   const latestBlocks = await getBlock(unSyncBlock.id);
   const latestBlock = latestBlocks[0];
   assert(latestBlock, Errors.ERR_NOT_FOUND('latestBlock'));
-  log(`区块ID，${latestBlock.id}`)
+  _log(`区块ID，${latestBlock.id}`)
   const {
     blockNum,
     blockTransactionId
   } = latestBlock;
   const isUnSynced = !blockNum || !blockTransactionId;
   if (isUnSynced) {
-    log('区块没有 blockNum 或者 blockTransactionId，本次同步失败，开始尝试下一次...');
+    _log('区块没有 blockNum 或者 blockTransactionId，本次同步失败，开始尝试下一次...');
     return;
   }
   await Block.update({

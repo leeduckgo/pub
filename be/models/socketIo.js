@@ -4,6 +4,7 @@ const User = require('./user');
 const Cache = require('./cache');
 const config = require('../config');
 const Log = require('./log');
+const { log } = require('../utils');
 const {
   assert,
   Errors
@@ -16,12 +17,12 @@ exports.EVENTS = {
   FILE_PUBLISHED: 'file_published'
 }
 
-const log = (event, data) => {
+const _log = (event, data) => {
   if (typeof data === 'string') {
-    console.log(`【Socket IO | ${event}】： ${data}`);
+    log(`【Socket IO | ${event}】： ${data}`);
   } else {
-    console.log(`【Socket IO | ${event}】`);
-    console.log(data);
+    log(`【Socket IO | ${event}】`);
+    log(data);
   }
 };
 
@@ -38,9 +39,9 @@ exports.init = (redis, server) => {
     })
   )
   io.on('connection', socket => {
-    log('connection', 'socket 已连接');
+    _log('connection', 'socket 已连接');
     socket.on('authenticate', async userId => {
-      log('authenticate', `userId ${userId}`);
+      _log('authenticate', `userId ${userId}`);
       if (!userId) {
         socket.emit('authenticate', {
           status: 'FAILED',

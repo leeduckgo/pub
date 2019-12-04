@@ -5,7 +5,6 @@ const {
 } = require("../models/validator");
 const Log = require("../models/log");
 const Chain = require("./chain");
-// const SensitiveWordsDetector = require("../utils/sensitiveWordsDetector");
 
 exports.list = async ctx => {
   const userId = ctx.verification.user.id;
@@ -62,14 +61,6 @@ exports.create = async ctx => {
   const data = ctx.request.body.payload;
   const isDraft = ctx.query.type === "DRAFT";
   assert(data, Errors.ERR_IS_REQUIRED("data"));
-  console.log(` ------------- data.content ---------------`, data.content);
-  // const hasInvalidWord = SensitiveWordsDetector.check(data.content);
-  // if (hasInvalidWord) {
-  //   throws({
-  //     code: 400,
-  //     message: `包含敏感词，请修改后重新发布`
-  //   })
-  // }
   const file = await createFile(user, data, {
     isDraft
   });
@@ -92,14 +83,6 @@ exports.update = async ctx => {
   } = ctx.verification;
   const data = ctx.request.body.payload;
   assert(data, Errors.ERR_IS_REQUIRED("data"));
-  console.log(` ------------- data.content ---------------`, data.content);
-  // const hasInvalidWord = SensitiveWordsDetector.check(data.content);
-  // if (hasInvalidWord) {
-  //   throws({
-  //     code: 400,
-  //     message: `包含敏感词，请修改后重新发布`
-  //   })
-  // }
   const id = ~~ctx.params.id;
   const file = await File.get(id);
   assert(file.userId === user.id, Errors.ERR_NO_PERMISSION);

@@ -3,10 +3,7 @@ const {
   assert,
   Errors
 } = require('../models/validator');
-
-const log = (message) => {
-  console.log(`【同步区块】: ${message}`)
-}
+const { log } = require('../utils');
 
 exports.mediumCallback = async (ctx) => {
   const {
@@ -15,7 +12,7 @@ exports.mediumCallback = async (ctx) => {
   assert(block, Errors.ERR_IS_REQUIRED('block'));
   const dbUnSyncBlock = await Block.get(block.id);
   assert(dbUnSyncBlock, Errors.ERR_NOT_FOUND('block'));
-  log(`区块ID，${block.id}`);
+  log(`【同步区块】: 区块ID，${block.id}`);
   await Block.update(block.id, {
     blockNum: block.blockNum,
     blockTransactionId: block.blockTransactionId,

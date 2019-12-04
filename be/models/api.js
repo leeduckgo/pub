@@ -8,6 +8,7 @@ const {
 } = require('../models/validator');
 const User = require('../models/user');
 const Topic = require('../models/topic');
+const { log } = require('../utils');
 
 exports.ensureAuthorization = (options = {}) => {
   const {
@@ -68,7 +69,7 @@ exports.errorHandler = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    console.log(err);
+    log(err);
     if (
       err.status &&
       err.status >= httpStatus.BAD_REQUEST &&

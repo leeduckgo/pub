@@ -22,7 +22,6 @@ export function createFilesStore() {
       this.files = sortedFiles;
     },
     updateFile(file: any) {
-      console.log(` ------------- update file ---------------`, file);
       this.files = this.files.map(item => {
         if (+item.id === +file.id) {
           return file;
@@ -34,7 +33,6 @@ export function createFilesStore() {
       this.files[idx] = file;
     },
     addFile(file: any) {
-      console.log(` ------------- add file ---------------`, file);
       this.files.unshift(file);
     },
   } as FilesStore;

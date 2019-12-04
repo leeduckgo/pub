@@ -85,7 +85,6 @@ const generateWallet = async userId => {
     avatar_base64: config.logoBase64
   }, updateOptions);
   assertFault(mxProfileRaw, Errors.ERR_WALLET_FAIL_TO_UPDATE_AVATAR);
-  console.log(`${user.id}: 初始化钱包成功`);
 
   return aesCryptoWallet(wallet);
 };
@@ -121,7 +120,6 @@ exports.tryCreateWallet = async (userId) => {
   const existedWallet = await getByUserId(userId);
 
   if (existedWallet) {
-    console.log(`${userId}： 钱包已存在，无需初始化`);
     return user;
   }
 
@@ -138,18 +136,15 @@ exports.updateCustomPin = async (userId, pinCode, options = {}) => {
   assert(userId, Errors.ERR_IS_REQUIRED('userId'))
   assert(pinCode, Errors.ERR_IS_REQUIRED('pinCode'))
   const wallet = await getByUserId(userId);
-  console.log(` ------------- wallet.customPin ---------------`, wallet.customPin);
   if (wallet.customPin) {
     const {
       oldPinCode
     } = options;
     assert(oldPinCode, Errors.ERR_IS_REQUIRED('oldPinCode'))
     const cryptoOldPin = aesCrypto(oldPinCode, config.aesKey256);
-    console.log(` ------------- cryptoOldPin ---------------`, cryptoOldPin);
     assert(wallet.customPin === cryptoOldPin, Errors.ERR_WALLET_MISMATCH_PIN);
   }
   const cryptoPin = aesCrypto(pinCode, config.aesKey256);
-  console.log(` ------------- cryptoPin ---------------`, cryptoPin);
   await Wallet.update({
     customPin: cryptoPin,
   }, {
@@ -166,8 +161,6 @@ exports.validatePin = async (userId, pinCode) => {
   const wallet = await getByUserId(userId);
   if (wallet.customPin) {
     const cryptoPin = aesCrypto(pinCode, config.aesKey256);
-    console.log(` ------------- wallet.customPin ---------------`, wallet.customPin);
-    console.log(` ------------- cryptoPin ---------------`, cryptoPin);
     return wallet.customPin === cryptoPin;
   }
   return false;

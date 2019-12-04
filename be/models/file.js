@@ -95,12 +95,6 @@ exports.create = async (userId, data) => {
   const maybeExistedFile = await exports.getByMsghash(msghash);
   assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
   const encryptedContent = JSON.stringify(ase256cbcCrypto.encrypt(data.content));
-  const {
-    session,
-    content
-  } = JSON.parse(encryptedContent);
-  const decryptedContent = ase256cbcCrypto.decrypt(session, content);
-  console.log(` ------------- decryptedContent ---------------`, decryptedContent);
   data.content = Buffer.from(data.content, 'utf8');
   const payload = {
     ...data,
@@ -171,12 +165,6 @@ exports.update = async (id, data) => {
     const maybeExistedFile = await exports.getByMsghash(msghash);
     assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
     const encryptedContent = JSON.stringify(ase256cbcCrypto.encrypt(data.content));
-    const {
-      session,
-      content
-    } = JSON.parse(encryptedContent);
-    const decryptedContent = ase256cbcCrypto.decrypt(session, content);
-    console.log(` ------------- decryptedContent ---------------`, decryptedContent);
     payload.encryptedContent = encryptedContent;
     data.content = Buffer.from(data.content, 'utf8');
     payload.msghash = msghash;
