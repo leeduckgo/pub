@@ -207,7 +207,7 @@ const login = async (ctx, user, provider) => {
     Log.create(user.id, `钱包不存在，初始化成功`);
   } else {
     insertedProfile = await Profile.get(profile.id);
-    Log.create(insertedProfile.userId, `登陆成功`);
+    Log.create(insertedProfile.userId, `登录成功`);
     const {
       userId
     } = insertedProfile;
@@ -234,7 +234,7 @@ const login = async (ctx, user, provider) => {
       type: 'allow',
     })
 
-    // 暂时只给 mixin, github 登陆的账号授权，其他账号可以用来测试【无授权】的情况
+    // 暂时只给 mixin, github 登录的账号授权，其他账号可以用来测试【无授权】的情况
     const isProduction = config.env === 'production';
     if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
       const block = await Chain.pushTopic({

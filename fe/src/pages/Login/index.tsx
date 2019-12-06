@@ -56,7 +56,7 @@ export default observer((props: any) => {
           <div className="dark-color text-center push-top-md">第三方账号登录</div>
           <div className="flex v-center h-center push-top-md">
             {allowMixin && (
-              <Tooltip placement="top" title={'使用 Mixin 账号登陆'}>
+              <Tooltip placement="top" title={'使用 Mixin 账号登录'}>
                 <a
                   href={getLoginUrl('mixin')}
                   onClick={() => selectProvider('mixin')}
@@ -70,7 +70,7 @@ export default observer((props: any) => {
               </Tooltip>
             )}
             {allowGithub && (
-              <Tooltip placement="top" title={'使用 GitHub 账号登陆'}>
+              <Tooltip placement="top" title={'使用 GitHub 账号登录'}>
                 <a
                   href={getLoginUrl('github')}
                   onClick={() => selectProvider('github')}
@@ -84,7 +84,7 @@ export default observer((props: any) => {
               </Tooltip>
             )}
             {allowPressone && (
-              <Tooltip placement="top" title={'使用 PressOne 账号登陆'}>
+              <Tooltip placement="top" title={'使用 PressOne 账号登录'}>
                 <a
                   href={getLoginUrl('pressone')}
                   onClick={() => selectProvider('pressone')}
