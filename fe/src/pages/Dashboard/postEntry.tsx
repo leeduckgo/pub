@@ -1,5 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import classNames from 'classnames';
 import ButtonProgress from '../../components/ButtonProgress';
 
 import { Menu, MenuItem, TableRow, TableCell, Tooltip } from '@material-ui/core';
@@ -53,6 +54,10 @@ export default observer((props: any) => {
     })();
   };
 
+  const openPrsIdentity = (rId: any) => {
+    window.open(`https://press.one/public/file/v?rId=${rId}`);
+  };
+
   const { file, idx } = props;
   const { postsEndpoint } = settingStore.settings;
   const isPending = file.status === 'pending';
@@ -67,7 +72,17 @@ export default observer((props: any) => {
       </TableCell>
       <TableCell>
         <Tooltip title={FileStatusTip[file.status]} placement="top">
-          <span className={`po-semibold ${file.status}`}>{FileStatus[file.status]}</span>
+          <span
+            className={classNames(
+              {
+                'cursor-pointer': isPublished,
+              },
+              `po-semibold ${file.status}`,
+            )}
+            onClick={() => isPublished && openPrsIdentity(file.rId)}
+          >
+            {FileStatus[file.status]}
+          </span>
         </Tooltip>
       </TableCell>
       <TableCell>
