@@ -132,9 +132,13 @@ export default observer(() => {
   });
 
   useEffect(() => {
-    setAllowLoading(true);
-    Api.fetchTopicAllowedUsers({ offset: allowPage * pageLimit, limit: pageLimit })
-      .then(result => {
+    (async () => {
+      setAllowLoading(true);
+      try {
+        const result = await Api.fetchTopicAllowedUsers({
+          offset: allowPage * pageLimit,
+          limit: pageLimit,
+        });
         if (denyPage !== 0 && result.count && !result.users.length) {
           setDenyPage(0);
           return;
@@ -144,16 +148,21 @@ export default observer(() => {
           count: result.count,
           users: result.users,
         });
-      })
-      .finally(() => {
-        setAllowLoading(false);
-      });
-  }, [allowPage, reloadState]);
+      } catch (err) {
+        console.log(err);
+      }
+      setAllowLoading(false);
+    })();
+  }, [allowData, denyPage, allowPage, reloadState]);
 
   useEffect(() => {
-    setDenyLoading(true);
-    Api.fetchTopicDeniedUsers({ offset: denyPage * pageLimit, limit: pageLimit })
-      .then(result => {
+    (async () => {
+      setDenyLoading(true);
+      try {
+        const result = await Api.fetchTopicDeniedUsers({
+          offset: denyPage * pageLimit,
+          limit: pageLimit,
+        });
         if (denyPage !== 0 && result.count && !result.users.length) {
           setDenyPage(0);
           return;
@@ -163,11 +172,12 @@ export default observer(() => {
           count: result.count,
           users: result.users,
         });
-      })
-      .finally(() => {
-        setDenyLoading(false);
-      });
-  }, [denyPage, reloadState]);
+      } catch (err) {
+        console.log(err);
+      }
+      setDenyLoading(false);
+    })();
+  }, [denyPage, denyData, reloadState]);
 
   const handleConfirmChangeUserPermission = async () => {
     const typeMap = {
