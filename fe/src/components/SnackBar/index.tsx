@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default observer(() => {
-  const { snackbarStore, settingStore } = useStore();
+  const { snackbarStore, settingsStore } = useStore();
   const classes = useStyles();
   const Icon = variantIcon[snackbarStore.type === 'error' ? 'error' : 'success'];
-  const { postsEndpoint } = settingStore.settings;
+  const readerUrl = settingsStore.settings['reader.url'];
   return (
     <div>
       <Snackbar
@@ -61,7 +61,7 @@ export default observer(() => {
                 className="po-cp pr-2"
                 key="redirect"
                 onClick={() => {
-                  window.open(`${postsEndpoint}/posts/${snackbarStore.meta.rId}`);
+                  window.open(`${readerUrl}/posts/${snackbarStore.meta.rId}`);
                 }}
               >
                 去看看

@@ -18,7 +18,7 @@ export const StoreProvider = ({ children }: IProps) => {
     userStore: useLocalStore(createUserStore),
     fileStore: useLocalStore(createFilesStore),
     snackbarStore: useLocalStore(createSnackbarStore),
-    settingStore: useLocalStore(createSettingsStore),
+    settingsStore: useLocalStore(createSettingsStore),
     walletStore: useLocalStore(createWalletStore),
   };
   return <storeContext.Provider value={store}>{children}</storeContext.Provider>;

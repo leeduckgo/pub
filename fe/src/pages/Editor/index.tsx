@@ -35,7 +35,7 @@ interface File {
 }
 
 export default observer((props: any) => {
-  const { userStore, fileStore, snackbarStore, settingStore } = useStore();
+  const { userStore, fileStore, snackbarStore, settingsStore } = useStore();
 
   if (userStore.isFetched && !userStore.isLogin) {
     setTimeout(() => {
@@ -317,7 +317,7 @@ export default observer((props: any) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="po-bold green-color"
-                  href={settingStore.settings.rulePostUrl}
+                  href={settingsStore.settings['reader.rulePostUrl']}
                 >
                   发布规则
                 </a>

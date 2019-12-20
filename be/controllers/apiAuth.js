@@ -16,7 +16,7 @@ const Log = require('../models/log');
 const Permission = require('../models/permission');
 const Chain = require('./chain');
 
-const providers = ['pressone', 'github', 'mixin'];
+const providers = config.settings['auth.providers'];
 
 const DEFAULT_AVATAR = 'https://static.press.one/pub/avatar.png';
 
@@ -48,7 +48,8 @@ exports.oauthBind = async ctx => {
 
 const checkPermission = async (provider, profile) => {
   const providerId = profile.id;
-  const isInWhiteList = config.whitelist[provider].includes(~~providerId);
+  const whitelist = config.whitelist[provider];
+  const isInWhiteList = whitelist && whitelist.includes(~~providerId);
   if (isInWhiteList) {
     return true;
   }
@@ -66,6 +67,9 @@ const providerPermissionChecker = {
     const isPaidUserOfXue = await checkIsPaidUserOfXue(profile.name);
     return isPaidUserOfXue;
   },
+  pressone: async () => {
+    return true;
+  }
 };
 
 const checkIsInMixinBoxGroup = async mixinUuid => {
@@ -220,14 +224,12 @@ const login = async (ctx, user, provider) => {
     }
   }
 
-  const {
-    topicAddress
-  } = config.settings;
+  const topicAddress = config.settings['site.topicAddress'];
 
   const insertedUser = await User.get(insertedProfile.userId);
   const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
 
-  if (!allowBlock) {
+  if (topicAddress && !allowBlock) {
     Permission.setPermission({
       userId: insertedUser.id,
       topicAddress,
@@ -236,7 +238,7 @@ const login = async (ctx, user, provider) => {
 
     // 暂时只给 mixin, github 登录的账号授权，其他账号可以用来测试【无授权】的情况
     const isProduction = config.env === 'production';
-    if (topicAddress && isProduction && ['mixin', 'github'].includes(provider)) {
+    if (isProduction && ['mixin', 'github'].includes(provider)) {
       const block = await Chain.pushTopic({
         userAddress: insertedUser.address,
         topicAddress,

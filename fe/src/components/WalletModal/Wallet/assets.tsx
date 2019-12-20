@@ -5,7 +5,7 @@ import Loading from 'components/Loading';
 import Fade from '@material-ui/core/Fade';
 import Info from '@material-ui/icons/Info';
 import WithdrawModal from './withdrawModal';
-import { assets, assetIconMap } from './utils';
+import { currencyIconMap } from './utils';
 import { sleep } from 'utils';
 import Api from './api';
 
@@ -42,7 +42,7 @@ const Asset = (props: any) => {
     <div className="flex items-center justify-between py-3 px-2 border-b border-gray-300 leading-none">
       <div className="flex items-center">
         <div className="w-10 h-10">
-          <img className="w-10 h-10" src={assetIconMap[asset]} alt={asset} />
+          <img className="w-10 h-10" src={currencyIconMap[asset]} alt={asset} />
         </div>
         <div className="flex items-center ml-4">
           <span className="font-bold mr-1 text-lg">{amount}</span>
@@ -62,8 +62,9 @@ const Asset = (props: any) => {
 };
 
 export default observer((props: any) => {
-  const { userStore, walletStore, snackbarStore } = useStore();
+  const { userStore, walletStore, snackbarStore, settingsStore } = useStore();
   const { mixinAccount } = userStore.user;
+  const { settings } = settingsStore;
   const [currency, setCurrency] = React.useState('');
   const [openWithdrawModal, setOpenWithdrawModal] = React.useState(false);
   const { balance, hasBalance, isCustomPinExist } = walletStore;
@@ -148,7 +149,7 @@ export default observer((props: any) => {
             </span>
           </div>
         )}
-        {assets.map((asset: any) => {
+        {settings['wallet.currencies'].map((asset: any) => {
           return (
             <div key={asset}>
               <Asset

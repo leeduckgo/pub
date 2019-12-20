@@ -3,7 +3,7 @@ import { useStore } from '../../store';
 import Api from '../../api';
 
 export default function Preload() {
-  const { userStore, settingStore } = useStore();
+  const { userStore, settingsStore } = useStore();
 
   React.useEffect(() => {
     (async () => {
@@ -13,13 +13,13 @@ export default function Preload() {
       } catch (err) {}
       try {
         const settings = await Api.fetchSettings();
-        settingStore.setSettings(settings);
-        document.title = settings.title;
+        settingsStore.setSettings(settings);
+        document.title = settings['site.title'];
       } catch (err) {}
       userStore.setIsFetched(true);
-      settingStore.setIsFetched(true);
+      settingsStore.setIsFetched(true);
     })();
-  }, [userStore, settingStore]);
+  }, [userStore, settingsStore]);
 
   return null;
 }

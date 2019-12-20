@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import Fade from '@material-ui/core/Fade';
 import Loading from 'components/Loading';
-import { assetIconMap } from './utils';
+import { currencyIconMap } from './utils';
 import FinanceApi from './api';
 import { sleep } from 'utils';
 import { useStore } from 'store';
@@ -24,7 +24,7 @@ const Receipt = (receipt: any, mixinWalletClientId: string) => {
         <div className="mr-4 w-10 h-10">
           <img
             className="w-10 h-10"
-            src={assetIconMap[receipt.currency]}
+            src={currencyIconMap[receipt.currency]}
             alt={receipt.currency}
           />
         </div>

@@ -24,8 +24,9 @@ import Topic from '../Topic';
 import WalletModal from 'components/WalletModal';
 
 export default observer((props: RouteChildrenProps) => {
-  const { userStore, snackbarStore, settingStore } = useStore();
+  const { userStore, snackbarStore, settingsStore } = useStore();
   const { user } = userStore;
+  const { settings } = settingsStore;
   const [walletOpen, setWalletOpen] = React.useState(false);
   const [walletTab, setWalletTab] = React.useState('assets');
   const action = getQuery('action');
@@ -94,7 +95,7 @@ export default observer((props: RouteChildrenProps) => {
               />
             </div>
             <span className="text-base font-bold ml-4 text-gray-700 flex items-center">
-              XUE.cn 写作站
+              {settings['site.shortTitle']}
               <Tooltip
                 placement="right"
                 title="我们帮你把文章发布到区块链，之后会有不同的阅读站点把你的文章呈现给读者，这是去中心化的模式，一键发布，多端阅读"
@@ -104,7 +105,11 @@ export default observer((props: RouteChildrenProps) => {
             </span>
           </div>
           <div className="mt-8 mx-2 pl-8 flex items-center leading-none">
-            <a href={settingStore.settings.postsEndpoint} target="_blank" rel="noopener noreferrer">
+            <a
+              href={settingsStore.settings['reader.url']}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Tooltip
                 placement="right"
                 title="阅读站可以有很多个，是去中心化的，这只是其中一个。你的文章将会被不同的阅读站聚合，给千千万万的读者阅读并打赏"

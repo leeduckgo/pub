@@ -4,9 +4,9 @@ import BlockIcon from '@material-ui/icons/Block';
 import { useStore } from '../../store';
 
 export default observer(() => {
-  const { settingStore } = useStore();
+  const { settingsStore } = useStore();
 
-  if (!settingStore.isFetched) {
+  if (!settingsStore.isFetched) {
     return null;
   }
 
@@ -20,10 +20,13 @@ export default observer(() => {
           <BlockIcon />
         </div>
         <span className="push-top-sm po-text-18 primary-color po-bold">
-          {settingStore.settings.denyText}
+          {settingsStore.settings['permission.denyText']}
         </span>
-        <a className="push-top po-bold green-color" href={settingStore.settings.denyActionLink}>
-          {settingStore.settings.denyActionText}
+        <a
+          className="push-top po-bold green-color"
+          href={settingsStore.settings['permission.denyActionLink']}
+        >
+          {settingsStore.settings['permission.denyActionText']}
         </a>
       </div>
     </div>

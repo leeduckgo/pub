@@ -100,7 +100,7 @@ exports.create = async (userId, data) => {
     ...data,
     userId,
     msghash,
-    topicAddress: config.settings.topicAddress,
+    topicAddress: config.settings['site.topicAddress'],
     encryptedContent
   };
   const file = await File.create(payload);
@@ -114,7 +114,7 @@ exports.list = async (userId) => {
     where: {
       userId,
       deleted: false,
-      topicAddress: config.settings.topicAddress
+      topicAddress: config.settings['site.topicAddress']
     }
   });
   const list = await Promise.all(

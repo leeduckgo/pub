@@ -8,7 +8,9 @@ const {
 } = require('../models/validator');
 const User = require('../models/user');
 const Topic = require('../models/topic');
-const { log } = require('../utils');
+const {
+  log
+} = require('../utils');
 
 exports.ensureAuthorization = (options = {}) => {
   const {
@@ -54,7 +56,7 @@ exports.ensureTopicOnwer = () => {
   return async (ctx, next) => {
     let isTopicOwner = false
 
-    const topic = await Topic.getByAddress(config.settings.topicAddress)
+    const topic = await Topic.getByAddress(config.settings['site.topicAddress'])
 
     if (topic && topic.userId === ctx.verification.user.id) {
       isTopicOwner = true

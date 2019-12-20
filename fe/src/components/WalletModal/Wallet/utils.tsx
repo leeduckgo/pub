@@ -1,10 +1,4 @@
-import { isProduction } from 'utils';
-
-export const assets = isProduction
-  ? ['PRS', 'BOX', 'BTC', 'EOS', 'ETH', 'XIN']
-  : ['CNB', 'PRS', 'BOX', 'BTC', 'EOS', 'ETH'];
-
-export const assetIconMap: any = {
+export const currencyIconMap: any = {
   CNB: 'https://xue-images.pek3b.qingstor.com/1025-cnb.png',
   BTC: 'https://xue-images.pek3b.qingstor.com/1024-btc.png',
   ETH: 'https://xue-images.pek3b.qingstor.com/1024-eth.png',

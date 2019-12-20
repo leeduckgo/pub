@@ -4,7 +4,9 @@ const User = require('./user');
 const Cache = require('./cache');
 const config = require('../config');
 const Log = require('./log');
-const { log } = require('../utils');
+const {
+  log
+} = require('../utils');
 const {
   assert,
   Errors
@@ -69,7 +71,7 @@ exports.sendToUser = async (userId, event, data) => {
   const userSocket = await Cache.pGet(sessionKey, userKey);
   assert(userSocket, Errors.ERR_NOT_FOUND('userSocket'));
   io.to(userSocket).emit(event, data);
-  Log.create(userId, `收到通知，文章上链成功 ${config.settings.postsEndpoint}/posts/${data.rId}`);
+  Log.create(userId, `收到通知，文章上链成功 ${config.settings['reader.url']}/posts/${data.rId}`);
 }
 
 exports.getSocketIo = () => io;
