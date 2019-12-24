@@ -28,7 +28,7 @@ const oauth = (ctx, oauthType) => {
   const {
     provider
   } = ctx.params;
-  assert(providers.includes(provider), Errors.ERR_IS_INVALID(`provider: ${provider}`))
+  assert(provider === 'mixin' || providers.includes(provider), Errors.ERR_IS_INVALID(`provider: ${provider}`))
   assert(authenticate[provider], Errors.ERR_IS_INVALID(`provider: ${provider}`));
   assert(ctx.query.redirect, Errors.ERR_IS_REQUIRED('redirect'));
   ctx.session.oauthType = oauthType;
