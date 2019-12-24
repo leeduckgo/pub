@@ -139,12 +139,11 @@ export default observer(() => {
           offset: allowPage * pageLimit,
           limit: pageLimit,
         });
-        if (denyPage !== 0 && result.count && !result.users.length) {
-          setDenyPage(0);
+        if (allowPage !== 0 && result.count && !result.users.length) {
+          setAllowPage(0);
           return;
         }
         setAllowData({
-          ...allowData,
           count: result.count,
           users: result.users,
         });
@@ -153,7 +152,7 @@ export default observer(() => {
       }
       setAllowLoading(false);
     })();
-  }, [allowData, denyPage, allowPage, reloadState]);
+  }, [allowPage, reloadState]);
 
   useEffect(() => {
     (async () => {
@@ -168,7 +167,6 @@ export default observer(() => {
           return;
         }
         setDenyData({
-          ...denyData,
           count: result.count,
           users: result.users,
         });
@@ -177,7 +175,7 @@ export default observer(() => {
       }
       setDenyLoading(false);
     })();
-  }, [denyPage, denyData, reloadState]);
+  }, [denyPage, reloadState]);
 
   const handleConfirmChangeUserPermission = async () => {
     const typeMap = {

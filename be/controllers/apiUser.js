@@ -6,10 +6,12 @@ exports.get = async ctx => {
   const user = ctx.verification.user;
   let isTopicOwner = false
 
-  const topic = await Topic.getByAddress(config.settings['site.topicAddress'])
-
-  if (topic && topic.userId === user.id) {
-    isTopicOwner = true
+  const topicAddress = config.settings['site.topicAddress'];
+  if (topicAddress) {
+    const topic = await Topic.getByAddress(topicAddress)
+    if (topic && topic.userId === user.id) {
+      isTopicOwner = true
+    }
   }
 
   ctx.body = {

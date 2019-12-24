@@ -242,9 +242,8 @@ const login = async (ctx, user, provider) => {
       type: 'allow',
     })
 
-    // 暂时只给 mixin, github 登录的账号授权，其他账号可以用来测试【无授权】的情况
     const isProduction = config.env === 'production';
-    if (isProduction && ['mixin', 'github'].includes(provider)) {
+    if (isProduction) {
       const block = await Chain.pushTopic({
         userAddress: insertedUser.address,
         topicAddress,
