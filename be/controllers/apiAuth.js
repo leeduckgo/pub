@@ -5,6 +5,7 @@ const config = require('../config');
 const auth = require('../models/auth');
 const {
   assert,
+  throws,
   Errors
 } = require('../models/validator');
 const User = require('../models/user');
@@ -104,46 +105,51 @@ const checkIsPaidUserOfXue = async githubNickName => {
 }
 
 exports.oauthCallback = async (ctx, next) => {
-  const {
-    provider
-  } = ctx.params;
-
-  let user;
-  if (provider === 'pressone') {
-    user = await handlePressOneCallback(ctx, provider);
-  } else {
-    user = await handleOauthCallback(ctx, next, provider);
-  }
-  assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
-
-  const profile = providerGetter[provider](user);
-
-  const {
-    oauthType
-  } = ctx.session;
-  assert(oauthType, Errors.ERR_IS_REQUIRED('oauthType'));
-
-  if (oauthType === 'login') {
-    const hasPermission = await checkPermission(provider, profile);
-    const noPermission = !hasPermission;
-    if (noPermission) {
-      Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
-      ctx.redirect(config.permissionDenyUrl);
-      return false;
-    }
-    await login(ctx, user, provider);
-  } else if (oauthType === 'bind') {
-    assert(provider === 'mixin', Errors.ERR_IS_INVALID('provider'))
+  try {
     const {
-      user
-    } = ctx.verification;
-    assert(user, Errors.ERR_NOT_FOUND(`user`));
-    await User.update(user.id, {
-      mixinAccountRaw: profile.raw
-    });
-  }
+      provider
+    } = ctx.params;
 
-  ctx.redirect(ctx.session.auth.redirect);
+    let user;
+    if (provider === 'pressone') {
+      user = await handlePressOneCallback(ctx, provider);
+    } else {
+      user = await handleOauthCallback(ctx, next, provider);
+    }
+    assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
+
+    const profile = providerGetter[provider](user);
+
+    const {
+      oauthType
+    } = ctx.session;
+    assert(oauthType, Errors.ERR_IS_REQUIRED('oauthType'));
+
+    if (oauthType === 'login') {
+      const hasPermission = await checkPermission(provider, profile);
+      const noPermission = !hasPermission;
+      if (noPermission) {
+        Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
+        ctx.redirect(config.permissionDenyUrl);
+        return false;
+      }
+      await login(ctx, user, provider);
+    } else if (oauthType === 'bind') {
+      assert(provider === 'mixin', Errors.ERR_IS_INVALID('provider'))
+      const {
+        user
+      } = ctx.verification;
+      assert(user, Errors.ERR_NOT_FOUND(`user`));
+      await User.update(user.id, {
+        mixinAccountRaw: profile.raw
+      });
+    }
+
+    ctx.redirect(ctx.session.auth.redirect);
+  } catch (err) {
+    console.log(err);
+    throws(Errors.ERR_FAIL_TO_LOGIN)
+  }
 }
 
 const handlePressOneCallback = async (ctx) => {
