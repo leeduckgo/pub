@@ -18,7 +18,7 @@ const generateKey = () => {
   } = PrsUtil.createKeyPair({
     dump: true
   });
-  const aesEncryptedHexOfPrivateKey = util.crypto.aesCrypto(privateKey, config.aesKey256);
+  const aesEncryptedHexOfPrivateKey = util.crypto.aesCrypto(privateKey, config.encryption.aes.aesKey256);
   return {
     aesEncryptedHexOfPrivateKey,
     publicKey,
@@ -33,7 +33,7 @@ const packTopic = async (topic, options = {}) => {
     withKeys
   } = options;
   if (withKeys) {
-    topicJson.privateKey = util.crypto.aesDecrypt(topicJson.aesEncryptedHexOfPrivateKey, config.aesKey256);
+    topicJson.privateKey = util.crypto.aesDecrypt(topicJson.aesEncryptedHexOfPrivateKey, config.encryption.aes.aesKey256);
     delete topicJson.aesEncryptedHexOfPrivateKey;
   } else {
     delete topicJson.publicKey;

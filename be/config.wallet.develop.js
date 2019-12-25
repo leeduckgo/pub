@@ -2,7 +2,7 @@ module.exports = {
   db: {
     host: '127.0.0.1',
     port: 3306,
-    database: 'flying_pub_wallet',
+    database: 'pub_wallet',
     user: 'root',
     password: '632330abc',
     dialect: 'mysql',
