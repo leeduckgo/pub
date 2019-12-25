@@ -6,14 +6,16 @@
 
 var app = require('../app');
 const config = require('../config');
-const { log } = require('../utils');
+const {
+  log
+} = require('../utils');
 var http = require('http');
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(config.port || '8060');
+var port = normalizePort(config.port || '8000');
 // app.set('port', port);
 
 /**
