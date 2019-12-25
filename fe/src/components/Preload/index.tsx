@@ -7,15 +7,28 @@ export default function Preload() {
 
   React.useEffect(() => {
     (async () => {
-      try {
-        const user = await Api.fetchUser();
+      const tryFetchUser = async () => {
+        try {
+          const user = await Api.fetchUser();
+          return user;
+        } catch (err) {}
+        return null;
+      };
+
+      const tryFetchSettings = async () => {
+        try {
+          const settings = await Api.fetchSettings();
+          return settings;
+        } catch (err) {}
+        return {};
+      };
+
+      const [user, settings] = await Promise.all([tryFetchUser(), tryFetchSettings()]);
+      if (user) {
         userStore.setUser(user);
-      } catch (err) {}
-      try {
-        const settings = await Api.fetchSettings();
-        settingsStore.setSettings(settings);
-        document.title = settings['site.title'];
-      } catch (err) {}
+      }
+      settingsStore.setSettings(settings);
+      document.title = settings['site.title'];
       userStore.setIsFetched(true);
       settingsStore.setIsFetched(true);
     })();
