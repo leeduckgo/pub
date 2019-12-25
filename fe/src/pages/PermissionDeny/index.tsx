@@ -11,23 +11,22 @@ export default observer(() => {
   }
 
   return (
-    <div className="page-layout-wrapper bg-page-bg">
-      <div
-        className="page-layout user-center flex column v-center h-center"
-        style={{ height: '100vh' }}
-      >
-        <div className="po-text-56 primary-color">
+    <div className="flex items-center justify-center h-screen text-center">
+      <div className="-mt-64">
+        <div className="text-6xl text-red-500">
           <BlockIcon />
         </div>
-        <span className="push-top-sm po-text-18 primary-color po-bold">
+        <div className="mt-2 text-lg text-gray-700 font-bold">
           {settingsStore.settings['permission.denyText']}
-        </span>
-        <a
-          className="push-top po-bold green-color"
-          href={settingsStore.settings['permission.denyActionLink']}
-        >
-          {settingsStore.settings['permission.denyActionText']}
-        </a>
+        </div>
+        <div className="mt-4">
+          <a
+            className="font-bold green-color"
+            href={settingsStore.settings['permission.denyActionLink']}
+          >
+            {settingsStore.settings['permission.denyActionText']}
+          </a>
+        </div>
       </div>
     </div>
   );
