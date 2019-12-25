@@ -12,7 +12,7 @@ const {
 const Block = require('../models/block');
 const Topic = require('../models/topic');
 
-const SIGN_URL = `${config.prsEndpoint}/api/v2/datasign`;
+const SIGN_URL = `https://press.one/api/v2/datasign`;
 
 const signBlock = (data) => {
   return request({
@@ -132,7 +132,7 @@ exports.pushFile = async (file, options = {}) => {
   const payload = getFilePayload({
     file,
     user,
-    topic: config.settings['site.topicAddress'],
+    topic: config.topic.address,
   }, {
     updatedFile
   });

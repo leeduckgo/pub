@@ -81,7 +81,7 @@ Xr2NSYgymfIZVuVBSKrC0nc1yD4/4Krl1WzPoa5sKNo=
 
   tokenPrivateKey: "kCtfo6go2PQYgXUAYJIqdLkKIxD8C7EwYAFC58kezgQsCzbu+NchwZx+tS/+rQGMFw+kzZHQkkcCz1reSdUgcg==",
 
-  authTokenKey: "pub_token",
+  auth.tokenKey: "pub_token",
 
   aesKey256: [
     11,

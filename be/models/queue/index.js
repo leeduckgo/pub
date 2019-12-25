@@ -7,10 +7,10 @@ const {
 const queues = [];
 
 exports.up = () => {
-  if (config.syncBlock) {
+  if (config.queue.syncBlock) {
     queues.push(BlockQueue.create());
   }
-  if (config.mixin.sync) {
+  if (config.provider.mixin.sync) {
     queues.push(createSyncMixinSnapshotsQueue());
     queues.push(createSyncInitializedQueue());
   }

@@ -3,8 +3,8 @@ const uuidv4 = require('uuid/v4');
 const fnv = require('fnv-plus');
 const config = require('../config');
 
-const ENCRYPTION_KEY = Buffer.from(config.encryptionKey, "hex");
-const IV_PREFIX = config.ivPrefix;
+const ENCRYPTION_KEY = Buffer.from(config.encryption.aes256Cbc.key, "hex");
+const IV_PREFIX = config.encryption.aes256Cbc.ivPrefix;
 
 const getIV = uuid => {
   const ahash64 = fnv.hash(IV_PREFIX + uuid, 64);

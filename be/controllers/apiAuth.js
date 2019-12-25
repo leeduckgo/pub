@@ -49,7 +49,7 @@ exports.oauthBind = async ctx => {
 
 const checkPermission = async (provider, profile) => {
   const providerId = profile.id;
-  const whitelist = config.whitelist[provider];
+  const whitelist = config.auth.whitelist[provider];
   const isInWhiteList = whitelist && whitelist.includes(~~providerId);
   if (isInWhiteList) {
     return true;
@@ -79,7 +79,7 @@ const checkIsInMixinBoxGroup = async mixinUuid => {
       uri: `https://xiaolai-ri-openapi.groups.xue.cn/v1/users/${mixinUuid}`,
       json: true,
       headers: {
-        Authorization: `Bearer ${config.boxGroupToken}`
+        Authorization: `Bearer ${config.auth.boxGroupToken}`
       },
     }).promise();
     return true;
@@ -91,10 +91,10 @@ const checkIsInMixinBoxGroup = async mixinUuid => {
 const checkIsPaidUserOfXue = async githubNickName => {
   try {
     const user = await request({
-      uri: `${config.xueUserExtraApi}/${githubNickName}`,
+      uri: `${config.auth.xueUserExtraApi}/${githubNickName}`,
       json: true,
       headers: {
-        'x-po-auth-token': config.xueAdminToken
+        'x-po-auth-token': config.auth.xueAdminToken
       },
     }).promise();
     const isPaidUser = user.balance > 0;
@@ -126,12 +126,14 @@ exports.oauthCallback = async (ctx, next) => {
     assert(oauthType, Errors.ERR_IS_REQUIRED('oauthType'));
 
     if (oauthType === 'login') {
-      const hasPermission = await checkPermission(provider, profile);
-      const noPermission = !hasPermission;
-      if (noPermission) {
-        Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
-        ctx.redirect(config.permissionDenyUrl);
-        return false;
+      if (config.auth.enableChecking) {
+        const hasPermission = await checkPermission(provider, profile);
+        const noPermission = !hasPermission;
+        if (noPermission) {
+          Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
+          ctx.redirect(config.auth.permissionDenyUrl);
+          return false;
+        }
       }
       await login(ctx, user, provider);
     } else if (oauthType === 'bind') {
@@ -230,7 +232,7 @@ const login = async (ctx, user, provider) => {
     }
   }
 
-  const topicAddress = config.settings['site.topicAddress'];
+  const topicAddress = config.topic.address;
 
   const insertedUser = await User.get(insertedProfile.userId);
   const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
@@ -259,7 +261,7 @@ const login = async (ctx, user, provider) => {
   });
 
   ctx.cookies.set(
-    config.authTokenKey,
+    config.auth.tokenKey,
     token, {
       expires: new Date('2100-01-01')
     }

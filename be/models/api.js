@@ -17,7 +17,7 @@ exports.ensureAuthorization = (options = {}) => {
     strict = true
   } = options;
   return async (ctx, next) => {
-    const token = ctx.cookies.get(config.authTokenKey);
+    const token = ctx.cookies.get(config.auth.tokenKey);
     if (!token && !strict) {
       await next();
       return;
@@ -56,7 +56,7 @@ exports.ensureTopicOnwer = () => {
   return async (ctx, next) => {
     let isTopicOwner = false
 
-    const topic = await Topic.getByAddress(config.settings['site.topicAddress'])
+    const topic = await Topic.getByAddress(config.topic.address)
 
     if (topic && topic.userId === ctx.verification.user.id) {
       isTopicOwner = true

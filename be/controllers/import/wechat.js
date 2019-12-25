@@ -15,8 +15,8 @@ const {
 } = require('../../models/validator')
 const config = require('../../config');
 
-const qingConfig = new Config(config.qingCloudAccessKeyId, config.qingCloudSecretAccessKey);
-const bucket = new QingStor(qingConfig).Bucket(config.qingCloudBucketName, config.qingCloudZone);
+const qingConfig = new Config(config.qingCloud.accessKeyId, config.qingCloud.secretAccessKey);
+const bucket = new QingStor(qingConfig).Bucket(config.qingCloud.bucketName, config.qingCloud.zone);
 
 const turndownService = new TurndownService({
   headingStyle: 'atx',

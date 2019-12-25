@@ -6,7 +6,9 @@ const {
   assert,
   Errors
 } = require('../models/validator');
-const { log } = require('../utils');
+const {
+  log
+} = require('../utils');
 const request = require('request-promise');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
@@ -51,7 +53,7 @@ exports.update = async (id, data) => {
 
 const getBlock = (rId) => {
   return request({
-    uri: `${config.prsEndpoint}/api/v2/blocks/${rId}`,
+    uri: `https://press.one/api/v2/blocks/${rId}`,
     json: true,
     headers: {
       accept: 'application/json'

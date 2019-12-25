@@ -8,7 +8,9 @@ const Wallet = require("./wallet");
 const socketIo = require("./socketIo");
 const Cache = require("./cache");
 const Log = require("./log");
-const { log } = require('../utils');
+const {
+  log
+} = require('../utils');
 const Receipt = require("./receipt");
 const Sequelize = require("sequelize");
 const Op = Sequelize.Op;
@@ -27,11 +29,11 @@ const {
 const balanceCacheKey = `${config.serviceKey}_BALANCE_CACHE_KEY`;
 
 const mixin = new Mixin({
-  client_id: config.mixin.clientId,
-  aeskey: config.mixin.aesKey,
-  pin: config.mixin.pinCode,
-  session_id: config.mixin.sessionId,
-  privatekey: config.mixin.privateKeyFilePath
+  client_id: config.provider.mixin.clientId,
+  aeskey: config.provider.mixin.aesKey,
+  pin: config.provider.mixin.pinCode,
+  session_id: config.provider.mixin.sessionId,
+  privatekey: config.provider.mixin.privateKeyFilePath
 });
 
 const getViewToken = (snapshotId) => {
@@ -58,7 +60,7 @@ const getMixinPaymentUrl = (options = {}) => {
 
 exports.recharge = async (data = {}) => {
   data.amount = parseAmount(data.amount);
-  data.memo = data.memo || `飞帖充值（${config.serviceName}）`;
+  data.memo = data.memo || `飞帖充值（${config.settings['site.name']}）`;
   const {
     userId,
     currency,
@@ -97,7 +99,7 @@ exports.recharge = async (data = {}) => {
 
 exports.withdraw = async (data = {}) => {
   data.amount = parseAmount(data.amount);
-  data.memo = data.memo || `飞帖提现（${config.serviceName}）`;
+  data.memo = data.memo || `飞帖提现（${config.settings['site.name']}）`;
   const {
     userId,
     currency,

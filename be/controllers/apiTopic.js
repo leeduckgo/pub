@@ -48,7 +48,7 @@ const getPermissionList = async (ctx, type) => {
     count,
     rows
   } = await Permission.getPermissionList({
-    topicAddress: config.settings['site.topicAddress'],
+    topicAddress: config.topic.address,
     type,
     offset,
     limit,
@@ -85,7 +85,7 @@ const changePermission = async (ctx, type) => {
     updated
   } = await Permission.setPermission({
     userId,
-    topicAddress: config.settings['site.topicAddress'],
+    topicAddress: config.topic.address,
     type,
   })
 
@@ -97,7 +97,7 @@ const changePermission = async (ctx, type) => {
   if (updated && isProduction) {
     const block = await Chain.pushTopic({
       userAddress: user.address,
-      topicAddress: config.settings['site.topicAddress'],
+      topicAddress: config.topic.address,
       type,
     })
     Log.create(userId, `提交 ${type} 区块, blockId ${block.id}`);
@@ -115,12 +115,12 @@ exports.updatescript = async (ctx) => {
     await Promise.all(userlist.map(async (userItem) => {
       await PermissionModel.findOrCreate({
         where: {
-          topicAddress: config.settings['site.topicAddress'],
+          topicAddress: config.topic.address,
           userId: userItem.id,
         },
         defaults: {
           userId: userItem.id,
-          topicAddress: config.settings['site.topicAddress'],
+          topicAddress: config.topic.address,
           permission: 'allow',
         },
       })
