@@ -5,20 +5,7 @@ definitions:
 
 pipelines:
   branches:
-    master:
-      - step:
-          name: pub
-          size: 2x
-          services:
-            - docker
-          caches:
-            - docker
-          script:
-            - export IMAGE_NAME=$DOCKER_REGISTRY_DOMAIN/$DOCKER_REGISTRY_USERNAME/pub:$BITBUCKET_BRANCH
-            - docker build -f Dockerfile-staging -t $IMAGE_NAME .
-            - docker login --username $DOCKER_REGISTRY_USERNAME --password $DOCKER_REGISTRY_PASSWORD $DOCKER_REGISTRY_DOMAIN
-            - docker push $IMAGE_NAME
-    release:
+    develop:
       - step:
           name: pub
           size: 2x
@@ -26,11 +13,3 @@ pipelines:
             - docker
           script:
             - echo -e 'Host 192.168.0.*\n\tUser huoju\n\tForwardAgent yes\n\tProxyCommand ssh huoju@139.198.2.168 nc %h %p' >> ~/.ssh/config && ssh -o StrictHostKeyChecking=no huoju@192.168.0.3 "cd ./build_shortcuts && ./14_build_pub.sh"
-    box:
-      - step:
-          name: pub
-          size: 2x
-          services:
-            - docker
-          script:
-            - echo -e 'Host 192.168.0.*\n\tUser huoju\n\tForwardAgent yes\n\tProxyCommand ssh huoju@139.198.2.168 nc %h %p' >> ~/.ssh/config && ssh -o StrictHostKeyChecking=no huoju@192.168.0.3 "cd ./build_shortcuts && ./20_build_box_pub.sh"

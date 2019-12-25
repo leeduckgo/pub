@@ -1,6 +1,6 @@
 "use strict";
 
-const serviceRoot = "http://localhost:8060";
+const serviceRoot = "http://localhost:8000";
 
 const config = {
   env: "development",
@@ -9,7 +9,7 @@ const config = {
 
   host: "127.0.0.1",
 
-  port: "8060",
+  port: "8000",
 
   db: {
     host: "127.0.0.1",

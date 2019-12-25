@@ -10,7 +10,7 @@
     "start-queue-prod": "node ./queue.js",
     "test": "node ./test",
     "test-watch": "./node_modules/.bin/nodemon ./test",
-    "fe-server": "http-server ./build -p 4060"
+    "fe-server": "http-server ./build -p 4000"
   },
   "nodemonConfig": {
     "ignore": [
