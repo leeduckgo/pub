@@ -10,4 +10,5 @@ module.exports = {
       charset: 'utf8mb4'
     }
   },
+  salt: 102030
 };

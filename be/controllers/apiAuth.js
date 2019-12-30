@@ -290,6 +290,7 @@ const providerGetter = {
   },
 
   pressone: user => {
+    delete user.proofs;
     return {
       id: user.id,
       name: user.name,

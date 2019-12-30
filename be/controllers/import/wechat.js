@@ -4,7 +4,6 @@ const {
 } = require('jsdom');
 const request = require('request-promise');
 const TurndownService = require('turndown')
-// const { Config, QingStor } = require('qingstor-sdk');
 const {
   Config,
   QingStor
@@ -102,7 +101,7 @@ const fetchWechatPost = async url => {
           throw new Error('upload wechat post image put object failed')
         }
 
-        const newImageUrl = `https://${config.qingCloudZone}.qingstor.com/${config.qingCloudBucketName}/${imageHash}`
+        const newImageUrl = `https://${config.qingCloud.zone}.qingstor.com/${config.qingCloud.bucketName}/${imageHash}`
         markdown = markdown.replace(
           new RegExp(imageUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
           newImageUrl,
