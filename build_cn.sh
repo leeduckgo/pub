@@ -8,7 +8,7 @@ IMAGE_NAME="dh-cn.press.one/pressone/pub"
 BOX_IMAGE_NAME="dh-cn.press.one/pressone/box-pub"
 XUE_IMAGE_NAME="dh-cn.press.one/pressone/xue-pub"
 PRS_IMAGE_NAME="dh-cn.press.one/pressone/prs-pub"
-PRS_IMAGE_NAME="dh-cn.press.one/pressone/blog-pub"
+BLOG_IMAGE_NAME="dh-cn.press.one/pressone/blog-pub"
 
 sudo docker login --username pressone --password 57e348ab37aa5b55f68b7642ac584a41 dh-cn.press.one
 sudo docker build -t $IMAGE_NAME .
