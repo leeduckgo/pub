@@ -49,9 +49,8 @@ exports.oauthBind = async ctx => {
 
 const checkPermission = async (provider, profile) => {
   const providerId = profile.id;
-  const whitelistCheckingId = profile.whitelistCheckingId;
   const whitelist = config.auth.whitelist[provider];
-  const isInWhiteList = whitelist && whitelist.includes(whitelistCheckingId || ~~providerId);
+  const isInWhiteList = whitelist && whitelist.includes(~~providerId);
   if (isInWhiteList) {
     return true;
   }
@@ -297,8 +296,7 @@ const providerGetter = {
       name: user.name,
       avatar: user.avatar || DEFAULT_AVATAR,
       bio: user.bio,
-      raw: JSON.stringify(user),
-      whitelistCheckingId: user.address
+      raw: JSON.stringify(user)
     }
   }
 }
