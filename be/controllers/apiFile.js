@@ -138,8 +138,12 @@ exports.update = async ctx => {
 };
 
 exports.get = async ctx => {
+  const {
+    user
+  } = ctx.verification;
   const id = ~~ctx.params.id;
   const file = await File.get(id);
   assert(file, Errors.ERR_NOT_FOUND("file"));
+  assert(file.userId === user.id, Errors.ERR_NO_PERMISSION);
   ctx.body = file;
 };

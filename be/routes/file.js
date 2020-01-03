@@ -14,6 +14,6 @@ router.get('/', ensureAuthorization(), list);
 router.post('/', ensureAuthorization(), create);
 router.del('/:id', ensureAuthorization(), remove);
 router.put('/:id', ensureAuthorization(), update);
-router.get('/:id', get);
+router.get('/:id', ensureAuthorization(), get);
 
 module.exports = router;
