@@ -13,6 +13,7 @@
     "@types/react-dom": "^16.8.5",
     "@types/react-router-dom": "^4.3.4",
     "classnames": "^2.2.6",
+    "font-awesome": "^4.7.0",
     "intro.js": "^2.9.3",
     "marked": "^0.7.0",
     "mobx": "^5.13.0",

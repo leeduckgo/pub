@@ -17,6 +17,7 @@ import { isMobile } from './utils';
 
 import './style/base.scss';
 import './styles/tailwind.css';
+import 'font-awesome/css/font-awesome.css';
 
 const AppRouter = () => {
   return isMobile() ? (
