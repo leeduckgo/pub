@@ -126,7 +126,7 @@ exports.oauthCallback = async (ctx, next) => {
     assert(oauthType, Errors.ERR_IS_REQUIRED('oauthType'));
 
     if (oauthType === 'login') {
-      if (config.auth.enableChecking) {
+      if (config.settings['permission.isPrivate']) {
         const hasPermission = await checkPermission(provider, profile);
         const noPermission = !hasPermission;
         if (noPermission) {
