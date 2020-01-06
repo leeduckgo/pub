@@ -12,6 +12,7 @@ export default () => {
           <ComputerIcon />
         </div>
         <span className="push-top-sm po-text-18 primary-color po-bold">请在电脑端打开链接</span>
+        <span className="mt-2 text-blue-400 text-base">{window.location.origin}</span>
       </div>
     </div>
   );
