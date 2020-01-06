@@ -7,6 +7,9 @@ export default {
   status: false,
   minHeight: '80px',
   placeholder: '开始创作你的文章...',
+  shortcuts: {
+    drawTable: 'Cmd-Alt-T',
+  },
   toolbar: [
     {
       name: 'bold',
@@ -38,6 +41,12 @@ export default {
       action: simplemde.toggleOrderedList,
       className: 'fa fa-list-ol',
       title: '有序列表 (Cmd-⌥-L)',
+    },
+    {
+      name: 'table',
+      action: simplemde.drawTable,
+      className: 'fa fa-table',
+      title: '表格 (Cmd-⌥-T)',
     },
     '|',
     {
