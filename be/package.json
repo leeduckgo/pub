@@ -12,11 +12,6 @@
     "test-watch": "./node_modules/.bin/nodemon ./test",
     "fe-server": "http-server ./build -p 4000"
   },
-  "nodemonConfig": {
-    "ignore": [
-      "session.json"
-    ]
-  },
   "dependencies": {
     "@koa/cors": "2",
     "aes-js": "3.1.2",
