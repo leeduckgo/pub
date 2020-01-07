@@ -4,7 +4,6 @@ ADD . /app
 RUN mv /app/fe/build /app/be/build
 
 WORKDIR /app/be
-RUN ls
 RUN npm config set registry https://registry.npm.taobao.org
 RUN npm install -g -s --no-progress yarn
 RUN yarn install
