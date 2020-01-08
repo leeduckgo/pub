@@ -78,7 +78,13 @@ exports.sync = async () => {
       blockNum: null,
       blockTransactionId: null,
       data: {
-        [Op.like]: `%"allow":%`
+        [Op.or]: [{
+            [Op.like]: `%"allow":%`
+          },
+          {
+            [Op.like]: `%"deny":%`
+          }
+        ]
       }
     }
   });
