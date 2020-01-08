@@ -26,8 +26,12 @@ const Topic = sequelize.define('topics', {
   },
 }, {
   timestamps: true,
-  charset: 'utf8',
-  collate: 'utf8_general_ci'
+  charset: 'utf8mb4',
+  indexes: [{
+    fields: ['userId']
+  }, {
+    fields: ['address']
+  }]
 });
 
 Topic.sync();

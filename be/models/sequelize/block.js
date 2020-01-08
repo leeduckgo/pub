@@ -42,8 +42,16 @@ const Block = sequelize.define('blocks', {
   }
 }, {
   timestamps: true,
-  charset: 'utf8',
-  collate: 'utf8_general_ci'
+  charset: 'utf8mb4',
+  indexes: [{
+    fields: ['user_address']
+  }, {
+    fields: ['type']
+  }, {
+    fields: ['blockNum']
+  }, {
+    fields: ['blockTransactionId']
+  }]
 });
 
 Block.sync();

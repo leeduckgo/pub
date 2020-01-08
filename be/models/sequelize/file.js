@@ -43,7 +43,15 @@ const File = sequelize.define('files', {
   }
 }, {
   timestamps: true,
-  charset: 'utf8mb4'
+  charset: 'utf8mb4',
+  indexes: [{
+    unique: true,
+    fields: ['rId']
+  }, {
+    fields: ['userId']
+  }, {
+    fields: ['deleted']
+  }]
 });
 
 File.sync();
