@@ -8,12 +8,23 @@ const Wallet = require('./wallet');
 const socketIo = require('./socketIo');
 const Cache = require('./cache');
 const Log = require('./log');
-const { log } = require('../utils');
+const {
+  log
+} = require('../utils');
 const Receipt = require('./receipt');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const { Joi, assert, attempt, Errors, assertFault } = require('./validator');
-const { parseAmount, currencyMapAsset } = Receipt;
+const {
+  Joi,
+  assert,
+  attempt,
+  Errors,
+  assertFault
+} = require('./validator');
+const {
+  parseAmount,
+  currencyMapAsset
+} = Receipt;
 
 const balanceCacheKey = `${config.serviceKey}_BALANCE_CACHE_KEY`;
 
@@ -32,7 +43,13 @@ const getViewToken = snapshotId => {
 };
 
 const getMixinPaymentUrl = (options = {}) => {
-  const { toMixinClientId, asset, amount, trace, memo } = options;
+  const {
+    toMixinClientId,
+    asset,
+    amount,
+    trace,
+    memo
+  } = options;
   return (
     'https://mixin.one/pay' +
     '?recipient=' +
@@ -51,7 +68,12 @@ const getMixinPaymentUrl = (options = {}) => {
 exports.recharge = async (data = {}) => {
   data.amount = parseAmount(data.amount);
   data.memo = data.memo || `飞帖充值（${config.settings['site.name']}）`;
-  const { userId, currency, amount, memo } = data;
+  const {
+    userId,
+    currency,
+    amount,
+    memo
+  } = data;
   assert(userId, Errors.ERR_IS_REQUIRED('userId'));
   assert(currency, Errors.ERR_IS_REQUIRED('currency'));
   assert(amount, Errors.ERR_IS_REQUIRED('amount'));
@@ -85,7 +107,12 @@ exports.recharge = async (data = {}) => {
 exports.withdraw = async (data = {}) => {
   data.amount = parseAmount(data.amount);
   data.memo = data.memo || `飞帖提现（${config.settings['site.name']}）`;
-  const { userId, currency, amount, memo = '飞帖提现' } = data;
+  const {
+    userId,
+    currency,
+    amount,
+    memo = '飞帖提现'
+  } = data;
   assert(amount, Errors.ERR_IS_INVALID('amount'));
   const wallet = await Wallet.getRawByUserId(userId);
   Log.create(userId, `钱包版本 ${wallet.version}`);
@@ -100,7 +127,7 @@ exports.withdraw = async (data = {}) => {
   assertFault(asset, Errors.ERR_WALLET_FAIL_TO_ACCESS_MIXIN_WALLET);
   assert(
     !mathjs.larger(amount, asset.balance) ||
-      mathjs.equal(amount, asset.balance),
+    mathjs.equal(amount, asset.balance),
     Errors.ERR_WALLET_NOT_ENOUGH_AMOUNT,
     402
   );
@@ -194,8 +221,7 @@ const transfer = async (data = {}) => {
     currencyMapAsset[currency],
     toMixinClientId,
     amount,
-    memo,
-    {
+    memo, {
       pin: mixinPin,
       aesKey: mixinAesKey,
       client_id: mixinClientId,
@@ -227,7 +253,12 @@ const getBalanceByUserId = async (userId, currency) => {
 };
 
 const getAsset = async (data = {}) => {
-  const { currency, clientId, sessionId, privateKey } = data;
+  const {
+    currency,
+    clientId,
+    sessionId,
+    privateKey
+  } = data;
   assert(currency, Errors.ERR_IS_REQUIRED('currency'));
   assert(clientId, Errors.ERR_IS_REQUIRED('clientId'));
   assert(sessionId, Errors.ERR_IS_REQUIRED('sessionId'));
@@ -466,7 +497,9 @@ exports.syncMixinSnapshots = () => {
               '100',
               'ASC'
             );
-            const { data } = result;
+            const {
+              data
+            } = result;
             for (const i in data) {
               session[currency].offset = data[i].created_at;
               if (data[i].user_id) {
@@ -497,16 +530,19 @@ exports.syncMixinSnapshots = () => {
   });
 };
 
+const syncReceiptLog = message => {
+  log(`【同步初始化收据队列】 ${message}`);
+};
+
 const syncInitializedReceipt = async receipt => {
-  const _log = message => {
-    log(`【同步初始化收据队列】 ${message}`);
-  };
   try {
     const date = new Date(receipt.createdAt);
     const diffTime = 1 * 1000;
     date.setTime(date.getTime() - diffTime);
     const offset = date.toISOString();
-    const { data } = await mixin.readSnapshots(
+    const {
+      data
+    } = await mixin.readSnapshots(
       offset,
       currencyMapAsset[receipt.currency],
       '100',
@@ -533,7 +569,7 @@ const syncInitializedReceipt = async receipt => {
           timeoutReceipt.id
         );
       } else {
-        _log(`${thisReceipt.id} 处于 ${minutes} 分钟等待期`);
+        syncReceiptLog(`${thisReceipt.id} 处于 ${minutes} 分钟等待期`);
       }
     }
     for (const updatedReceipt of updatedReceipts) {
@@ -545,19 +581,16 @@ const syncInitializedReceipt = async receipt => {
       }
     }
   } catch (err) {
-    _log(`失败了`);
+    syncReceiptLog(`失败了`);
     log(err);
   }
 };
 
 exports.syncInitializedReceipts = async () => {
-  const _log = message => {
-    log(`【同步初始化收据队列】 ${message}`);
-  };
   return new Promise(resolve => {
     (async () => {
       const timerId = setTimeout(() => {
-        _log('超时，不再等待，准备开始下一次');
+        syncReceiptLog('超时，不再等待，准备开始下一次');
         resolve();
         stop = true;
       }, 20 * 1000);
@@ -569,10 +602,10 @@ exports.syncInitializedReceipts = async () => {
           }
         });
         if (receipts.length === 0) {
-          _log('没有初始化的收据');
+          syncReceiptLog('没有初始化的收据');
           return;
         }
-        _log(`初始化收据的总数：${receipts.length}`);
+        syncReceiptLog(`初始化收据的总数：${receipts.length}`);
         const limit = 5;
         while (receipts.length > 0) {
           let tasks = [];
@@ -583,13 +616,13 @@ exports.syncInitializedReceipts = async () => {
             tasks = receipts.slice(0, limit).map(syncInitializedReceipt);
             receipts = receipts.slice(limit);
           }
-          _log(`当前请求收据数量：${tasks.length}`);
-          _log(`本次剩余收据数量：${receipts.length}`);
+          syncReceiptLog(`当前请求收据数量：${tasks.length}`);
+          syncReceiptLog(`本次剩余收据数量：${receipts.length}`);
           await Promise.all(tasks);
         }
       } catch (err) {
-        _log('失败，准备开始下一次');
-        _log(err);
+        syncReceiptLog('失败，准备开始下一次');
+        syncReceiptLog(err);
       }
       clearTimeout(timerId);
       if (stop) {
@@ -602,11 +635,12 @@ exports.syncInitializedReceipts = async () => {
 
 exports.getReceiptsByUserAddress = async (userAddress, options = {}) => {
   assert(userAddress, Errors.ERR_IS_REQUIRED('userAddress'));
-  const { offset = 0, limit, status } = options;
+  const {
+    offset = 0, limit, status
+  } = options;
   const receipts = await Receipt.list({
     where: {
-      [Op.or]: [
-        {
+      [Op.or]: [{
           fromAddress: userAddress
         },
         {
@@ -617,14 +651,18 @@ exports.getReceiptsByUserAddress = async (userAddress, options = {}) => {
     },
     offset,
     limit,
-    order: [['updatedAt', 'DESC']]
+    order: [
+      ['updatedAt', 'DESC']
+    ]
   });
   return receipts;
 };
 
 const getReceiptsByFileRId = async (fileRId, options = {}) => {
   assert(fileRId, Errors.ERR_IS_REQUIRED('fileRId'));
-  const { offset = 0, limit } = options;
+  const {
+    offset = 0, limit
+  } = options;
   const receipts = await Receipt.list({
     where: {
       objectRId: fileRId,
