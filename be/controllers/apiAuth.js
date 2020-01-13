@@ -244,15 +244,12 @@ const login = async (ctx, user, provider) => {
       type: 'allow',
     })
 
-    const isProduction = config.env === 'production';
-    if (isProduction) {
-      const block = await Chain.pushTopic({
-        userAddress: insertedUser.address,
-        topicAddress,
-        type: 'allow',
-      });
-      Log.create(insertedProfile.userId, `提交 allow 区块, blockId ${block.id}`);
-    }
+    const block = await Chain.pushTopic({
+      userAddress: insertedUser.address,
+      topicAddress,
+      type: 'allow',
+    });
+    Log.create(insertedProfile.userId, `提交 allow 区块, blockId ${block.id}`);
   }
 
   const token = await Token.create({

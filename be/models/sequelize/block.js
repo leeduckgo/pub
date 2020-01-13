@@ -16,11 +16,11 @@ const Block = sequelize.define('blocks', {
     allowNull: false
   },
   meta: {
-    type: Sequelize.TEXT('medium'),
+    type: Sequelize.TEXT,
     allowNull: false
   },
   data: {
-    type: Sequelize.TEXT('medium'),
+    type: Sequelize.TEXT,
     allowNull: false
   },
   hash: {
