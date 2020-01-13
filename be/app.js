@@ -42,7 +42,7 @@ app.use(cors({
 }));
 app.use(convert(logger()));
 
-app.keys = config.sessionKeys;
+app.keys = config.encryption.sessionKeys;
 app.use(session(config.session, app));
 const passport = models.auth.buildPassport();
 app.use(passport.initialize());

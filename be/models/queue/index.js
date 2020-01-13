@@ -1,4 +1,3 @@
-const config = require('../../config');
 const BlockQueue = require('./block');
 const {
   createSyncMixinSnapshotsQueue,
@@ -7,13 +6,9 @@ const {
 const queues = [];
 
 exports.up = () => {
-  if (config.queue.syncBlock) {
-    queues.push(BlockQueue.create());
-  }
-  if (config.provider.mixin.sync) {
-    queues.push(createSyncMixinSnapshotsQueue());
-    queues.push(createSyncInitializedQueue());
-  }
+  queues.push(BlockQueue.create());
+  queues.push(createSyncMixinSnapshotsQueue());
+  queues.push(createSyncInitializedQueue());
 }
 
 exports.down = () => {

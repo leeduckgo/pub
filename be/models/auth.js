@@ -6,29 +6,33 @@ const MixinStrategy = require('passport-mixin').Strategy;
 const config = require('../config');
 
 const buildPassport = () => {
-  passport.use(new GithubStrategy({
-    clientID: config.provider.github.clientID,
-    clientSecret: config.provider.github.clientSecret,
-    callbackURL: config.provider.github.callbackUrl
-  }, (accessToken, refreshToken, profile, callback) => {
-    profile.auth = {
-      accessToken: accessToken,
-      refreshToken: refreshToken
-    };
-    callback(null, profile);
-  }));
+  if (config.provider.github) {
+    passport.use(new GithubStrategy({
+      clientID: config.provider.github.clientID,
+      clientSecret: config.provider.github.clientSecret,
+      callbackURL: config.provider.github.callbackUrl
+    }, (accessToken, refreshToken, profile, callback) => {
+      profile.auth = {
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      };
+      callback(null, profile);
+    }));
+  }
 
-  passport.use(new MixinStrategy({
-    clientID: config.provider.mixin.clientId,
-    clientSecret: config.provider.mixin.clientSecret,
-    callbackURL: config.provider.mixin.callbackUrl
-  }, (accessToken, refreshToken, profile, callback) => {
-    profile.auth = {
-      accessToken: accessToken,
-      refreshToken: refreshToken
-    };
-    callback(null, profile);
-  }));
+  if (config.provider.mixin) {
+    passport.use(new MixinStrategy({
+      clientID: config.provider.mixin.clientId,
+      clientSecret: config.provider.mixin.clientSecret,
+      callbackURL: config.provider.mixin.callbackUrl
+    }, (accessToken, refreshToken, profile, callback) => {
+      profile.auth = {
+        accessToken: accessToken,
+        refreshToken: refreshToken
+      };
+      callback(null, profile);
+    }));
+  }
 
   passport.serializeUser((user, callback) => {
     callback(null, user);

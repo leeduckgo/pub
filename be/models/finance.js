@@ -1,7 +1,6 @@
 const mathjs = require('mathjs');
 const Mixin = require('mixin-node');
 const rfc3339nano = require('rfc3339nano');
-const fs = require('fs');
 const config = require('../config');
 const User = require('./user');
 const Wallet = require('./wallet');
@@ -33,7 +32,7 @@ const mixin = new Mixin({
   aeskey: config.provider.mixin.aesKey,
   pin: config.provider.mixin.pinCode,
   session_id: config.provider.mixin.sessionId,
-  privatekey: config.provider.mixin.privateKeyFilePath
+  privatekey: Buffer.from(config.provider.mixin.privateKey, 'utf8')
 });
 
 const getViewToken = snapshotId => {
