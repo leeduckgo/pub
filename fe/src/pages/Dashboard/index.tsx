@@ -156,6 +156,14 @@ export default observer((props: RouteChildrenProps) => {
     return <div className="po-push-page-middle text-center gray-color po-text-16">暂无文章</div>;
   };
 
+  const renderNotification = () => {
+    return (
+      <div className="bg-red-500 p-4 mx-6 mb-5 text-white">
+        公告：PRESS.one 链正在升级，飞帖的新文章暂时无法上链，您需要再等待一下 ~
+      </div>
+    );
+  };
+
   const { isFetched, files } = fileStore;
 
   return (
@@ -181,6 +189,7 @@ export default observer((props: RouteChildrenProps) => {
           <Loading />
         </div>
       )}
+      {isFetched && renderNotification()}
       {isFetched && files.length === 0 && renderNoPosts()}
       {isFetched && files.length > 0 && renderPosts(files)}
 
