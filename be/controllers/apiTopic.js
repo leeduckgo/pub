@@ -93,8 +93,7 @@ const changePermission = async (ctx, type) => {
     success: true,
   };
 
-  const isProduction = config.env === 'production';
-  if (updated && isProduction) {
+  if (updated) {
     const block = await Chain.pushTopic({
       userAddress: user.address,
       topicAddress: config.topic.address,
