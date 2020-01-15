@@ -8,17 +8,12 @@ const logger = require('koa-logger');
 const cors = require('@koa/cors');
 const config = require('./config');
 const session = require('koa-session');
-const fs = require('fs');
-const {
-  log
-} = require('./utils');
 
 const index = require('./routes/index');
 const user = require('./routes/user');
 const auth = require('./routes/auth');
 const logout = require('./routes/logout');
 const file = require('./routes/file');
-const topic = require('./routes/topic');
 const storage = require('./routes/storage');
 const finance = require('./routes/finance');
 const ping = require('./routes/ping');
@@ -56,7 +51,6 @@ router.use('/api/user', ensureAuthorization(), user.routes(), user.allowedMethod
 router.use('/api/auth', auth.routes(), auth.allowedMethods());
 router.use('/api/logout', ensureAuthorization(), logout.routes(), logout.allowedMethods());
 router.use('/api/files', file.routes(), file.allowedMethods());
-router.use('/api/topics', topic.routes(), topic.allowedMethods());
 router.use('/api/storage', storage.routes(), storage.allowedMethods());
 router.use('/api/finance', finance.routes(), finance.allowedMethods());
 router.use('/api/ping', ping.routes(), ping.allowedMethods());
@@ -67,7 +61,7 @@ router.use('/api/import', importRoute.routes(), importRoute.allowedMethods());
 app.use(router.routes(), router.allowedMethods());
 
 app.on('error', function (err) {
-  log(err)
+  console.log(err)
 });
 
 app.serverUpCallback = (server) => {

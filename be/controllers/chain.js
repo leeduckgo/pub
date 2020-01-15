@@ -10,7 +10,6 @@ const {
   Errors
 } = require('../models/validator');
 const Block = require('../models/block');
-const Topic = require('../models/topic');
 
 const SIGN_URL = `https://press.one/api/v2/datasign`;
 
@@ -154,9 +153,7 @@ exports.pushTopic = async (options = {}) => {
   assert(userAddress, Errors.ERR_IS_REQUIRED('userAddress'));
   assert(topicAddress, Errors.ERR_IS_REQUIRED('topicAddress'));
   assert(['allow', 'deny'].includes(type), Errors.ERR_IS_INVALID('type'));
-  const topic = await Topic.getByAddress(topicAddress, {
-    withKeys: true
-  });
+  const topic = config.topic;
   const payload = getTopicPayload({
     userAddress,
     type,

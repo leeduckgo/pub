@@ -320,18 +320,20 @@ export default observer((props: any) => {
           <div className="px-4 text-center">
             <DialogContentText id="alert-dialog-description">
               <div className="text-sm text-gray-600">点击确认发布之后，文章将发布到区块链上</div>
-              <div className="text-gray-500 mt-2 po-text-12">
-                （重要：发布之前请先阅读一下
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="po-bold green-color"
-                  href={settingsStore.settings['reader.rulePostUrl']}
-                >
-                  发布规则
-                </a>
-                ）
-              </div>
+              {settingsStore.settings['reader.rulePostUrl'] && (
+                <div className="text-gray-500 mt-2 po-text-12">
+                  （重要：发布之前请先阅读一下
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="po-bold green-color"
+                    href={settingsStore.settings['reader.rulePostUrl']}
+                  >
+                    发布规则
+                  </a>
+                  ）
+                </div>
+              )}
             </DialogContentText>
           </div>
         </DialogContent>

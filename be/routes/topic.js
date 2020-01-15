@@ -9,14 +9,14 @@ const {
 } = require('../controllers/apiTopic');
 const {
   ensureAuthorization,
-  ensureTopicOnwer,
+  ensureAdmin,
 } = require('../models/api');
 
 router.post('/', ensureAuthorization(), create);
-router.get('/allow', ensureAuthorization(), ensureTopicOnwer(), getAllowPermissionList);
-router.get('/deny', ensureAuthorization(), ensureTopicOnwer(), getDenyPermissionList);
-router.post('/allow/:userid', ensureAuthorization(), ensureTopicOnwer(), allow);
-router.post('/deny/:userid', ensureAuthorization(), ensureTopicOnwer(), deny);
-router.get('/updatescript', ensureAuthorization(), ensureTopicOnwer(), updatescript);
+router.get('/allow', ensureAuthorization(), ensureAdmin(), getAllowPermissionList);
+router.get('/deny', ensureAuthorization(), ensureAdmin(), getDenyPermissionList);
+router.post('/allow/:userid', ensureAuthorization(), ensureAdmin(), allow);
+router.post('/deny/:userid', ensureAuthorization(), ensureAdmin(), deny);
+router.get('/updatescript', ensureAuthorization(), ensureAdmin(), updatescript);
 
 module.exports = router;

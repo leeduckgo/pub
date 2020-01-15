@@ -3,14 +3,16 @@
 const passport = require('koa-passport');
 const GithubStrategy = require('passport-github2').Strategy;
 const MixinStrategy = require('passport-mixin').Strategy;
-const config = require('../config');
+const {
+  provider
+} = require('../config');
 
 const buildPassport = () => {
-  if (config.provider.github) {
+  if (provider.github) {
     passport.use(new GithubStrategy({
-      clientID: config.provider.github.clientID,
-      clientSecret: config.provider.github.clientSecret,
-      callbackURL: config.provider.github.callbackUrl
+      clientID: provider.github.clientID,
+      clientSecret: provider.github.clientSecret,
+      callbackURL: provider.github.callbackUrl
     }, (accessToken, refreshToken, profile, callback) => {
       profile.auth = {
         accessToken: accessToken,
@@ -20,11 +22,11 @@ const buildPassport = () => {
     }));
   }
 
-  if (config.provider.mixin) {
+  if (provider.mixin) {
     passport.use(new MixinStrategy({
-      clientID: config.provider.mixin.clientId,
-      clientSecret: config.provider.mixin.clientSecret,
-      callbackURL: config.provider.mixin.callbackUrl
+      clientID: provider.mixin.clientId,
+      clientSecret: provider.mixin.clientSecret,
+      callbackURL: provider.mixin.callbackUrl
     }, (accessToken, refreshToken, profile, callback) => {
       profile.auth = {
         accessToken: accessToken,
@@ -45,21 +47,27 @@ const buildPassport = () => {
   return passport;
 };
 
-const authenticate = {
-  github: passport.authenticate('github', {
-    failureRedirect: config.provider.github.loginUrl,
+const authenticate = {};
+
+if (provider.github) {
+  authenticate.github = passport.authenticate('github', {
+    failureRedirect: provider.github.loginUrl,
     scope: ['read:user']
-  }),
+  });
+}
 
-  mixin: passport.authenticate('mixin', {
-    failureRedirect: config.provider.mixin.loginUrl,
+if (provider.mixin) {
+  authenticate.mixin = passport.authenticate('mixin', {
+    failureRedirect: provider.mixin.loginUrl,
     scope: 'PROFILE:READ'
-  }),
+  })
+}
 
-  pressone: ctx => {
-    ctx.redirect(`https://press.one/developer/apps/${config.provider.pressone.appAddress}/authorize?scope=user`);
+if (provider.pressone) {
+  authenticate.pressone = ctx => {
+    ctx.redirect(`https://press.one/developer/apps/${provider.pressone.appAddress}/authorize?scope=user`);
   }
-};
+}
 
 module.exports = {
   authenticate,

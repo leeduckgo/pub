@@ -7,10 +7,6 @@ const {
   throws,
 } = require('../models/validator');
 const User = require('../models/user');
-const Topic = require('../models/topic');
-const {
-  log
-} = require('../utils');
 
 exports.ensureAuthorization = (options = {}) => {
   const {
@@ -46,23 +42,18 @@ exports.ensureAuthorization = (options = {}) => {
     const user = await User.get(userId, {
       withProfile: true
     });
+    const isAdmin = config.auth.adminIds.includes(~~user.id);
+    user.isAdmin = isAdmin;
     ctx.verification.user = user;
     assert(user, Errors.ERR_NOT_FOUND('user'));
     await next();
   }
 }
 
-exports.ensureTopicOnwer = () => {
+exports.ensureAdmin = () => {
   return async (ctx, next) => {
-    let isTopicOwner = false
-
-    const topic = await Topic.getByAddress(config.topic.address)
-
-    if (topic && topic.userId === ctx.verification.user.id) {
-      isTopicOwner = true
-    }
-
-    assert(isTopicOwner, Errors.ERR_NO_PERMISSION, 401);
+    const user = ctx.verification.user;
+    assert(user.isAdmin, Errors.ERR_NO_PERMISSION, 401);
     await next()
   }
 }

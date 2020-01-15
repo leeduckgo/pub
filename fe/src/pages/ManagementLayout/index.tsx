@@ -78,7 +78,7 @@ export default observer((props: RouteChildrenProps) => {
       text: '权限管理',
       icon: AssignmentIcon,
       path: '/topic',
-      show: user.isTopicOwner,
+      show: user.isAdmin,
     },
   ];
 
