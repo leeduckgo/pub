@@ -131,7 +131,8 @@ exports.oauthCallback = async (ctx, next) => {
         const noPermission = !hasPermission;
         if (noPermission) {
           Log.createAnonymity(profile.id, `没有 ${provider} 权限，raw ${profile.raw}`);
-          ctx.redirect(config.auth.permissionDenyUrl);
+          const clientHost = ctx.session.auth.redirect.split('/').slice(0, 3).join('/');
+          ctx.redirect(`${clientHost}/permissionDeny`);
           return false;
         }
       }
