@@ -64,12 +64,10 @@ const getFilePayload = ({
   if (updatedFile) {
     assert(updatedFile.block, Errors.ERR_IS_REQUIRED('updatedFile.block'));
     const {
-      blockTransactionId,
-      blockNum
+      rId
     } = updatedFile.block;
-    assert(blockTransactionId, Errors.ERR_IS_REQUIRED('blockTransactionId'));
-    assert(blockNum, Errors.ERR_IS_REQUIRED('blockNum'));
-    data.updated_file_id = `${blockTransactionId}@${blockNum}`;
+    assert(rId, Errors.ERR_IS_REQUIRED('rId'));
+    data.updated_file_id = rId;
   }
 
   assert(user.mixinWalletClientId, Errors.ERR_NOT_FOUND('user.mixinWalletClientId'));
