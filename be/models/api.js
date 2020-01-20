@@ -71,7 +71,7 @@ exports.errorHandler = async (ctx, next) => {
   try {
     await next();
   } catch (err) {
-    log(err);
+    console.log(err);
     if (
       err.status &&
       err.status >= httpStatus.BAD_REQUEST &&

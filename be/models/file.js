@@ -144,7 +144,9 @@ exports.get = async (id, options = {}) => {
       deleted: false
     }
   });
-  assert(file, Errors.ERR_NOT_FOUND('file'));
+  if (!file) {
+    return null;
+  }
   const {
     withRawContent
   } = options;
@@ -194,11 +196,18 @@ exports.delete = async id => {
 
 exports.getByMsghash = async (msghash, options = {}) => {
   assert(msghash, Errors.ERR_IS_REQUIRED('msghash'));
+  const where = {
+    msghash,
+    deleted: false
+  };
+  const {
+    ignoreDeleted
+  } = options;
+  if (ignoreDeleted) {
+    delete where.deleted;
+  }
   const file = await File.findOne({
-    where: {
-      msghash,
-      deleted: false
-    }
+    where
   });
   if (!file) {
     return null

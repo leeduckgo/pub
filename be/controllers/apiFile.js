@@ -128,7 +128,11 @@ exports.update = async ctx => {
     await File.delete(file.id);
     Log.create(
       file.userId,
-      `更新文章 ${updatedFile.title}，id ${updatedFile.id}`
+      `更新后的文章 ${newFile.title}，id ${newFile.id}`
+    );
+    Log.create(
+      file.userId,
+      `被替换的文章 ${file.title}，id ${file.id}`
     );
     ctx.body = {
       newFile,

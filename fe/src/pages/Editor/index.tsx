@@ -157,8 +157,15 @@ export default observer((props: any) => {
         };
         const isUpdating = file.hasOwnProperty('id');
         if (isUpdating) {
-          const res = await Api.updateFile(file.id, param, file.status === 'draft');
-          fileStore.updateFile(res.updatedFile);
+          const isDraft = file.status === 'draft';
+          const isReplacement = !isDraft;
+          const res = await Api.updateFile(file.id, param, isDraft);
+          if (isDraft) {
+            fileStore.updateFile(res.updatedFile);
+          } else if (isReplacement) {
+            fileStore.removeFile(res.updatedFile.id);
+            fileStore.addFile(res.newFile);
+          }
         } else {
           const res = await Api.createFile(param);
           fileStore.addFile(res);

@@ -35,5 +35,8 @@ export function createFilesStore() {
     addFile(file: any) {
       this.files.unshift(file);
     },
+    removeFile(id: any) {
+      this.files = this.files.filter(file => +file.id !== +id);
+    },
   } as FilesStore;
 }
