@@ -39,7 +39,10 @@ const getPostfix = mimeType => {
 const getFileUrl = file => {
   const name = file.msghash;
   const postfix = getPostfix(file.mimeType);
-  return `${config.serviceRoot}/api/storage/${name}.${postfix}`;
+  const isDev = config.serviceRoot.includes('localhost');
+  const ipRoot = `http://${config.host}:${config.port}`;
+  // using ip so that atom docker container can access it
+  return `${isDev ? ipRoot : config.serviceRoot}/api/storage/${name}.${postfix}`;
 }
 
 const getFilePayload = ({
