@@ -6,3 +6,5 @@ yarn-error.log*
 
 /config.js
 /config.wallet.js
+
+/build
