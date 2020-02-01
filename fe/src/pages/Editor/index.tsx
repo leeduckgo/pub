@@ -292,7 +292,9 @@ export default observer((props: any) => {
         )}
 
         <div onClick={handleClickOpen}>
-          <nav className="p-editor-save-publish flex v-center">发布上链</nav>
+          <nav className="p-editor-save-publish flex v-center">
+            {isPublished ? '更新文章' : '发布上链'}
+          </nav>
         </div>
       </div>
 
