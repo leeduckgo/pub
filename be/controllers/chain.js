@@ -1,19 +1,17 @@
 const request = require('request-promise');
-const {
-  mimeTypes
-} = require('../utils')
+const { mimeTypes } = require('../utils');
 const config = require('../config');
 const User = require('../models/user');
 const PrsUtil = require('prs-utility');
-const {
-  assert,
-  Errors
-} = require('../models/validator');
+const { assert, Errors } = require('../models/validator');
 const Block = require('../models/block');
 
-const SIGN_URL = `https://press.one/api/v2/datasign`;
+// const SIGN_URL = `https://press.one/api/v2/datasign`;
+const SIGN_URL = `http://127.0.0.1:8090/api/v2/datasign`;
 
-const signBlock = (data) => {
+const HASH_ALG = 'sha256';
+
+const signBlock = data => {
   return request({
     method: 'post',
     uri: SIGN_URL,
@@ -23,7 +21,7 @@ const signBlock = (data) => {
     },
     body: data
   }).promise();
-}
+};
 
 const getPostfix = mimeType => {
   let postfix;
@@ -34,7 +32,7 @@ const getPostfix = mimeType => {
     }
   }
   return postfix;
-}
+};
 
 const getFileUrl = file => {
   const name = file.msghash;
@@ -42,15 +40,12 @@ const getFileUrl = file => {
   const isDev = config.serviceRoot.includes('localhost');
   const ipRoot = `http://${config.host}:${config.port}`;
   // using ip so that atom docker container can access it
-  return `${isDev ? ipRoot : config.serviceRoot}/api/storage/${name}.${postfix}`;
-}
+  return `${
+    isDev ? ipRoot : config.serviceRoot
+  }/api/storage/${name}.${postfix}`;
+};
 
-const getFilePayload = ({
-  file,
-  user,
-  topic,
-}, options = {}) => {
-
+const getFilePayload = ({ file, user, topic }, options = {}) => {
   assert(file, Errors.ERR_IS_REQUIRED('file'));
   assert(user, Errors.ERR_IS_REQUIRED('user'));
   assert(topic, Errors.ERR_IS_REQUIRED('topic'));
@@ -60,9 +55,7 @@ const getFilePayload = ({
     topic
   };
 
-  const {
-    updatedFile
-  } = options;
+  const { updatedFile } = options;
   if (updatedFile) {
     assert(updatedFile.block, Errors.ERR_IS_REQUIRED('updatedFile.block'));
     const rId = updatedFile.block.id;
@@ -70,7 +63,10 @@ const getFilePayload = ({
     data.updated_tx_id = rId;
   }
 
-  assert(user.mixinWalletClientId, Errors.ERR_NOT_FOUND('user.mixinWalletClientId'));
+  assert(
+    user.mixinWalletClientId,
+    Errors.ERR_NOT_FOUND('user.mixinWalletClientId')
+  );
 
   const payload = {
     user_address: user.address,
@@ -78,36 +74,35 @@ const getFilePayload = ({
     meta: {
       uris: [getFileUrl(file)],
       mime: `${file.mimeType};charset=UTF-8`,
-      encryption: "aes-256-cbc",
-      payment_url: `mixin://transfer/${user.mixinWalletClientId}`
+      encryption: 'aes-256-cbc',
+      payment_url: `mixin://transfer/${user.mixinWalletClientId}`,
+      hash_alg: HASH_ALG
     },
     data,
-    hash: PrsUtil.hashBlockData(data),
-    signature: PrsUtil.signBlockData(data, user.privateKey).signature
+    hash: PrsUtil.hashBlockData(data, HASH_ALG),
+    signature: PrsUtil.signBlockData(data, user.privateKey, HASH_ALG).signature
   };
   return payload;
-}
+};
 
 const getTopicPayload = (options = {}) => {
-  const {
-    userAddress,
-    topic,
-    type,
-  } = options;
+  const { userAddress, topic, type } = options;
   const data = {
     [type]: userAddress,
-    topic: topic.address,
-  }
+    topic: topic.address
+  };
   const payload = {
     user_address: topic.address,
     type: 'PIP:2001',
-    meta: [],
+    meta: {
+      hash_alg: HASH_ALG
+    },
     data,
-    hash: PrsUtil.hashBlockData(data),
-    signature: PrsUtil.signBlockData(data, topic.privateKey).signature
+    hash: PrsUtil.hashBlockData(data, HASH_ALG),
+    signature: PrsUtil.signBlockData(data, topic.privateKey, HASH_ALG).signature
   };
   return payload;
-}
+};
 
 const packBlock = block => {
   const result = {};
@@ -118,28 +113,29 @@ const packBlock = block => {
     result[key] = isObj ? JSON.stringify(value) : value;
   }
   return result;
-}
+};
 
 exports.pushFile = async (file, options = {}) => {
   const user = await User.get(file.userId, {
-    withKeys: true,
+    withKeys: true
   });
-  const {
-    updatedFile
-  } = options;
-  const payload = getFilePayload({
-    file,
-    user,
-    topic: config.topic.address,
-  }, {
-    updatedFile
-  });
+  const { updatedFile } = options;
+  const payload = getFilePayload(
+    {
+      file,
+      user,
+      topic: config.topic.address
+    },
+    {
+      updatedFile
+    }
+  );
   const block = await signBlock(payload);
   assert(block, Errors.ERR_NOT_FOUND('block'));
   const packedBlock = packBlock(block);
   const dbBlock = await Block.create(packedBlock);
   return dbBlock;
-}
+};
 
 /**
  * @param {object} options
@@ -148,11 +144,7 @@ exports.pushFile = async (file, options = {}) => {
  * @param {'allow' | 'deny'} [options.type]
  */
 exports.pushTopic = async (options = {}) => {
-  const {
-    userAddress,
-    topicAddress,
-    type = 'allow',
-  } = options;
+  const { userAddress, topicAddress, type = 'allow' } = options;
   assert(userAddress, Errors.ERR_IS_REQUIRED('userAddress'));
   assert(topicAddress, Errors.ERR_IS_REQUIRED('topicAddress'));
   assert(['allow', 'deny'].includes(type), Errors.ERR_IS_INVALID('type'));
@@ -167,4 +159,4 @@ exports.pushTopic = async (options = {}) => {
   const packedBlock = packBlock(block);
   const dbBlock = await Block.create(packedBlock);
   return dbBlock;
-}
+};

@@ -91,7 +91,7 @@ const verifyData = (data, options = {}) => {
 exports.create = async (userId, data) => {
   assert(userId, Errors.ERR_IS_REQUIRED('userId'));
   verifyData(data);
-  const msghash = prsUtil.keccak256(data.content);
+  const msghash = prsUtil.sha256(data.content);
   const maybeExistedFile = await exports.getByMsghash(msghash);
   assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
   const encryptedContent = JSON.stringify(ase256cbcCrypto.encrypt(data.content));
@@ -163,7 +163,7 @@ exports.update = async (id, data) => {
   });
   const payload = data;
   if (data.content) {
-    const msghash = prsUtil.keccak256(data.content);
+    const msghash = prsUtil.sha256(data.content);
     const maybeExistedFile = await exports.getByMsghash(msghash);
     assert(!maybeExistedFile, Errors.ERR_IS_DUPLICATED('msghash'), 409);
     const encryptedContent = JSON.stringify(ase256cbcCrypto.encrypt(data.content));

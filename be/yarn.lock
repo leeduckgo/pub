@@ -1579,6 +1579,11 @@ crypto-js@^3.1.8:
   resolved "https://registry.npmjs.org/crypto-js/-/crypto-js-3.1.8.tgz#715f070bf6014f2ae992a98b3929258b713f08d5"
   integrity sha1-cV8HC/YBTyrpkqmLOSkli3E/CNU=
 
+crypto-js@^3.1.9-1:
+  version "3.1.9-1"
+  resolved "https://registry.npm.taobao.org/crypto-js/download/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
+  integrity sha1-/aGedh/Ad+Af+/3G6f38WeiAbNg=
+
 crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
@@ -4178,6 +4183,11 @@ netmask@^1.0.6:
   resolved "https://registry.npmjs.org/netmask/-/netmask-1.0.6.tgz#20297e89d86f6f6400f250d9f4f6b4c1945fcd35"
   integrity sha1-ICl+idhvb2QA8lDZ9Pa0wZRfzTU=
 
+node-bin-setup@^1.0.0:
+  version "1.0.6"
+  resolved "https://registry.npm.taobao.org/node-bin-setup/download/node-bin-setup-1.0.6.tgz#4b5c9bb937ece702d7069b36ca78af4684677528"
+  integrity sha1-S1ybuTfs5wLXBps2ynivRoRndSg=
+
 node-environment-flags@1.0.5:
   version "1.0.5"
   resolved "https://registry.npmjs.org/node-environment-flags/-/node-environment-flags-1.0.5.tgz#fa930275f5bf5dae188d6192b24b4c8bbac3d76a"
@@ -4214,6 +4224,13 @@ node-pre-gyp@^0.12.0:
     rimraf "^2.6.1"
     semver "^5.3.0"
     tar "^4"
+
+node@^10.17.0:
+  version "10.18.1"
+  resolved "https://registry.npm.taobao.org/node/download/node-10.18.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fnode%2Fdownload%2Fnode-10.18.1.tgz#f3228f223df9feb13e9b14a04130ace74db3877b"
+  integrity sha1-8yKPIj35/rE+mxSgQTCs502zh3s=
+  dependencies:
+    node-bin-setup "^1.0.0"
 
 nodemon@^1.8.1:
   version "1.19.4"
@@ -4963,15 +4980,17 @@ proxy-from-env@^1.0.0:
   resolved "https://registry.npmjs.org/proxy-from-env/-/proxy-from-env-1.0.0.tgz#33c50398f70ea7eb96d21f7b817630a55791c7ee"
   integrity sha1-M8UDmPcOp+uW0h97gXYwpVeRx+4=
 
-prs-utility@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/prs-utility/-/prs-utility-0.0.4.tgz#1f7448eeb34aa1894c6ddc1c7c64b2b2413a7938"
-  integrity sha512-RzC3zTopdaNdLMMVu4cQgkPcv8JgBflLJOcl7Qh+pVNRjw7UNR1Ua4Qbr2r9jSgwXSxEWjQJ9BjUZlIJHzmmhA==
+prs-utility@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.npm.taobao.org/prs-utility/download/prs-utility-0.0.7.tgz#a7397145fa819fca6c5eff014c15dd94dfe2c7ec"
+  integrity sha1-pzlxRfqBn8psXv8BTBXdlN/ix+w=
   dependencies:
+    crypto-js "^3.1.9-1"
     ethereumjs-util "^5.1.3"
     js-sha3 "^0.7.0"
     keythereum "^1.0.2"
     md5 "^2.2.1"
+    node "^10.17.0"
     qs "^6.6.0"
     secp256k1 "^3.5.0"
 
