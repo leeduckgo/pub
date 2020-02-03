@@ -24,7 +24,9 @@ const importRoute = require('./routes/import');
 const config = require('./config');
 const models = require('./models');
 
-const { ensureAuthorization } = require('./models/api');
+const {
+  ensureAuthorization
+} = require('./models/api');
 
 const redis = models.cache.init();
 
@@ -73,7 +75,7 @@ router.get('*', async ctx => ctx.render('index'));
 
 app.use(router.routes(), router.allowedMethods());
 
-app.on('error', function(err) {
+app.on('error', function (err) {
   console.log(err);
 });
 

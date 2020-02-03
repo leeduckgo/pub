@@ -104,7 +104,7 @@ const checkIsPaidUserOfXue = async githubNickName => {
   }
 }
 
-exports.oauthCallback = async (ctx, next) => {
+exports.oauthCallback = async ctx => {
   try {
     const {
       provider
@@ -114,7 +114,7 @@ exports.oauthCallback = async (ctx, next) => {
     if (provider === 'pressone') {
       user = await handlePressOneCallback(ctx, provider);
     } else {
-      user = await handleOauthCallback(ctx, next, provider);
+      user = await handleOauthCallback(ctx, provider);
     }
     assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
 
@@ -170,7 +170,7 @@ const handlePressOneCallback = async (ctx) => {
   return user
 }
 
-const handleOauthCallback = async (ctx, next, provider) => {
+const handleOauthCallback = async (ctx, provider) => {
   const {
     authenticate
   } = auth;
@@ -181,7 +181,7 @@ const handleOauthCallback = async (ctx, next, provider) => {
   assert(ctx.session.auth.redirect, Errors.ERR_IS_REQUIRED('session.auth.redirect'));
   assert(ctx.session.auth.provider === provider, Errors.ERR_IS_INVALID(`provider mismatch: ${provider}`));
 
-  await authenticate[provider](ctx, next);
+  await authenticate[provider](ctx, () => {});
   assert(ctx.session, Errors.ERR_IS_REQUIRED('session'));
   assert(ctx.session.passport, Errors.ERR_IS_REQUIRED('session.passport'));
   assert(ctx.session.passport.user, Errors.ERR_IS_REQUIRED('session.passport.user'));
