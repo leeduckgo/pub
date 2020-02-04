@@ -6,9 +6,7 @@ const PrsUtil = require('prs-utility');
 const { assert, Errors } = require('../models/validator');
 const Block = require('../models/block');
 
-// const SIGN_URL = `https://press.one/api/v2/datasign`;
-const SIGN_URL = `http://127.0.0.1:8090/api/v2/datasign`;
-
+const SIGN_URL = `https://press.one/api/v2/datasign`;
 const HASH_ALG = 'sha256';
 
 const signBlock = data => {
