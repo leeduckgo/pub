@@ -1,6 +1,5 @@
 'use strict';
 
-const request = require('request-promise');
 const config = require('../config');
 const auth = require('../models/auth');
 const {
@@ -60,49 +59,14 @@ const checkPermission = async (provider, profile) => {
 
 const providerPermissionChecker = {
   mixin: async profile => {
-    const rawJson = JSON.parse(profile.raw);
-    const IsInMixinBoxGroup = await checkIsInMixinBoxGroup(rawJson.user_id);
-    return IsInMixinBoxGroup;
+    // can check mixin permission
+    return true;
   },
   github: async profile => {
-    const isPaidUserOfXue = await checkIsPaidUserOfXue(profile.name);
-    return isPaidUserOfXue;
-  },
-  pressone: async () => {
-    return false;
+    // can check github permission
+    return true;
   }
 };
-
-const checkIsInMixinBoxGroup = async mixinUuid => {
-  try {
-    await request({
-      uri: `https://xiaolai-ri-openapi.groups.xue.cn/v1/users/${mixinUuid}`,
-      json: true,
-      headers: {
-        Authorization: `Bearer ${config.auth.boxGroupToken}`
-      },
-    }).promise();
-    return true;
-  } catch (err) {
-    return false;
-  }
-}
-
-const checkIsPaidUserOfXue = async githubNickName => {
-  try {
-    const user = await request({
-      uri: `${config.auth.xueUserExtraApi}/${githubNickName}`,
-      json: true,
-      headers: {
-        'x-po-auth-token': config.auth.xueAdminToken
-      },
-    }).promise();
-    const isPaidUser = user.balance > 0;
-    return isPaidUser;
-  } catch (err) {
-    return false;
-  }
-}
 
 exports.oauthCallback = async ctx => {
   try {
@@ -110,12 +74,7 @@ exports.oauthCallback = async ctx => {
       provider
     } = ctx.params;
 
-    let user;
-    if (provider === 'pressone') {
-      user = await handlePressOneCallback(ctx, provider);
-    } else {
-      user = await handleOauthCallback(ctx, provider);
-    }
+    const user = await handleOauthCallback(ctx, provider);
     assert(user, Errors.ERR_NOT_FOUND(`${provider} user`));
 
     const profile = providerGetter[provider](user);
@@ -153,21 +112,6 @@ exports.oauthCallback = async ctx => {
     console.log(err);
     throws(Errors.ERR_FAIL_TO_LOGIN)
   }
-}
-
-const handlePressOneCallback = async (ctx) => {
-  const {
-    userAddress
-  } = ctx.query;
-  assert(userAddress, Errors.ERR_IS_REQUIRED('userAddress'));
-  const user = await request({
-    uri: `https://press.one/api/v2/users/${userAddress}`,
-    json: true,
-    headers: {
-      accept: 'application/json'
-    },
-  }).promise();
-  return user
 }
 
 const handleOauthCallback = async (ctx, provider) => {
@@ -284,17 +228,6 @@ const providerGetter = {
       avatar: user._json.avatar_url || DEFAULT_AVATAR,
       bio: '',
       raw: JSON.stringify(user._json)
-    }
-  },
-
-  pressone: user => {
-    delete user.proofs;
-    return {
-      id: user.id,
-      name: user.name,
-      avatar: user.avatar || DEFAULT_AVATAR,
-      bio: user.bio,
-      raw: JSON.stringify(user)
     }
   }
 }
