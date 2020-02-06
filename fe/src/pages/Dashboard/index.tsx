@@ -74,7 +74,7 @@ const useImportDialog = (props: any) => {
 };
 
 export default observer((props: RouteChildrenProps) => {
-  const { fileStore } = useStore();
+  const { fileStore, settingsStore } = useStore();
 
   const {
     importDialogVisible,
@@ -157,6 +157,7 @@ export default observer((props: RouteChildrenProps) => {
   };
 
   const { isFetched, files } = fileStore;
+  const { settings } = settingsStore;
 
   return (
     <div className="p-dashboard-main po-mw-1200">
@@ -164,9 +165,11 @@ export default observer((props: RouteChildrenProps) => {
         <div className="p-dashboard-main-head-title">文章</div>
 
         <div className="p-dashboard-main-right">
-          <Button onClick={handleOpenImportDialog} className="import-btn" variant="contained">
-            一键导入文章
-          </Button>
+          {settings['import.enabled'] && (
+            <Button onClick={handleOpenImportDialog} className="import-btn" variant="contained">
+              一键导入文章
+            </Button>
+          )}
 
           <Link to="/editor">
             <Button className="primary create-btn" variant="contained">

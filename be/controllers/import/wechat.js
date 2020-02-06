@@ -13,9 +13,10 @@ const {
   Errors,
 } = require('../../models/validator')
 const config = require('../../config');
+const importEnabled = config.settings['import.enabled'];
 
-const qingConfig = new Config(config.qingCloud.accessKeyId, config.qingCloud.secretAccessKey);
-const bucket = new QingStor(qingConfig).Bucket(config.qingCloud.bucketName, config.qingCloud.zone);
+const qingConfig = importEnabled ? new Config(config.qingCloud.accessKeyId, config.qingCloud.secretAccessKey) : null;
+const bucket = importEnabled ? new QingStor(qingConfig).Bucket(config.qingCloud.bucketName, config.qingCloud.zone) : null;
 
 const turndownService = new TurndownService({
   headingStyle: 'atx',
@@ -44,6 +45,9 @@ turndownService.addRule('img', {
 })
 
 const fetchWechatPost = async url => {
+  if (!importEnabled) {
+    return null;
+  }
   let html
   try {
     html = await request({

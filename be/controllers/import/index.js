@@ -1,3 +1,4 @@
+const config = require('../../config');
 const {
   assert,
   throws,
@@ -7,6 +8,8 @@ const {
   createFile
 } = require('../apiFile')
 
+const importEnabled = config.settings['import.enabled'];
+
 const fetchPressOnePost = require('./prs')
 const fetchWechatPost = require('./wechat')
 
@@ -15,6 +18,10 @@ const wechatLinkRegexp = /^https:\/\/mp\.weixin\.qq\.com\/s.*$/
 
 /** 从 press.one 和微信导入文章到草稿 */
 exports.postImport = async ctx => {
+  if (!importEnabled) {
+    ctx.body = 'import feature is disabled';
+    return;
+  }
   const url = ctx.query.url
   assert(url, Errors.ERR_IS_INVALID('url'));
   let data
