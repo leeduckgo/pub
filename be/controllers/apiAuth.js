@@ -180,7 +180,7 @@ const login = async (ctx, user, provider) => {
   const topicAddress = config.topic.address;
 
   const insertedUser = await User.get(insertedProfile.userId);
-  const allowBlock = await Block.getAllowBlockByAddress(insertedUser.address);
+  const allowBlock = await Block.getAllowBlock(topicAddress, insertedUser.address);
 
   if (topicAddress && !allowBlock) {
     Permission.setPermission({
