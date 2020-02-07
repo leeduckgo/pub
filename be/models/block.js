@@ -61,11 +61,11 @@ const getBlock = (rId) => {
   }).promise();
 }
 
-exports.getAllowBlockByAddress = async address => {
+exports.getAllowBlock = async (topicAddress, address) => {
   const block = await Block.findOne({
     where: {
       data: {
-        [Op.like]: `%"allow":"${address}"%`
+        [Op.like]: `%"allow":"${address}","topic":"${topicAddress}"%`
       }
     }
   });
