@@ -58,7 +58,7 @@ export default observer(() => {
           action={[
             snackbarStore.type === 'socket' ? (
               <span
-                className="po-cp pr-2"
+                className="cursor-pointer pr-2"
                 key="redirect"
                 onClick={() => {
                   window.open(`${readerUrl}/posts/${snackbarStore.meta.rId}`);
