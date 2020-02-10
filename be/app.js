@@ -14,6 +14,7 @@ const user = require('./routes/user');
 const auth = require('./routes/auth');
 const logout = require('./routes/logout');
 const file = require('./routes/file');
+const topic = require('./routes/topic');
 const storage = require('./routes/storage');
 const finance = require('./routes/finance');
 const ping = require('./routes/ping');
@@ -65,6 +66,7 @@ router.use(
   logout.allowedMethods()
 );
 router.use('/api/files', file.routes(), file.allowedMethods());
+router.use('/api/topics', topic.routes(), topic.allowedMethods());
 router.use('/api/storage', storage.routes(), storage.allowedMethods());
 router.use('/api/finance', finance.routes(), finance.allowedMethods());
 router.use('/api/ping', ping.routes(), ping.allowedMethods());

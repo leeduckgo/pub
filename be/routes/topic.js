@@ -1,6 +1,5 @@
 const router = require('koa-router')();
 const {
-  create,
   allow,
   deny,
   getAllowPermissionList,
@@ -12,7 +11,6 @@ const {
   ensureAdmin,
 } = require('../models/api');
 
-router.post('/', ensureAuthorization(), create);
 router.get('/allow', ensureAuthorization(), ensureAdmin(), getAllowPermissionList);
 router.get('/deny', ensureAuthorization(), ensureAdmin(), getDenyPermissionList);
 router.post('/allow/:userid', ensureAuthorization(), ensureAdmin(), allow);
