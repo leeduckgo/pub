@@ -67,7 +67,7 @@ export default observer((props: any) => {
   return (
     <TableRow key={idx}>
       <TableCell component="th" scope="row">
-        <div className="po-bold title">{file.title}</div>
+        <div className="font-bold title">{file.title}</div>
       </TableCell>
       <TableCell>
         <Tooltip title={FileStatusTip[file.status]} placement="top">
@@ -76,7 +76,7 @@ export default observer((props: any) => {
               {
                 'cursor-pointer': isPublished,
               },
-              `po-semibold ${file.status}`,
+              `font-medium ${file.status}`,
             )}
             onClick={() => isPublished && openPrsIdentity(file.rId)}
           >
@@ -93,7 +93,7 @@ export default observer((props: any) => {
             <span>
               <IconButton
                 disabled={isPending}
-                className="push-right-xs"
+                className="mr-1"
                 onClick={e => {
                   e.stopPropagation();
                   editFile(+file.id);
@@ -106,13 +106,13 @@ export default observer((props: any) => {
           {canDelete && (
             <div>
               <IconButton
-                className="po-text-20"
+                className="text-base"
                 aria-label="more"
                 aria-controls="dashboard-post-menu"
                 aria-haspopup="true"
                 onClick={handleMenuClick}
               >
-                <Settings className="po-text-20" />
+                <Settings className="text-base" />
               </IconButton>
               <Menu
                 id="dashboard-post-menu"
@@ -141,15 +141,15 @@ export default observer((props: any) => {
                     disableHoverListener={!isPublished}
                   >
                     <div
-                      className="flex v-center gray-darker-color"
+                      className="flex items-center text-gray-500"
                       onClick={e => {
                         deleteFile(file, idx);
                       }}
                     >
-                      <span className="flex v-center po-text-20 push-right-xs">
+                      <span className="flex items-center text-base mr-1">
                         <DeleteIcon />
                       </span>
-                      <span className="po-bold">删除</span>
+                      <span className="font-bold">删除</span>
                       <ButtonProgress color={'primary-color'} size={12} isDoing={deleting} />
                     </div>
                   </Tooltip>
@@ -163,7 +163,7 @@ export default observer((props: any) => {
               placement="top"
             >
               <a href={`${readerUrl}/posts/${file.rId}`} target="_blank" rel="noopener noreferrer">
-                <IconButton className="push-right-xs">
+                <IconButton className="mr-1">
                   <OpenInNewIcon />
                 </IconButton>
               </a>

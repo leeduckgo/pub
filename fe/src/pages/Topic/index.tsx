@@ -54,7 +54,7 @@ const renderUserList = (renderUserListProps: RenderUserListProps) => {
   ) : (
     <>
       {users.map(userItem => (
-        <div key={userItem.id} className="user-list-item flex v-center">
+        <div key={userItem.id} className="user-list-item flex items-center">
           <div className="w-10 h-10 rounded-full overflow-hidden">
             <img className="w-10 h-10" src={userItem.avatar} alt={userItem.name} />
           </div>
@@ -75,7 +75,7 @@ const renderUserList = (renderUserListProps: RenderUserListProps) => {
           </div>
         </div>
       ))}
-      <div className="button-box flex v-center">
+      <div className="button-box flex items-center">
         <Button
           onClick={() => onPageChange(page - 1)}
           disabled={pageLoading || page === 0}
@@ -215,13 +215,13 @@ export default observer(() => {
   };
 
   return (
-    <div className="p-topic po-mw-1200 flex column">
-      <section className="p-topic-head flex v-center sb">
+    <div className="p-topic ex-mw-1200 flex flex-col">
+      <section className="p-topic-head flex items-center justify-between">
         <div className="p-topic-head-title">权限管理</div>
       </section>
 
-      <section className="p-topic-main flex column po-mw-1200">
-        <div className="p-topic-main-inner flex column MuiPaper-elevation1">
+      <section className="p-topic-main flex flex-col ex-mw-1200">
+        <div className="p-topic-main-inner flex flex-col MuiPaper-elevation1">
           <Tabs className="flex" value={tab} onChange={(_e, v) => changeTab(v)}>
             <Tab label="允许发布文章的用户" />
             <Tab label="禁止发布文章的用户" />

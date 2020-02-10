@@ -39,13 +39,17 @@ export default class ButtonProgress extends React.Component<IProps, IState> {
     const { isShowDone } = this.state;
     if (isDoing) {
       return (
-        <span className="button-circular-progress flex h-center v-center">
+        <span className="button-circular-progress flex justify-center items-center -mr-1">
           <CircularProgress size={size} className={`${color}`} />
         </span>
       );
     }
     if (isShowDone) {
-      return <Done className={`${color} push-left-xs po-text-16"`} />;
+      return (
+        <div className="ml-1 -mr-1">
+          <Done className={`${color}"`} />
+        </div>
+      );
     }
     return null;
   }

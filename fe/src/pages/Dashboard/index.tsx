@@ -129,7 +129,7 @@ export default observer((props: RouteChildrenProps) => {
 
   const renderPosts = (files: any) => {
     return (
-      <section className="p-dashboard-main-table po-mw-1200">
+      <section className="p-dashboard-main-table ex-mw-1200">
         <Paper>
           <Table>
             <TableHead>
@@ -153,15 +153,15 @@ export default observer((props: RouteChildrenProps) => {
   };
 
   const renderNoPosts = () => {
-    return <div className="po-push-page-middle text-center gray-color po-text-16">暂无文章</div>;
+    return <div className="mt-56 text-center gray-color text-base">暂无文章</div>;
   };
 
   const { isFetched, files } = fileStore;
   const { settings } = settingsStore;
 
   return (
-    <div className="p-dashboard-main po-mw-1200">
-      <section className="p-dashboard-main-head flex v-center sb">
+    <div className="p-dashboard-main ex-mw-1200">
+      <section className="p-dashboard-main-head flex items-center justify-between">
         <div className="p-dashboard-main-head-title">文章</div>
 
         <div className="p-dashboard-main-right">

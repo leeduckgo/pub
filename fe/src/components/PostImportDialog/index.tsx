@@ -44,7 +44,7 @@ const PostImportDialog = (props: IProps) => {
       <DialogTitle id="alert-dialog-title">
         <div className="pt-1 text-center">导入文章</div>
       </DialogTitle>
-      <DialogContent className="flex column v-center">
+      <DialogContent className="flex justify-center items-center flex-col">
         <div className="px-5">
           <DialogContentText id="alert-dialog-description">
             <div className="text-sm text-gray-600">支持微信公众号文章、PRESSone文章</div>

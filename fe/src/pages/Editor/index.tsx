@@ -6,6 +6,7 @@ import Loading from 'components/Loading';
 import ConfirmDialog from 'components/ConfirmDialog';
 import Help from '@material-ui/icons/Help';
 import { getMarkdownCheatSheet } from './MarkdownCheatSheet';
+import Fade from '@material-ui/core/Fade';
 
 import {
   Dialog,
@@ -239,20 +240,20 @@ export default observer((props: any) => {
           />
 
           <SimpleMDE
-            className="p-editor-markdown push-top-sm"
+            className="p-editor-markdown mt-2"
             value={file.content}
             onChange={handleContentChange}
             options={config}
           />
 
-          <div className="flex sb">
+          <div className="flex justify-between">
             <div></div>
             <div
-              className="md-ref flex v-center push-top-sm help-color po-cp"
+              className="md-ref flex items-center mt-2 help-color cursor-pointer"
               onClick={openMdCheatSheet}
             >
-              <div className="po-text-18 flex">
-                <Help className="push-right-xs" />
+              <div className="flex">
+                <Help className="mr-1" />
               </div>
               Markdown 语法参考
             </div>
@@ -273,81 +274,83 @@ export default observer((props: any) => {
   const isPublished = file.status === 'published';
 
   return (
-    <div className="p-editor flex h-center po-fade-in">
-      <div onClick={handleBack}>
-        <nav className="p-editor-back flex v-center link-color">
-          <NavigateBefore />
-          文章
-        </nav>
-      </div>
+    <Fade in={true} timeout={500}>
+      <div className="p-editor flex justify-center">
+        <div onClick={handleBack}>
+          <nav className="p-editor-back flex items-center link-color">
+            <NavigateBefore />
+            文章
+          </nav>
+        </div>
 
-      <div className="p-editor-save">
-        {!isPublished && (
-          <div onClick={handleSave}>
-            <nav className="p-editor-save-draft flex v-center push-right">
-              保存草稿
-              <ButtonProgress isDoing={isSaving} isDone={!isSaving} color="link-color" />
+        <div className="p-editor-save">
+          {!isPublished && (
+            <div onClick={handleSave}>
+              <nav className="p-editor-save-draft flex items-center mr-4">
+                保存草稿
+                <ButtonProgress isDoing={isSaving} isDone={!isSaving} color="link-color" />
+              </nav>
+            </div>
+          )}
+
+          <div onClick={handleClickOpen}>
+            <nav className="p-editor-save-publish flex items-center">
+              {isPublished ? '更新文章' : '发布上链'}
             </nav>
+          </div>
+        </div>
+
+        {isFetching && (
+          <div className="h-screen flex justify-center items-center">
+            <Loading size={40} />
           </div>
         )}
 
-        <div onClick={handleClickOpen}>
-          <nav className="p-editor-save-publish flex v-center">
-            {isPublished ? '更新文章' : '发布上链'}
-          </nav>
-        </div>
+        {!isFetching && renderEditor()}
+
+        <Dialog
+          className="publish-dialog"
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            <div className="pt-1 text-center">发布上链</div>
+          </DialogTitle>
+          <DialogContent>
+            <div className="px-4 text-center">
+              <DialogContentText id="alert-dialog-description">
+                <div className="text-sm text-gray-600">点击确认发布之后，文章将发布到区块链上</div>
+                {settingsStore.settings['reader.rulePostUrl'] && (
+                  <div className="text-gray-500 mt-2 text-sm">
+                    （重要：发布之前请先阅读一下
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-bold green-color"
+                      href={settingsStore.settings['reader.rulePostUrl']}
+                    >
+                      发布规则
+                    </a>
+                    ）
+                  </div>
+                )}
+              </DialogContentText>
+            </div>
+          </DialogContent>
+          <DialogActions>
+            <div className="cancel-publish link-color mr-4 cursor-pointer" onClick={handleClose}>
+              我需要再改一下
+            </div>
+            <div className="confirm-publish flex items-center" onClick={handlePublish}>
+              确认发布
+              <ButtonProgress isDoing={isPublishing} color="white-color" />
+            </div>
+          </DialogActions>
+          <div className="pb-2"></div>
+        </Dialog>
       </div>
-
-      {isFetching && (
-        <div className="h-screen flex justify-center items-center">
-          <Loading size={40} />
-        </div>
-      )}
-
-      {!isFetching && renderEditor()}
-
-      <Dialog
-        className="publish-dialog"
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          <div className="pt-1 text-center">发布上链</div>
-        </DialogTitle>
-        <DialogContent>
-          <div className="px-4 text-center">
-            <DialogContentText id="alert-dialog-description">
-              <div className="text-sm text-gray-600">点击确认发布之后，文章将发布到区块链上</div>
-              {settingsStore.settings['reader.rulePostUrl'] && (
-                <div className="text-gray-500 mt-2 po-text-12">
-                  （重要：发布之前请先阅读一下
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="po-bold green-color"
-                    href={settingsStore.settings['reader.rulePostUrl']}
-                  >
-                    发布规则
-                  </a>
-                  ）
-                </div>
-              )}
-            </DialogContentText>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <div className="cancel-publish link-color push-right po-cp" onClick={handleClose}>
-            我需要再改一下
-          </div>
-          <div className="confirm-publish flex v-center" onClick={handlePublish}>
-            确认发布
-            <ButtonProgress isDoing={isPublishing} color="white-color" />
-          </div>
-        </DialogActions>
-        <div className="pb-2"></div>
-      </Dialog>
-    </div>
+    </Fade>
   );
 });

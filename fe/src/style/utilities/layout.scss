@@ -2,33 +2,33 @@
   display: flex;
   align-items: flex-start;
 
-  &.normal {
-    align-items: normal;
-  }
+  // &.normal {
+  //   align-items: normal;
+  // }
 
-  &.baseline {
-    align-items: baseline;
-  }
+  // &.baseline {
+  //   align-items: baseline;
+  // }
 
-  &.end {
-    justify-content: flex-end;
-  }
+  // &.end {
+  //   justify-content: flex-end;
+  // }
 
-  &.column {
-    flex-direction: column;
-  }
+  // &.column {
+  //   flex-direction: column;
+  // }
 
-  &.wrap {
-    flex-wrap: wrap;
-  }
+  // &.wrap {
+  //   flex-wrap: wrap;
+  // }
 
-  &.h-center {
-    justify-content: center;
-  }
+  // &.h-center {
+  //   justify-content: center;
+  // }
 
-  &.v-center {
-    align-items: center;
-  }
+  // &.v-center {
+  //   align-items: center;
+  // }
 
   &.sb {
     justify-content: space-between;
