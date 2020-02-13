@@ -29,6 +29,8 @@
 ./start.sh
 ```
 
+项目启动完毕，你可以访问写作站服务：[http://localhost:4000](http://localhost:4000)
+
 ### 打包镜像
 
 ```
