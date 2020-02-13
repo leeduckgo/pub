@@ -7,7 +7,7 @@
 
 克隆基础服务仓库（数据库，redis，同步服务）：`git clone https://github.com/Press-One/flying-pub`
 
-克隆飞帖仓库：`git clone https://github.com/Press-One/pub.git`
+克隆飞帖写作站仓库：`git clone https://github.com/Press-One/pub.git`
 
 ## 生成配置
 
@@ -20,6 +20,14 @@
 ```
 
 （备注：在启动向导程序时，需要花一点时间初始化环境，估计耗时 5 分钟，完成之后才会进入向导程序）
+
+配置生成之后，请打开 `atom.env`，手动修改一行代码
+
+```
+TOPIC=e4d4d92b8bb666fcd72a3483c95cf945f19c2bd9;http://${YOUR_HOST_IP}:8000/api/webhook/medium
+```
+
+把你的电脑的本地 IP 填到 `${YOUR_HOST_IP}`
 
 ## 启动
 
