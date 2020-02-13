@@ -1,3 +1,7 @@
+飞帖写作站，负责把数据上传到区块链
+
+![Flying pub architecture](https://static.press.one/blogimgs/image1.png)
+
 ## 准备环境
 
 你需要安装 Docker
